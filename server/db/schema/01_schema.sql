@@ -11,14 +11,14 @@ CREATE TABLE users (
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   description TEXT,
-  profile_img_url VARCHAR(255) DEFAULT "/images/profile-hex.png"
+  profile_img_url TEXT DEFAULT '/images/profile-hex.png'
 );
 
 CREATE TABLE maps (
   id SERIAL PRIMARY KEY NOT NULL,
   owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   latitude DECIMAL(8,6) NOT NULL,
-  longitudes DECIMAL(9,6) NOT NULL,
+  longitude DECIMAL(9,6) NOT NULL,
   title VARCHAR(255) NOT NULL,
   zoom_lv INTEGER NOT NULL,
   description TEXT
@@ -28,10 +28,10 @@ CREATE TABLE pins (
   id SERIAL PRIMARY KEY NOT NULL,
   map_id INTEGER REFERENCES maps(id) ON DELETE CASCADE,
   latitude DECIMAL(8,6) NOT NULL,
-  longitudes DECIMAL(9,6) NOT NULL,
+  longitude DECIMAL(9,6) NOT NULL,
   title VARCHAR(255) NOT NULL,
   description TEXT,
-  img_url VARCHAR(255) NOT NULL,
+  img_url TEXT NOT NULL
 );
 
 
