@@ -21,5 +21,18 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+
+  router.get("/users/:id", (req, res) => {
+
+  });
+
+  router.put()
+
+
+
+
+
+
+
   return router;
 };
