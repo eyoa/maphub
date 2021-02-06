@@ -19,8 +19,8 @@ CREATE TABLE maps (
   owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   latitude DECIMAL(8,6) NOT NULL,
   longitudes DECIMAL(9,6) NOT NULL,
-  title VARCHAR(255),
-  zoom_lv INTEGER,
+  title VARCHAR(255) NOT NULL,
+  zoom_lv INTEGER NOT NULL,
   description TEXT
 );
 
@@ -29,21 +29,21 @@ CREATE TABLE pins (
   map_id INTEGER REFERENCES maps(id) ON DELETE CASCADE,
   latitude DECIMAL(8,6) NOT NULL,
   longitudes DECIMAL(9,6) NOT NULL,
-  title VARCHAR(255),
+  title VARCHAR(255) NOT NULL,
   description TEXT,
   img_url VARCHAR(255) NOT NULL,
 );
 
 
 CREATE TABLE collaborators (
-  id SERIAL PRIMARY KEY NULL NULL,
+  id SERIAL PRIMARY KEY NOT NULL,
   map_id INTEGER REFERENCES maps(id) ON DELETE CASCADE,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE favorites (
-  id SERIAL PRIMARY KEY NULL NULL,
+  id SERIAL PRIMARY KEY NOT NULL,
   map_id INTEGER REFERENCES maps(id) ON DELETE CASCADE,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
 );
