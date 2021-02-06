@@ -30,21 +30,93 @@ INSERT INTO users (username, email, password, description, profile_img_url) VALU
     'desc5',
     'data:image/jpeg;base64,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');
 
+
 -- maps seed
 INSERT INTO maps (latitude, longitude, title, zoom_lv, description, owner_id ) VALUES (
-
-
+  43.653274,
+  -79.381397,
+  'Toronto',
+  10,
+  'this is Toronto',
+  1
+);
+INSERT INTO maps (latitude, longitude, title, zoom_lv, description, owner_id ) VALUES (
+  40.749496,
+  -73.964418,
+  'New York',
+  5,
+  'this is New York',
+  1
+);
+INSERT INTO maps (latitude, longitude, title, zoom_lv, description, owner_id ) VALUES (
+  37.557060,
+  126.996202,
+  'Seoul',
+  15,
+  'this is Seoul',
+  4
 );
 
 -- pins seed
-INSERT INTO pins (title, description, img_url, latitude, longitude, map_id)
-  VALUES ();
+INSERT INTO pins (title, description, img_url, latitude, longitude, map_id) VALUES (
+  'ROM',
+  'museum',
+  'https://lh3.googleusercontent.com/proxy/9GtkRGZOr2JCwRWSdFUpbSeQI3tGqW4RAbS7mWytNEmHTKDGmTbzlVkGzMsxBPZuzIGrjGWTWqXDtQzRwZubeQ-RfFa6PEJTHGHDl8wvEs-bBFjoYKgm7xJs_fLJ59ZIdZgjYUEhTSk2R38YuWnViqP2U4wP8iY=w408-h272-k-no',
+  43.667683,
+  -79.394661,
+  1
+);
+INSERT INTO pins (title, description, img_url, latitude, longitude, map_id) VALUES (
+  'CN tower',
+  'wow so tall',
+  'https://lh5.googleusercontent.com/p/AF1QipNzl4jOuwwe1n6aph6wvZ7VUz-Ys5y-Gl680iOu=w408-h301-k-no',
+  43.642790,
+  -79.386572,
+  1
+);
+INSERT INTO pins (title, description, img_url, latitude, longitude, map_id) VALUES (
+  'Nathan Philips Square',
+  'wow so square',
+  'https://lh5.googleusercontent.com/p/AF1QipMs3bRGCHNblBXfUOpITnRgCjrH5rdDgUkAH_Hz=w408-h305-k-no',
+  43.653463,
+  -79.380336,
+  1
+);
+INSERT INTO pins (title, description, img_url, latitude, longitude, map_id) VALUES (
+  'Empire State Building',
+  'wow so empire',
+  'https://lh5.googleusercontent.com/p/AF1QipPVXL2PBY-7KHWwR4SybsxS47ZpMCaYV19cMT0w=w408-h512-k-no',
+  40.749962,
+  -73.981744,
+  2
+);
+INSERT INTO pins (title, description, img_url, latitude, longitude, map_id) VALUES (
+  'Statue of Liberty',
+  NULL,
+  'https://lh5.googleusercontent.com/p/AF1QipPsKydx4u9c4wZbiSQ80Q37Uiky-FpCQKqecjL1=w408-h306-k-no',
+  40.683866,
+  -74.043542,
+  2
+);
 
 
 -- collaborators seed
-INSERT INTO collaborators (map_id, user_id)
-  VALUES ();
+INSERT INTO collaborators (map_id, user_id) VALUES (1, 1);
+INSERT INTO collaborators (map_id, user_id) VALUES (1, 2);
+INSERT INTO collaborators (map_id, user_id) VALUES (1, 3);
+INSERT INTO collaborators (map_id, user_id) VALUES (2, 1);
+INSERT INTO collaborators (map_id, user_id) VALUES (3, 1);
+INSERT INTO collaborators (map_id, user_id) VALUES (3, 2);
+INSERT INTO collaborators (map_id, user_id) VALUES (3, 3);
+INSERT INTO collaborators (map_id, user_id) VALUES (3, 4);
 
 -- favorites seed
-INSERT INTO favourites (map_id, user_id)
-  VALUES ();
+INSERT INTO favourites (map_id, user_id) VALUES (1, 1);
+INSERT INTO favourites (map_id, user_id) VALUES (1, 2);
+INSERT INTO favourites (map_id, user_id) VALUES (1, 3);
+INSERT INTO favourites (map_id, user_id) VALUES (1, 5);
+INSERT INTO favourites (map_id, user_id) VALUES (3, 1);
+INSERT INTO favourites (map_id, user_id) VALUES (3, 2);
+INSERT INTO favourites (map_id, user_id) VALUES (3, 3);
+INSERT INTO favourites (map_id, user_id) VALUES (3, 5);
+
