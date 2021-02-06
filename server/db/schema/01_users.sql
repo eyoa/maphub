@@ -19,3 +19,27 @@ CREATE TABLE maps (
   zoom_lv INTEGER,
   description TEXT
 );
+
+CREATE TABLE pins (
+  id SERIAL PRIMARY KEY NOT NULL,
+  map_id INTEGER REFERENCES maps(id) ON DELETE CASCADE,
+  latitude DECIMAL(8,6) NOT NULL,
+  longitudes DECIMAL(9,6) NOT NULL,
+  title VARCHAR(255),
+  description TEXT,
+  img_url VARCHAR(255) NOT NULL,
+);
+
+
+CREATE TABLE collaborators (
+  id SERIAL PRIMARY KEY NULL NULL,
+  map_id INTEGER REFERENCES maps(id) ON DELETE CASCADE,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE favorites (
+  id SERIAL PRIMARY KEY NULL NULL,
+  map_id INTEGER REFERENCES maps(id) ON DELETE CASCADE,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+);
