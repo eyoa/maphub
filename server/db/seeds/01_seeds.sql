@@ -99,7 +99,6 @@ INSERT INTO pins (title, description, img_url, latitude, longitude, map_id) VALU
   2
 );
 
-
 -- collaborators seed
 INSERT INTO collaborators (map_id, user_id) VALUES (1, 1);
 INSERT INTO collaborators (map_id, user_id) VALUES (1, 2);
