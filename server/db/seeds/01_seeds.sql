@@ -110,12 +110,12 @@ INSERT INTO collaborators (map_id, user_id) VALUES (3, 3);
 INSERT INTO collaborators (map_id, user_id) VALUES (3, 4);
 
 -- favorites seed
-INSERT INTO favourites (map_id, user_id) VALUES (1, 1);
-INSERT INTO favourites (map_id, user_id) VALUES (1, 2);
-INSERT INTO favourites (map_id, user_id) VALUES (1, 3);
-INSERT INTO favourites (map_id, user_id) VALUES (1, 5);
-INSERT INTO favourites (map_id, user_id) VALUES (3, 1);
-INSERT INTO favourites (map_id, user_id) VALUES (3, 2);
-INSERT INTO favourites (map_id, user_id) VALUES (3, 3);
-INSERT INTO favourites (map_id, user_id) VALUES (3, 5);
+INSERT INTO favorites (map_id, user_id) VALUES (1, 1);
+INSERT INTO favorites (map_id, user_id) VALUES (1, 2);
+INSERT INTO favorites (map_id, user_id) VALUES (1, 3);
+INSERT INTO favorites (map_id, user_id) VALUES (1, 5);
+INSERT INTO favorites (map_id, user_id) VALUES (3, 1);
+INSERT INTO favorites (map_id, user_id) VALUES (3, 2);
+INSERT INTO favorites (map_id, user_id) VALUES (3, 3);
+INSERT INTO favorites (map_id, user_id) VALUES (3, 5);
 
