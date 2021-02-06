@@ -25,5 +25,60 @@ module.exports = (db) => {
     //       .json({ error: err.message });
     //   });
   });
+
+
+  // queries for map list
+  router.get("/maps", (req, res) => {
+    console.log("Get maps route");
+    res.send("Get maps route");
+
+    // will query the db for maps
+    // db.theMapQuery({params})
+    //     .then(data => {
+    //     })
+    //     .catch(err => {
+    //     });
+  });
+
+  // queries for map details (include pins list)
+  router.get("/map", (req, res) => {
+    console.log("Get map details route");
+    res.send("Get map details route");
+
+    // will query the db for map specific stuff
+    // db.theMapQuery({params})
+    //     .then(data => {
+    //     })
+    //     .catch(err => {
+    //     });
+  });
+
+  // queries for pin details
+  router.get("/pin", (req, res) => {
+    console.log("Get pin details route");
+    res.send("Get pin details route");
+
+    // will query the db for pin details
+    // db.thePinQuery({params})
+    //     .then(data => {
+    //     })
+    //     .catch(err => {
+    //     });
+  });
+
+    // queries for collaborator list
+    router.get("/collaborators", (req, res) => {
+      console.log("Get collaborators list route");
+      res.send("Get collaborators list route");
+
+      // will query the db for map specific stuff
+      // db.theQuery({params})
+      //     .then(data => {
+      //     })
+      //     .catch(err => {
+      //     });
+    });
+
+
   return router;
 };
