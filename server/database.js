@@ -15,17 +15,6 @@ const getObjWithoutId = function (obj) {
   return res;
 }
 
-const testQuery = function() {
-  let queryStr = `
-    SELECT *
-    FROM users
-  `;
-  const queryParams = [];
-  return query(queryStr, queryParams)
-  .then(res => res.rows);
-}
-exports.testQuery = testQuery;
-
 // user queries // ------------------------------------------------------------------------------------
 const getUser = function(id, email) {
   const queryParams = [];
@@ -91,17 +80,4 @@ const addUser = function(user) {
 exports.addUser = addUser;
 
 //--------------------------------------------------------------------------------------------------
-
-const getMapList = () => {
-  return pool.query(
-    'SELECT title, description FROM maps;'
-    )
-  .then(data => {
-    console.log("GOT the goods");
-    console.log(data.rows);
-    return data.rows
-  })
-  .catch(e => null);
-};
-exports.getMapList = getMapList;
 
