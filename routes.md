@@ -20,11 +20,13 @@
 |GET |/api/maps  |     show list of maps (browse)|
 |GET| /api/maps/:id(?parameters)   |show specific queried maps (example my favorites)|
 |GET |/api/map/:id(?parameters) |  show map detail view (single map)|
-|PUT |/api/map/:id(?parameters)	|	edit map details|
+|PUT |/api/map/:id(?parameters)	|	create new map (single map)|
+|PATCH |/api/map/:id(?parameters)	|	update map (single) details|
 |DELETE |/api/map/(?parameters) 	|	remove map|
 |GET |/api/pin/:id(?parameters)  |  show pin details (title/ description etc)|
-|PUT |/api/pin/:id(?parameters)    |edit pin details (title/ description etc)|
+|PUT |/api/pin/:id(?parameters)    |create new pin |
+|PATCH |/api/pin/:id(?parameters)    |edit pin details (title/ description etc)|
 |DELETE |/api/pin/:id        |         remove pin from db|
 |GET   |   /api/collaborators/:id(?map_id)   | get list of collaborators|
-|PUT    |   /api/collaborators/:id(?params)  |  edit specific collaborator|
-|DELETE   | /api/collaborators/:id(?params)    |remove specific collaborator |
+|PUT   |   /api/collaborators/:id(?map_id)   | add new collaborator|
+|DELETE   | /api/collaborators/:id(?params)    |remove collaborator |
