@@ -1,20 +1,10 @@
 const pool = require('./lib/pool');
-const getActiveKeys = require('./qHelpers');
+const {
+  getActiveKeys,
+  getObjWithoutId,
+  query
+} = require('./qHelpers');
 
-const query = function (queryStr, queryParams) {
-  return pool.query(queryStr, queryParams)
-  .catch(err => console.log(`query error: ${Error(err)}`));
-};
-
-const getObjWithoutId = function (obj) {
-  const res = {};
-  for(let key in obj) {
-    if (key !== 'id') {
-      res[key] = obj[key];
-    }
-  }
-  return res;
-};
 
 // user queries // ------------------------------------------------------------------------------------
 const getUser = function(id, email) {

@@ -13,4 +13,19 @@ const getActiveKeys = function(params) {
     return [];
 }
 
-module.exports = getActiveKeys;
+const getObjWithoutId = function (obj) {
+  const res = {};
+  for(let key in obj) {
+    if (key !== 'id') {
+      res[key] = obj[key];
+    }
+  }
+  return res;
+};
+
+const query = function (queryStr, queryParams) {
+  return pool.query(queryStr, queryParams)
+  .catch(err => console.log(`query error: ${Error(err)}`));
+};
+
+module.exports = {getActiveKeys, getObjWithoutId, query};
