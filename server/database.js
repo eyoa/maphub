@@ -7,20 +7,24 @@ const {
 
 
 // user queries // ------------------------------------------------------------------------------------
-const getUser = function(id, email) {
+const getUser = function(user) {
   const queryParams = [];
   let queryStr = `
     SELECT *
     FROM users
     WHERE
   `;
-  if (id) {
-    queryStr += ` id = $1;`;
+  let appended = false;
+  if (user.id) {
+    queryStr += ` id = $1`;
     queryParams.push(id);
-  } else if (email) {
-    queryStr += ` email = $1;`;
+    appended = true;
+  }
+  if (user.email) {
+    queryStr += appended ? ` AND email = $1`: `email = $1`;
     queryParams.push(email);
   }
+  queryStr += ';';
   return query(queryStr, queryParams)
   .then(res => res.rows[0]);
 };
@@ -119,13 +123,14 @@ exports.getMapList = getMapList;
 
 // only allow map detail query based on id
 // this might be specific case for getMapList
-const getMapDetails = function (id) {
+const getMapDetails = function (map) {
   let queryStr = `
-    SELECT *
-    FROM maps
-    WHERE id = $1;
+    SELECT
+      m.*, p.*
+    FROM maps m JOIN pins p ON m.id = p.map_id
+    WHERE m.id = $1;
   `;
-  const queryParams = [id];
+  const queryParams = [map.id];
   return query(queryStr, queryParams)
   .then(res => res.rows[0]);
 };
