@@ -7,7 +7,7 @@ const query = function (queryStr, queryParams) {
 
 const getObjWithoutId = function (obj) {
   const res = {};
-  for(let key of obj) {
+  for(let key in obj) {
     if (key !== 'id') {
       res[key] = obj[key];
     }
@@ -15,13 +15,24 @@ const getObjWithoutId = function (obj) {
   return res;
 }
 
+const testQuery = function() {
+  let queryStr = `
+    SELECT *
+    FROM collaborators
+  `;
+  const queryParams = [];
+  return query(queryStr, queryParams)
+  .then(res => res.rows);
+}
+exports.testQuery = testQuery;
+
 // only allow map detail query based on id
 // this might be specific case for getMapList
 const getMapDetails = function (id) {
   let queryStr = `
     SELECT *
     FROM maps
-    WHERE id = ${id};
+    WHERE id = $1;
   `;
   const queryParams = [id];
   return query(queryStr, queryParams)
@@ -32,16 +43,17 @@ exports.getMapDetails = getMapDetails;
 //update pin details
 const editPinDetails = function (pin) {
   const copyWithoutId = getObjWithoutId(pin);
-  const queryParams = [];
+  const queryParams = [pin.id];
   let queryStr = `
     UPDATE pins
     SET
   `
   let counter = 0;
-  for (let key of copyWithoutId) {
+  for (let key in copyWithoutId) {
     let val = copyWithoutId[key];
-    queryStr += counter === 0 ? ` ${key} = ${val} ` : ` ,${key} = ${val} `;
+    queryStr += counter === 0 ? ` ${key} = $${counter+2} ` : ` ,${key} = $${counter+2} `;
     queryParams.push(val);
+    counter++;
   }
 
   queryStr +=
@@ -89,9 +101,9 @@ exports.getMapCollaborators = getMapCollaborators;
 const getAllUserCollaborators = function (user_id, limit=10) {
   let queryStr = `
     SELECT DISTINCT u.*
-    FROM collaborators1
+    FROM collaborators c1
       JOIN collaborators c2 ON c2.map_id = c1.map_id
-      JOIN user u ON u.id = c2.user_id;
+      JOIN users u ON u.id = c2.user_id
     WHERE
       c1.user_id = $1 AND u.id != $1
     LIMIT $2;
@@ -116,6 +128,8 @@ const addCollaborator = function (map_id, user_id) {
 exports.addCollaborator = addCollaborator;
 
 // delete from collaborators
+// this function might need better input parameters:
+//i.e. we probably want to remove by mapid and userid?
 const removeCollaborator = function (id) {
   let queryStr = `
     DELETE
