@@ -5,19 +5,23 @@ const query = function (queryStr, queryParams) {
   .catch(err => console.log(`query error: ${Error(err)}`));
 };
 
+
+
 // user queries // ------------------------------------------------------------------------------------
 const getUser = function(id, email) {
+  const queryParams = [];
   let queryStr = `
     SELECT *
     FROM users
     WHERE
   `;
   if (id) {
-    queryStr += ` id = ${id};`;
+    queryStr += ` id = $1;`;
+    queryParams.push(id);
   } else if (email) {
-    queryStr += ` email = ${email};`;
+    queryStr += ` email = $1;`;
+    queryParams.push(email);
   }
-  let queryParams = [];
   return query(queryStr, queryParams)
   .then(res => res.rows[0]);
 };
