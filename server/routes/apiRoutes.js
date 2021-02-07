@@ -67,8 +67,6 @@ module.exports = (db) => {
     console.log("Create map route");
     // res.send("Create map route");
 
-
-    // will query the db for map specific stuff
     // ================================================ params format not checked yet
     db.addMap({params})
         .then(data => {
@@ -86,9 +84,8 @@ module.exports = (db) => {
   router.patch("/map", (req, res) => {
     console.log("map details edited! route");
     // res.send("Map details edited! route");
-    // updateMap
 
-    // will query the db for map specific stuff
+    // updateMap
     // ================================================ params format not checked yet
     db.updateMap({params})
     .then(data => {
@@ -104,6 +101,8 @@ module.exports = (db) => {
 
 
   // remove a map
+  // by map id
+  // ================================================ params format not checked yet
   router.delete("/map", (req, res) => {
     console.log("Map deleted route");
     res.send("Map deleted route");
@@ -121,17 +120,21 @@ module.exports = (db) => {
   });
 
   // queries for pin details
+  // by pin id
+  // ================================================ params format not checked yet
   router.get("/pin", (req, res) => {
     console.log("Get pin details route");
-    res.send("Get pin details route");
-    // getPins
 
-    // will query the db for pin details
-    // db.thePinQuery({params})
-    //     .then(data => {
-    //     })
-    //     .catch(err => {
-    //     });
+    db.getPinDetails({params})
+    .then(data => {
+      console.log("pin details is ", data)
+      res.json(data);
+    })
+    .catch(err => {
+      res
+      .status(500)
+      .json({ error: err.message });
+    });
   });
 
     // create new pin

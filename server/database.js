@@ -86,7 +86,7 @@ const addMap = function(mapParams) {
     .then(data => {
       return data.rows;
     })
-    .catch(e => console.log("Map query error", e));
+    .catch(e => console.log("Map create error", e));
 };
 exports.addMap = addMap;
 
@@ -129,7 +129,7 @@ const updateMap = function(mapParams) {
     .then(data => {
       return data.rows;
     })
-    .catch(e => console.log("Map query error", e));
+    .catch(e => console.log("Map update error", e));
 };
 exports.updateMap = updateMap;
 
@@ -162,10 +162,44 @@ const removeMap = function(mapParams) {
       // =================  Unsure if any data should be returned....
       return " ^_^ ";
     })
-    .catch(e => console.log("Map query error", e));
+    .catch(e => console.log("Map remove error", e));
 };
 exports.removeMap = removeMap;
 
 // TEST CODE
 // removeMap({id : 2 });
 
+
+// get pin details columns other than longtitude and latitude
+//mapParams is an object with key values pairs (needs pin id)
+const getPinDetails = function(mapParams) {
+  const params = [];
+  let queryString = '';
+
+  console.log(mapParams);
+
+  //  ====================================================== If we are doing this by pin id
+  //  adjust
+  if (mapParams.id) {
+    params.push(mapParams.id);
+    queryString = `
+    SELECT title, description, img_url
+    FROM pins
+    WHERE id = $1;
+    `;
+  }
+
+  console.log("pin details query is ", queryString);
+  console.log("parameters sent is ", params);
+
+  return pool.query(queryString, params)
+    .then(data => {
+      console.log(data);
+      return data.rows;
+    })
+    .catch(e => console.log("Pin query error", e));
+};
+exports.getPinDetails = getPinDetails;
+
+// TEST CODE
+// getPinDetails({id : 3});
