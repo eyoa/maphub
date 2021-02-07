@@ -18,7 +18,7 @@ pin
 */
 module.exports = (db) => {
   router.get('/test', (req, res) => {
-    return db.getAllUserCollaborators(5)
+    return db.testQuery()
     .then(queryRes => res.send(queryRes))
     .catch(err => console.log(Error(err)));
   });

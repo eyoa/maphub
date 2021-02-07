@@ -45,10 +45,8 @@ app.use("/api", apiRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 //FOR TESTING -----------------------------------------
-/*
 const testRoutes = require("./routes/testRoutes");
 app.use("/", testRoutes(db));
-*/
 //------------------------------------------------------
 
 // Home page
