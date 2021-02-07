@@ -5,7 +5,26 @@ const query = function (queryStr, queryParams) {
   .catch(err => console.log(`query error: ${Error(err)}`));
 };
 
+const getObjWithoutId = function (obj) {
+  const res = {};
+  for(let key in obj) {
+    if (key !== 'id') {
+      res[key] = obj[key];
+    }
+  }
+  return res;
+}
 
+const testQuery = function() {
+  let queryStr = `
+    SELECT *
+    FROM users
+  `;
+  const queryParams = [];
+  return query(queryStr, queryParams)
+  .then(res => res.rows);
+}
+exports.testQuery = testQuery;
 
 // user queries // ------------------------------------------------------------------------------------
 const getUser = function(id, email) {
@@ -28,16 +47,29 @@ const getUser = function(id, email) {
 exports.getUser = getUser;
 
 const setUser = function(user) {
+  const copyWithoutId = getObjWithoutId(user);
   const userAttr = ['username', 'email', 'password', 'description', 'profile_img_url'];
+  const queryParams = [user.id];
+
   let queryStr = `
     UPDATE users
-    SET ${userAttr[0]} = $2, ${userAttr[1]} = $3, ${userAttr[2]} = 4, ${userAttr[3]} = $5, ${userAttr[4]} = $6
-    WHERE id = $1;
+    SET
   `;
-  let queryParams = [user.id];
-  for (let attr in userAttr) {
-    queryParams.push(user[attr]);
+
+  let counter = 0;
+  for (let key in copyWithoutId) {
+    let val = copyWithoutId[key];
+    queryStr += counter === 0 ? ` ${key} = $${counter+2} ` : ` ,${key} = $${counter+2} `;
+    queryParams.push(val);
+    counter++;
   }
+
+  queryStr +=
+  `
+    WHERE id = $1
+    RETURNING *;
+  `;
+
   return query(queryStr, queryParams)
   .then(res => res.rows[0]);
 };
@@ -45,14 +77,12 @@ exports.setUser = setUser;
 
 const addUser = function(user) {
   let queryStr = `
-    INSERT INTO users
-    ${Object.keys(user)}
-    VALUES
-    ($1, $2, $3, $4, $5)
+    INSERT INTO users (${Object.keys(user)})
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
   `;
   const queryParams = [];
-  for (let key of user) {
+  for (let key in user) {
     queryParams.push(user[key]);
   }
   return query(queryStr, queryParams)

@@ -15,10 +15,19 @@ pin
   map_id: 1
 }
 
+user
+{
+  id: 1,
+  username: 'AAAAAAAAAAA',
+  email: 'AAAAAAAAAAA',
+  password: 'AAAAAAAAAAAAA',
+  description: 'AAAAAAAAAAAAAAAAAA',
+  profile_img_url: 'AAAAAAAAAAAAAAAAAAAA'
+}
 */
 module.exports = (db) => {
   router.get('/test', (req, res) => {
-    return db.getUser(null, '1@gmail.com')
+    return db.testQuery()
     .then(queryRes => res.send(queryRes))
     .catch(err => console.log(Error(err)));
   });
