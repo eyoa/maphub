@@ -130,7 +130,7 @@ module.exports = (db) => {
     });
 
     // edit pin details
-    router.put("/pin", (req, res) => {
+    router.patch("/pin", (req, res) => {
       console.log("editing pin details route");
       res.send("editing pin details route");
 
