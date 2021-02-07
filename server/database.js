@@ -103,8 +103,23 @@ const editPinDetails = function (pin) {
     UPDATE pins
     SET
   `
+  let counter = 0;
+  for (let key in copyWithoutId) {
+    let val = copyWithoutId[key];
+    queryStr += counter === 0 ? ` ${key} = $${counter+2} ` : ` ,${key} = $${counter+2} `;
+    queryParams.push(val);
+    counter++;
+  }
 
-}
+  queryStr +=
+  `
+    WHERE id = $1
+    RETURNING *;
+  `;
+
+  return query(queryStr, queryParams)
+  .then(res => res.rows[0]);
+};
 exports.editPinDetails = editPinDetails;
 
 //remove pin
