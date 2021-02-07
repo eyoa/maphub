@@ -13,7 +13,7 @@ const getObjWithoutId = function (obj) {
     }
   }
   return res;
-}
+};
 
 // user queries // ------------------------------------------------------------------------------------
 const getUser = function(id, email) {
@@ -103,7 +103,7 @@ const editPinDetails = function (pin) {
     SET
   `
 
-
+}
 exports.editPinDetails = editPinDetails;
 
 //remove pin
