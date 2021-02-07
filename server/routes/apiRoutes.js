@@ -14,19 +14,18 @@ module.exports = (db) => {
   router.get("/", (req, res) => {
     // getMapList (same as below with less params)
     console.log("Root ");
-    res.send("Root");
-    // let query = `SELECT * FROM widgets`;
-    // console.log(query);
-    // db.query(query)
-    //   .then(data => {
-    //     const widgets = data.rows;
-    //     res.json({ widgets });
-    //   })
-    //   .catch(err => {
-    //     res
-    //       .status(500)
-    //       .json({ error: err.message });
-    //   });
+
+    // testing to see if pool/database connect setup works
+    db.getMapList()
+    .then( data =>{
+      console.log("data is ", data)
+      res.json(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
   });
 
 
