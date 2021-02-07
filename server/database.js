@@ -122,7 +122,7 @@ exports.getMapList = getMapList;
 const getMapDetails = function (id) {
   let queryStr = `
     SELECT *
-    FROM maps
+    FROM maps JOIN pins ON pins.map_id = maps.id
     WHERE id = $1;
   `;
   const queryParams = [id];
