@@ -5,10 +5,7 @@ const query = function (queryStr, queryParams) {
   .catch(err => console.log(`custom query: ${Error(err)}`));
 };
 
-
 module.exports = {
-
-
   /*
     user queries
   */
@@ -31,6 +28,7 @@ module.exports = {
     .then(res => res.rows[0]);
   },
 
+
   setUser : function(user) {
     const userAttr = ['username', 'email', 'password', 'description', 'profile_img_url'];
 
@@ -48,6 +46,7 @@ module.exports = {
     return query(queryStr, queryParams)
     .then(res => res.rows[0]);
   },
+
 
   addUser: function(user) {
     let queryStr = `
