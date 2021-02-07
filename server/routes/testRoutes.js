@@ -18,7 +18,7 @@ pin
 */
 module.exports = (db) => {
   router.get('/test', (req, res) => {
-    return db.testQuery()
+    return db.getMapDetails({id: 1})
     .then(queryRes => res.send(queryRes))
     .catch(err => console.log(Error(err)));
   });

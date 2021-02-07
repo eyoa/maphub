@@ -28,15 +28,18 @@ exports.testQuery = testQuery;
 
 // only allow map detail query based on id
 // this might be specific case for getMapList
-const getMapDetails = function (id) {
+const getMapDetails = function (map) {
+  // , p.title AS pin_description, p.img_url, p.latitude AS pin_latitude, p.longitude AS pin_longitude ... in case we need
   let queryStr = `
-    SELECT *
-    FROM maps
-    WHERE id = $1;
+    SELECT
+      m.id AS map_id, m.latitude AS map_latitude, m.longitude AS map_longitude, m.title AS map_title, m.zoom_lv, m.description AS map_description, m.owner_id,
+      p.id AS pin_id
+    FROM maps m JOIN pins p ON p.map_id = m.id
+    WHERE m.id = $1;
   `;
-  const queryParams = [id];
+  const queryParams = [map.id];
   return query(queryStr, queryParams)
-  .then(res => res.rows[0]);
+  .then(res => res.rows);
 };
 exports.getMapDetails = getMapDetails;
 
