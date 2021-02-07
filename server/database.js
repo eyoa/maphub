@@ -14,7 +14,7 @@ const getMapList = (params) => {
   `;
 
   const keys = getActiveKeys(params);
-  console.log("keys array is", keys);
+  // console.log("keys array is", keys);
 
   if (keys.includes('user_id')) {
     //favorites list
@@ -33,13 +33,139 @@ const getMapList = (params) => {
 
   queryString += `;`;
 
+  // console.log("queryString is ", queryString);
+
   return pool.query(queryString, queryParams)
     .then(data => {
-      console.log("GOT the goods");
-      console.log(data.rows);
+      // console.log("GOT the goods - map list");
+      // console.log(data.rows);
       return data.rows;
     })
     .catch(e => console.log("Map query error", e));
 };
 exports.getMapList = getMapList;
+
+
+const addMap = function(mapParams) {
+  const params = [];
+  let queryString = `INSERT INTO maps (`;
+
+  const keys = Object.keys(mapParams);
+  for (const key of keys) {
+    queryString += key;
+    if (keys.indexOf(key) ===  keys.length - 1) {
+      queryString +=  `) `;
+    } else {
+      queryString +=  `, `;
+    }
+  }
+  queryString +=  `VALUES (`;
+
+  for (const key of keys) {
+    // check to push correct type to db
+    const numRegex = new RegExp("^[1-9]\d*(\.\d+)?$", "gm");
+    if (typeof mapParams[key] === 'string' && numRegex.test(mapParams[key])) {
+      params.push(Number(mapParams[key]));
+    } else {
+      params.push(mapParams[key]);
+    }
+
+    if (keys.indexOf(key) ===  keys.length - 1) {
+      queryString += `$${params.length} ) `;
+    } else {
+      queryString += `$${params.length}, `;
+    }
+  }
+
+  queryString += `RETURNING *;`;
+
+  // console.log("addMap query is ", queryString);
+  // console.log("addMap parameters ", params);
+
+  return pool.query(queryString, params)
+    .then(data => {
+      return data.rows;
+    })
+    .catch(e => console.log("Map query error", e));
+};
+exports.addMap = addMap;
+
+// TEST CODE
+// addMap({latitude: 43.653274, longitude: -79.381397, title: 'somewhere', zoom_lv: 8, description : 'This is a testplace totally fake', owner_id : 3});
+
+
+
+// update entry in map table
+//mapParams is an object with key values pairs matching db
+const updateMap = function(mapParams) {
+  const updateParams = [];
+  let updateString = `UPDATE maps SET `;
+
+  const keys = getActiveKeys(mapParams);
+  // console.log(keys);
+
+  for (const key of keys) {
+    if (key !== 'id') {
+      console.log("==============", key);
+
+      updateParams.push(mapParams[key]);
+      updateString += key + ' = ' + `$${updateParams.length}`;
+
+      if (keys.indexOf(key) !==  keys.length - 1) {
+        updateString +=  `, `;
+      }
+    }
+
+  }
+
+  updateParams.push(mapParams['id']);
+  updateString += ` WHERE id = $${updateParams.length} `;
+  updateString += `RETURNING *;`;
+
+  // console.log("updateMap query is ", updateString);
+  // console.log("updateMap parameters ", updateParams);
+
+  return pool.query(updateString, updateParams)
+    .then(data => {
+      return data.rows;
+    })
+    .catch(e => console.log("Map query error", e));
+};
+exports.updateMap = updateMap;
+
+// TEST CODE
+// updateMap({id : 2, description : 'This is New York again'});
+
+
+
+// remove a map
+//mapParams is an object with key values pairs (needs for map id)
+const removeMap = function(mapParams) {
+  const paramMapid = [];
+  let removeQuery = '';
+  // to ensure there is a valid condition before sending remove query
+  console.log(mapParams.id);
+
+  if (mapParams.id) {
+    paramMapid.push(mapParams.id);
+    removeQuery = `
+    DELETE FROM maps
+    WHERE id = $1;
+    `;
+  }
+
+  console.log("removeMap query is ", removeQuery);
+  console.log("map id to remove is ", paramMapid);
+
+  return pool.query(removeQuery, paramMapid)
+    .then(data => {
+      // =================  Unsure if any data should be returned....
+      return " ^_^ ";
+    })
+    .catch(e => console.log("Map query error", e));
+};
+exports.removeMap = removeMap;
+
+// TEST CODE
+// removeMap({id : 2 });
 

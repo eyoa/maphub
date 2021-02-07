@@ -32,15 +32,20 @@ module.exports = (db) => {
   // queries for map list (example favorites)
   router.get("/maps", (req, res) => {
     console.log("Get maps list route");
-    res.send("Get maps list route");
-     // getMapList
+    // res.send("Get maps list route");
 
-    // will query the db for maps
-    // db.theMapQuery({params})
-    //     .then(data => {
-    //     })
-    //     .catch(err => {
-    //     });
+    // ================================================ params format not checked yet
+      db.getMapList(req.params)
+      .then( data =>{
+        console.log("data is ", data)
+        res.json(data);
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+
   });
 
   // queries for single map details (include pins list)
@@ -60,29 +65,41 @@ module.exports = (db) => {
   // put create map entry
   router.put("/map", (req, res) => {
     console.log("Create map route");
-    res.send("Create map route");
-    // addMap
+    // res.send("Create map route");
+
 
     // will query the db for map specific stuff
-    // db.theQuery({params})
-    //     .then(data => {
-    //     })
-    //     .catch(err => {
-    //     });
+    // ================================================ params format not checked yet
+    db.addMap({params})
+        .then(data => {
+          console.log("data is ", data)
+          res.json(data);
+        })
+        .catch(err => {
+          res
+          .status(500)
+          .json({ error: err.message });
+        });
   });
 
   // edit map entry details
   router.patch("/map", (req, res) => {
     console.log("map details edited! route");
-    res.send("Map details edited! route");
+    // res.send("Map details edited! route");
     // updateMap
 
     // will query the db for map specific stuff
-    // db.theQuery({params})
-    //     .then(data => {
-    //     })
-    //     .catch(err => {
-    //     });
+    // ================================================ params format not checked yet
+    db.updateMap({params})
+    .then(data => {
+      console.log("data is ", data)
+      res.json(data);
+    })
+    .catch(err => {
+      res
+      .status(500)
+      .json({ error: err.message });
+    });
   });
 
 
@@ -92,12 +109,15 @@ module.exports = (db) => {
     res.send("Map deleted route");
     //removeMap
 
-    // will query the db for map specific stuff
-    // db.theQuery({params})
-    //     .then(data => {
-    //     })
-    //     .catch(err => {
-    //     });
+    db.removeMap({params})
+    .then(data => {
+      console.log("successful delete returned ", data);
+    })
+    .catch(err => {
+      res
+      .status(500)
+      .json({ error: err.message });
+    });
   });
 
   // queries for pin details

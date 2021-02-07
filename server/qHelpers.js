@@ -8,6 +8,7 @@ const getActiveKeys = function(params) {
         }
         return key;
       });
+      return keys;
     }
     return [];
 }
