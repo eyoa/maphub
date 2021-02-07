@@ -66,7 +66,7 @@ module.exports = (db) => {
   router.put("/logout", (req, res) => {
     /*
     req.session.userId = null;
-    res.send(....) redirect to main page
+    res.send(....)
     */
   });
 
