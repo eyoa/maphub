@@ -44,6 +44,7 @@ const setUser = function(user) {
     UPDATE users
     SET
   `;
+
   let counter = 0;
   for (let key in copyWithoutId) {
     let val = copyWithoutId[key];
