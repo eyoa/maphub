@@ -124,15 +124,17 @@ exports.getMapList = getMapList;
 // only allow map detail query based on id
 // this might be specific case for getMapList
 const getMapDetails = function (map) {
+  // , p.title AS pin_description, p.img_url, p.latitude AS pin_latitude, p.longitude AS pin_longitude ... in case we need
   let queryStr = `
     SELECT
-      m.*, p.*
-    FROM maps m JOIN pins p ON m.id = p.map_id
+      m.id AS map_id, m.latitude AS map_latitude, m.longitude AS map_longitude, m.title AS map_title, m.zoom_lv, m.description AS map_description, m.owner_id,
+      p.id AS pin_id
+    FROM maps m JOIN pins p ON p.map_id = m.id
     WHERE m.id = $1;
   `;
   const queryParams = [map.id];
   return query(queryStr, queryParams)
-  .then(res => res.rows[0]);
+  .then(res => res.rows);
 };
 exports.getMapDetails = getMapDetails;
 
@@ -372,21 +374,21 @@ const editPinDetails = function (pin) {
 exports.editPinDetails = editPinDetails;
 
 //remove pin
-const removePin = function (id) {
+const removePin = function (pin) {
   let queryStr = `
     DELETE
     FROM pins
     WHERE id = $1
     RETURNING *;
   `;
-  const queryParams = [id];
+  const queryParams = [pin.id];
   return query(queryStr, queryParams)
   .then(res => res.rows[0]);
 };
 exports.removePin = removePin;
 
 //get all collaborators of a map
-const getMapCollaborators = function (map_id, limit=10) {
+const getMapCollaborators = function (map, limit=10) {
   let queryStr = `
     SELECT u.*
     FROM
@@ -395,14 +397,14 @@ const getMapCollaborators = function (map_id, limit=10) {
       c.map_id = $1
     LIMIT $2;
   `;
-  const queryParams = [map_id, limit];
+  const queryParams = [map.id, limit];
   return query(queryStr, queryParams)
   .then(res => res.rows);
 };
 exports.getMapCollaborators = getMapCollaborators;
 
 //get every user that has collaborated with a user
-const getAllUserCollaborators = function (user_id, limit=10) {
+const getAllUserCollaborators = function (user, limit=10) {
   let queryStr = `
     SELECT DISTINCT u.*
     FROM collaborators c1
@@ -412,20 +414,20 @@ const getAllUserCollaborators = function (user_id, limit=10) {
       c1.user_id = $1 AND u.id != $1
     LIMIT $2;
   `;
-  const queryParams = [user_id, limit];
+  const queryParams = [user.id, limit];
   return query(queryStr, queryParams)
   .then(res => res.rows);
 };
 exports.getAllUserCollaborators = getAllUserCollaborators;
 
 //add new collaborator
-const addCollaborator = function (map_id, user_id) {
+const addCollaborator = function (map, user) {
   let queryStr = `
     INSERT INTO collaborators (map_id, user_id)
     VALUES ($1, $2)
     RETURNING *;
   `;
-  const queryParams = [map_id, user_id];
+  const queryParams = [map.id, user.id];
   return query(queryStr, queryParams)
   .then(res => res.rows[0]);
 };
@@ -434,14 +436,14 @@ exports.addCollaborator = addCollaborator;
 // delete from collaborators
 // this function might need better input parameters:
 //i.e. we probably want to remove by mapid and userid?
-const removeCollaborator = function (id) {
+const removeCollaborator = function (map, user) {
   let queryStr = `
     DELETE
     FROM Collaborators
-    WHERE id = $1
+    WHERE map_id = $1 AND user_id = $2
     RETURNING *;
   `;
-  const queryParams = [id];
+  const queryParams = [map.id, user.id];
   return query(queryStr, queryParams)
   .then(res => res.rows[0]);
 };
