@@ -203,3 +203,51 @@ exports.getPinDetails = getPinDetails;
 
 // TEST CODE
 // getPinDetails({id : 3});
+
+
+const addPin = function(mapParams) {
+  const params = [];
+  let queryString = `INSERT INTO pins (`;
+
+  const keys = Object.keys(mapParams);
+  for (const key of keys) {
+    queryString += key;
+    if (keys.indexOf(key) ===  keys.length - 1) {
+      queryString +=  `) `;
+    } else {
+      queryString +=  `, `;
+    }
+  }
+  queryString +=  `VALUES (`;
+
+  for (const key of keys) {
+    // check to push correct type to db
+    const numRegex = new RegExp("^[1-9]\d*(\.\d+)?$", "gm");
+    if (typeof mapParams[key] === 'string' && numRegex.test(mapParams[key])) {
+      params.push(Number(mapParams[key]));
+    } else {
+      params.push(mapParams[key]);
+    }
+
+    if (keys.indexOf(key) ===  keys.length - 1) {
+      queryString += `$${params.length} ) `;
+    } else {
+      queryString += `$${params.length}, `;
+    }
+  }
+
+  queryString += `RETURNING *;`;
+
+  console.log("addPin query is ", queryString);
+  console.log("addPin parameters ", params);
+
+  return pool.query(queryString, params)
+    .then(data => {
+      return data.rows;
+    })
+    .catch(e => console.log("Pin create error", e));
+};
+exports.addPin = addPin;
+
+// TEST CODE
+// addPin({latitude: 43.653274, longitude: -79.381397, title: 'I am a pin!', img_url: './images/fake_image.png', description : 'This is the best and only spot', map_id : 1});
