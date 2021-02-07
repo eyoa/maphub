@@ -240,7 +240,8 @@ const removeMap = function(mapParams) {
     paramMapid.push(mapParams.id);
     removeQuery = `
     DELETE FROM maps
-    WHERE id = $1;
+    WHERE id = $1
+    RETURNING *;
     `;
   }
 
@@ -249,8 +250,8 @@ const removeMap = function(mapParams) {
 
   return pool.query(removeQuery, paramMapid)
     .then(data => {
-      // =================  Unsure if any data should be returned....
-      return " ^_^ ";
+      console.log(data);
+      return data.rows;
     })
     .catch(e => console.log("Map remove error", e));
 };
@@ -367,6 +368,7 @@ const editPinDetails = function (pin) {
   return query(queryStr, queryParams)
   .then(res => res.rows[0]);
 };
+
 exports.editPinDetails = editPinDetails;
 
 //remove pin
