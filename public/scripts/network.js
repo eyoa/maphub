@@ -34,7 +34,9 @@ const getProfile = function(params) {
   });
 };
 
-const updateUser = function(data) {
+const updateUser = function(params, data) {
+  let url = "/users/";
+  url += "?" + params;
   return $.ajax({
     method: "PUT",
     url,
