@@ -37,10 +37,8 @@ $(() => {
     </ul>
 
     </div>
-
   </nav>
-
-      `;
+  `;
 
   $navbar.append(navbarSnippet);
 
