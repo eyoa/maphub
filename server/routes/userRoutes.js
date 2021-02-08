@@ -26,7 +26,7 @@ module.exports = (db) => {
   }
 
   //get user data
-  router.get("/users/:id", (req, res) => {
+  router.get("/", (req, res) => {
     /*
     return db.getUser(userId)
     .then(user => user);
@@ -36,7 +36,7 @@ module.exports = (db) => {
   });
 
   //update user data
-  router.put("/users/:id", (req, res) => {
+  router.put("/", (req, res) => {
     /*
     db.setUser(username, password, email ....)
     .then(updatedUser => updatedUser)
