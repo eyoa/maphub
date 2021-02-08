@@ -1,4 +1,51 @@
-function getMapList (params) {
+// user ajax requests
+
+const logIn = function(data) {
+  return $.ajax({
+    method: "PUT",
+    url: "/users/login",
+    data
+  });
+};
+
+const logOut = function() {
+  return $.ajax({
+    method: "PUT",
+    url: "/users/logout",
+  });
+};
+
+const register = function(data) {
+  return $.ajax({
+    method: "PUT",
+    url: "/users/register",
+    data
+  });
+};
+
+
+const getProfile = function(params) {
+  // params sent in url query like an api
+  let url = "/users/";
+  url += "?" + params;
+  return $.ajax({
+    method: "GET",
+    url
+  });
+};
+
+const updateUser = function(data) {
+  return $.ajax({
+    method: "PUT",
+    url,
+    data
+  });
+};
+
+
+//  api ajax requests
+
+function getMapList(params) {
   let url  = params ? "/maps?" + params : "/";
   return $.ajax({
     method: "GET",
@@ -6,7 +53,7 @@ function getMapList (params) {
   });
 }
 
-function getMapDetails (params) {
+function getMapDetails(params) {
   return $.ajax({
     method: "GET",
     url: "/map?" + params,
@@ -21,7 +68,7 @@ function addMap(data) {
   });
 }
 
-function editMap (params, data) {
+function editMap(params, data) {
   return $.ajax({
     method: "PATCH",
     url: "/map?" + params,
@@ -29,21 +76,21 @@ function editMap (params, data) {
   });
 }
 
-function removeMap (params) {
+function removeMap(params) {
   return $.ajax({
     method: "DELETE",
     url: "/map?" + params,
   });
 }
 
-function getPinDetails (params) {
+function getPinDetails(params) {
   return $.ajax({
     method: "GET",
     url: "/pin?" + params
   });
 }
 
-function addPin (data) {
+function addPin(data) {
   return $.ajax({
     method: "PUT",
     url: "/pin",
@@ -51,7 +98,7 @@ function addPin (data) {
   });
 }
 
-function editPin (params, data) {
+function editPin(params, data) {
   return $.ajax({
     method: "PATCH",
     url: "/pin?" + params,
@@ -59,21 +106,21 @@ function editPin (params, data) {
   });
 }
 
-function removePin (params) {
+function removePin(params) {
   return $.ajax({
     method: "DELETE",
     url: "/pin?" + params
   });
 }
 
-function getCollaborators (params) {
+function getCollaborators(params) {
   return $.ajax({
     method: "GET",
     url: "/collaborators?" + params
   });
 }
 
-function addCollaborator (data) {
+function addCollaborator(data) {
   return $.ajax({
     method: "PUT",
     url: "/collaborators",
@@ -81,7 +128,7 @@ function addCollaborator (data) {
   });
 }
 
-function removeCollaborator (params) {
+function removeCollaborator(params) {
   return $.ajax({
     method: "DELETE",
     url: "/collaborators?" + params
