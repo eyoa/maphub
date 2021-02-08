@@ -13,12 +13,12 @@ module.exports = (db) => {
   // Root browse list of maps show all public ones
   router.get("/", (req, res) => {
     // getMapList (same as below with less params)
-    console.log("Root ");
+    // console.log("Root ");
 
     // testing to see if pool/database connect setup works
     db.getMapList()
       .then(data =>{
-        console.log("data is ", data);
+        // console.log("data is ", data);
         res.json(data);
       })
       .catch(err => {
@@ -31,13 +31,13 @@ module.exports = (db) => {
 
   // queries for map list (example favorites)
   router.get("/maps", (req, res) => {
-    console.log("Get maps list route");
+    // console.log("Get maps list route");
     // res.send("Get maps list route");
 
     // ================================================ params format not checked yet
     db.getMapList(req.params)
       .then(data =>{
-        console.log("data is ", data);
+        // console.log("data is ", data);
         res.json(data);
       })
       .catch(err => {
@@ -50,7 +50,7 @@ module.exports = (db) => {
 
   // queries for single map details (include pins list)
   router.get("/map", (req, res) => {
-    console.log("Get map details route");
+    // console.log("Get map details route");
     res.send("Get map details route");
     // getMapDetails
 
@@ -64,13 +64,13 @@ module.exports = (db) => {
 
   // put create map entry
   router.put("/map", (req, res) => {
-    console.log("Create map route");
+    // console.log("Create map route");
     // res.send("Create map route");
 
     // ================================================ params format not checked yet
     db.addMap({params})
       .then(data => {
-        console.log("data is ", data);
+        // console.log("data is ", data);
         res.json(data);
       })
       .catch(err => {
@@ -82,14 +82,14 @@ module.exports = (db) => {
 
   // edit map entry details
   router.patch("/map", (req, res) => {
-    console.log("map details edited! route");
+    // console.log("map details edited! route");
     // res.send("Map details edited! route");
 
     // updateMap
     // ================================================ params format not checked yet
     db.updateMap({params})
       .then(data => {
-        console.log("data is ", data);
+        // console.log("data is ", data);
         res.json(data);
       })
       .catch(err => {
@@ -104,13 +104,13 @@ module.exports = (db) => {
   // by map id
   // ================================================ params format not checked yet
   router.delete("/map", (req, res) => {
-    console.log("Map deleted route");
+    // console.log("Map deleted route");
     res.send("Map deleted route");
     //removeMap
 
     db.removeMap({params})
       .then(data => {
-        console.log("successful delete returned ", data);
+        // console.log("successful delete returned ", data);
       })
       .catch(err => {
         res
@@ -123,11 +123,11 @@ module.exports = (db) => {
   // by pin id
   // ================================================ params format not checked yet
   router.get("/pin", (req, res) => {
-    console.log("Get pin details route");
+    // console.log("Get pin details route");
 
     db.getPinDetails({params})
       .then(data => {
-        console.log("pin details is ", data);
+        // console.log("pin details is ", data);
         res.json(data);
       })
       .catch(err => {
@@ -142,13 +142,13 @@ module.exports = (db) => {
   // ================================================ params format not checked yet
 
   router.put("/pin", (req, res) => {
-    console.log("creat new pin route");
+    // console.log("creat new pin route");
     // res.send("Create new pin route");
 
     //addPin returns new created pin row
     db.addPin({params})
       .then(data => {
-        console.log("pin created ", data);
+        // console.log("pin created ", data);
         res.json(data);
       })
       .catch(err => {
@@ -160,7 +160,7 @@ module.exports = (db) => {
 
   // edit pin details
   router.patch("/pin", (req, res) => {
-    console.log("editing pin details route");
+    // console.log("editing pin details route");
     res.send("editing pin details route");
 
     //updatePin
@@ -176,7 +176,7 @@ module.exports = (db) => {
 
   // remove pin
   router.delete("/pin", (req, res) => {
-    console.log("pin removed route");
+    // console.log("pin removed route");
     res.send("pin removed route");
     // removePin
 
@@ -190,7 +190,7 @@ module.exports = (db) => {
 
   // queries for collaborator list
   router.get("/collaborators", (req, res) => {
-    console.log("Get collaborators list route");
+    // console.log("Get collaborators list route");
     res.send("Get collaborators list route");
     // getCollaboars
 
@@ -204,7 +204,7 @@ module.exports = (db) => {
 
   // add collaborator to map
   router.put("/collaborators", (req, res) => {
-    console.log("Get collaborators list route");
+    // console.log("Get collaborators list route");
     res.send("Get collaborators list route");
     //addCollaborator
 
@@ -218,7 +218,7 @@ module.exports = (db) => {
 
   // remove collaborator from map
   router.delete("/collaborators", (req, res) => {
-    console.log("Collaborator removed from list route");
+    // console.log("Collaborator removed from list route");
     res.send("Collaborator removed from list route");
     // removeCollaborator
 
