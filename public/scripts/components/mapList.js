@@ -17,7 +17,7 @@ $(() => {
   </section>
   `);
 
-  // window.mapList = $mapList;
+  window.mapList = $mapList;
 
   function clearList() {
     $mapList.empty();
