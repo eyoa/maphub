@@ -1,4 +1,4 @@
-// user ajax requests
+// users ajax requests
 
 const logIn = function(data) {
   return $.ajax({
