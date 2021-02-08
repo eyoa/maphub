@@ -46,7 +46,7 @@ const updateUser = function(data) {
 //  api ajax requests
 
 function getMapList(params) {
-  let url  = params ? "/maps?" + params : "/";
+  let url  = params ? "/api/maps?" + params : "/api/";
   return $.ajax({
     method: "GET",
     url
@@ -56,14 +56,14 @@ function getMapList(params) {
 function getMapDetails(params) {
   return $.ajax({
     method: "GET",
-    url: "/map?" + params,
+    url: "/api/map?" + params,
   });
 }
 
 function addMap(data) {
   return $.ajax({
     method: "PUT",
-    url: "/map",
+    url: "/api/map",
     data
   });
 }
@@ -71,7 +71,7 @@ function addMap(data) {
 function editMap(params, data) {
   return $.ajax({
     method: "PATCH",
-    url: "/map?" + params,
+    url: "/api/map?" + params,
     data
   });
 }
@@ -79,21 +79,21 @@ function editMap(params, data) {
 function removeMap(params) {
   return $.ajax({
     method: "DELETE",
-    url: "/map?" + params,
+    url: "/api/map?" + params,
   });
 }
 
 function getPinDetails(params) {
   return $.ajax({
     method: "GET",
-    url: "/pin?" + params
+    url: "/api/pin?" + params
   });
 }
 
 function addPin(data) {
   return $.ajax({
     method: "PUT",
-    url: "/pin",
+    url: "/api/pin",
     data
   });
 }
@@ -101,7 +101,7 @@ function addPin(data) {
 function editPin(params, data) {
   return $.ajax({
     method: "PATCH",
-    url: "/pin?" + params,
+    url: "/api/pin?" + params,
     data
   });
 }
@@ -109,21 +109,21 @@ function editPin(params, data) {
 function removePin(params) {
   return $.ajax({
     method: "DELETE",
-    url: "/pin?" + params
+    url: "/api/pin?" + params
   });
 }
 
 function getCollaborators(params) {
   return $.ajax({
     method: "GET",
-    url: "/collaborators?" + params
+    url: "/api/collaborators?" + params
   });
 }
 
 function addCollaborator(data) {
   return $.ajax({
     method: "PUT",
-    url: "/collaborators",
+    url: "/api/collaborators",
     data
   });
 }
@@ -131,6 +131,6 @@ function addCollaborator(data) {
 function removeCollaborator(params) {
   return $.ajax({
     method: "DELETE",
-    url: "/collaborators?" + params
+    url: "/api/collaborators?" + params
   });
 }
