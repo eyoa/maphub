@@ -10,9 +10,9 @@ $(() => {
   `);
 
   window.$mapView = $mapView;
-  $headerContainer = $(`#mapView-header-container`);
-  $displayContainer = $(`#mapView-display-container`);
-  $contentContainer = $(`#mapView-content-container`);
+  const $headerContainer = $(`#mapView-header-container`);
+  const $displayContainer = $(`#mapView-display-container`);
+  const $contentContainer = $(`#mapView-content-container`);
 
   //mapView state: view, editDetail, editMap
   window.mapViewState = 'view';
@@ -24,7 +24,7 @@ $(() => {
   const insertHeader = function(map, currentUser, state) {
     //need this in network
     getMapCollaborators(/*params*/).then(json => {
-      const mapCollaborators = ;//json...
+      const mapCollaborators = [];//json...
       $headerContainer.empty();
       const mapHeader = mapViewHeader.createMapHeader(map, currentUser, state, mapCollaborators);
       $headerContainer.append(mapHeader);
