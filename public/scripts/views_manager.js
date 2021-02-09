@@ -22,6 +22,7 @@ $(() => {
       $userProfile.appendTo($main);
       break;
     case 'mapDetails':
+      $mapView.appendTo($main);
       break;
     case 'newMap':
       break;

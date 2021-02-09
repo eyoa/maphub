@@ -1,4 +1,5 @@
 $(() => {
+  window.pinList = {};
   const createPinItem = function (pin, state) {
     let editRemoveBtn = ``;
     if (state === 'editDetail') {

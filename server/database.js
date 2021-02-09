@@ -85,7 +85,7 @@ exports.addUser = addUser;
 const getMapList = (params) => {
   const queryParams = [];
   let queryString = `
-  SELECT title, description
+  SELECT id, title, description
   FROM maps
   `;
 
@@ -120,6 +120,18 @@ const getMapList = (params) => {
     .catch(e => console.log("Map query error", e));
 };
 exports.getMapList = getMapList;
+
+const getMapById = function(map){
+  let queryStr = `
+    SELECT *
+    FROM maps
+    WHERE id = $1;
+  `;
+  const queryParams = [map.id];
+  return query(queryStr, queryParams)
+  .then(res => res.rows[0]);
+}
+exports.getMapById = getMapById;
 
 // only allow map detail query based on id
 // this might be specific case for getMapList
@@ -264,6 +276,19 @@ exports.removeMap = removeMap;
 
 // get pin details columns other than longtitude and latitude
 //mapParams is an object with key values pairs (needs pin id)
+
+const getMapPins = function(map) {
+  let queryStr = `
+    SELECT p.*
+    FROM maps m JOIN pins p ON m.id = p.map_id
+    WHERE m.id = $1
+  `;
+  const queryParams = [map.id];
+  return query(queryStr, queryParams)
+  .then(res => res.rows);
+}
+exports.getMapPins = getMapPins;
+
 const getPinDetails = function(mapParams) {
   const params = [];
   let queryString = '';
@@ -387,16 +412,15 @@ const removePin = function (pin) {
 exports.removePin = removePin;
 
 //get all collaborators of a map
-const getMapCollaborators = function (map, limit=10) {
+const getMapCollaborators = function (map) {
   let queryStr = `
     SELECT u.*
     FROM
       collaborators c JOIN users u ON c.user_id = u.id
     WHERE
-      c.map_id = $1
-    LIMIT $2;
+      c.map_id = $1;
   `;
-  const queryParams = [map.id, limit];
+  const queryParams = [map.id];
   return query(queryStr, queryParams)
   .then(res => res.rows);
 };

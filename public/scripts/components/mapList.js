@@ -20,6 +20,19 @@ $(() => {
       $mapList.append(entry);
     }
   };
+
+  $(document).on('click','.mapEntry', function(event) {
+    const mapId = $(this).attr('id');
+    event.preventDefault();
+    Promise.all([getMapById(`id=${mapId}`), getCurrentUser()])
+    .then((output) => {
+      const map = output[0]
+      const currentUser = 1;
+      window.$mapView.displayMapView(map, currentUser, 'view');
+      window.views_manager.show('mapDetails');
+    })
+  });
+
   window.mapList.addMapEntries = addMapEntries;
 
 });

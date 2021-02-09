@@ -1,4 +1,5 @@
 $(() => {
+  window.mapForm ={};
   const createMapForm = function(map) {
     let titlePlaceholder = 'enter a title';
     let descPlaceholder = 'enter description';

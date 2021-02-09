@@ -49,17 +49,28 @@ module.exports = (db) => {
   });
 
   // queries for single map details (include pins list)
-  router.get("/map", (req, res) => {
-    // console.log("Get map details route");
-    res.send("Get map details route");
-    // getMapDetails
+  router.get("/map/info", (req, res) => {
+    db.getMapById(req.query)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({error: err.message});
+    })
+  });
 
-    // will query the db for map specific stuff
-    // db.theMapQuery({params})
-    //     .then(data => {
-    //     })
-    //     .catch(err => {
-    //     });
+  router.get("/map/details", (req, res) => {
+    db.getMapDetails(req.query)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({error: err.message});
+    })
   });
 
   // put create map entry
@@ -122,6 +133,19 @@ module.exports = (db) => {
   // queries for pin details
   // by pin id
   // ================================================ params format not checked yet
+
+  router.get("/map/pin", (req, res) => {
+    db.getMapPins(req.query)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
+  });
+
   router.get("/pin", (req, res) => {
     // console.log("Get pin details route");
 
@@ -190,16 +214,15 @@ module.exports = (db) => {
 
   // queries for collaborator list
   router.get("/collaborators", (req, res) => {
-    // console.log("Get collaborators list route");
-    res.send("Get collaborators list route");
-    // getCollaboars
-
-    // will query the db for map specific stuff
-    // db.theQuery({params})
-    //     .then(data => {
-    //     })
-    //     .catch(err => {
-    //     });
+    db.getMapCollaborators(req.query)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
   });
 
   // add collaborator to map

@@ -1,4 +1,5 @@
 $(() => {
+  window.profileMapItem = {};
   const createMapItem = function (map, user, currentUser, mapCategory) {
     let changeButton = '';
     let buttonMsg;

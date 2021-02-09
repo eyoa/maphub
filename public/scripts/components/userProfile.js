@@ -74,5 +74,5 @@ $(() => {
 
   //on click listener for mapItems and buttons
 
-  window.userProfile.displayUserProfile = displayUserProfile;
+  window.$userProfile.displayUserProfile = displayUserProfile;
 });

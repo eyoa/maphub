@@ -25,6 +25,17 @@ module.exports = (db) => {
     */
   }
 
+  router.get("/me", (req, res) => {
+    const userId = req.session.userId;
+    if (!userId) {
+      res.send(null);
+      return;
+    }
+    db.getUser({id: userId})
+    .then(user => res.send({user}))
+    .catch(err => res.send(null));
+  })
+
   //get user data
   router.get("/", (req, res) => {
     /*

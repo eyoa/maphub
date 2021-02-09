@@ -1,6 +1,6 @@
 $(() => {
-  const $mapView = $(`
-  <div class="container" id="userProfile">
+  window.$mapView = $(`
+  <div class="container" id="mapView">
     <div class="container" id="mapView-header-container"></div>
     <div class="container" id="mapView-display-container"></div>
     <div class="container" id="mapView-content-container"></div>
@@ -8,9 +8,9 @@ $(() => {
   `);
 
   window.$mapView = $mapView;
-  const $headerContainer = $(`#mapView-header-container`);
-  const $displayContainer = $(`#mapView-display-container`);
-  const $contentContainer = $(`#mapView-content-container`);
+  const $headerContainer = $mapView.find(`#mapView-header-container`);
+  const $displayContainer = $mapView.find(`#mapView-display-container`);
+  const $contentContainer = $mapView.find(`#mapView-content-container`);
 
   //mapView state: view, editDetail, editMap
   window.currMapViewState = 'view';
@@ -30,15 +30,16 @@ $(() => {
     if (!map) {
       // display default map @ default coord & default zoom level
     } else {
-      getMailDetails(map).then(json => {
-        $displayContainer.append(fetchLeafletMap(json.data))
+      getMapDetails(map).then(json => {
+        //$displayContainer.append(fetchLeafletMap(json.data))
+        $displayContainer.append(`<div>map goes here :)</div>`)
       });
     }
   };
 
   const insertContent = function(map, currentUser, state, contentType, contentData){
     $contentContainer.empty();
-    const mapContent = mapViewContent.createMapContent(map, currentUser, state, contentType, contentData);
+    const mapContent = $mapViewContent.createMapContent(map, currentUser, state, contentType, contentData);
     $contentContainer.append(mapContent);
   }
 
@@ -46,9 +47,11 @@ $(() => {
   // view, editDetails -> pinList | editMap -> mapForm
     //displays default page of a given state. use this for buttons that change mapView state
   const displayMapView = function (map, currentUser, state) {
-    Promise.all(getPins(map), getCollab(map)).then(res=> {
-      const pins = res[0];
-      const collabs = res[1];
+    Promise.all([getMapPins(`id=${map.id}`), getCollaborators(`id=${map.id}`)]).then(output=> {
+      const pins = output[0];
+      output[1];
+      const collabs = [];
+      for (const collab of output[1]) collabs.push(collab.id);
 
       insertHeader(map, currentUser, state, collabs);
       insertMapDisplay(map);
@@ -110,5 +113,5 @@ $(() => {
 
   */
 
-  window.mapView.displayMapView = displayMapView;
+  window.$mapView.displayMapView = displayMapView;
 });

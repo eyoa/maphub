@@ -1,3 +1,4 @@
+const pool = require('./lib/pool');
 
 const getActiveKeys = function(params) {
   // get array of keys with actual values

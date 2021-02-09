@@ -1,15 +1,13 @@
-const { addUser } = require("../../../server/database");
-
 $(() => {
-  const $mapViewContent = $(`
+  window.$mapViewContent = $(`
     <div class="container row" id="map-content">
       <div class="container" id="map-content-header"></div>
       <div class="container" id="map-content-body"></div>
     </div>
   `);
 
-  const $mapContentHeader = $(`#map-content-header`);
-  const $mapContentBody = $(`#map-content-body`);
+  const $mapContentHeader = $mapViewContent.find(`#map-content-header`);
+  const $mapContentBody = $mapViewContent.find(`#map-content-body`);
 
   const insertContentHeader = function (map, currentUser, state) {
     $mapContentHeader.empty();
@@ -43,7 +41,7 @@ $(() => {
     let $content;
     switch(contentType){
       case "pinList":
-        $content = pinlist.createPinList(contentData, state);
+        $content = pinList.createPinList(contentData, state);
         break;
       case "collabList":
         $content = collabList.createCollabList(contentData, state);
@@ -61,7 +59,8 @@ $(() => {
   const createMapContent = function (map, currentUser, state, contentType, contentData) {
     insertContentHeader(map, currentUser, state);
     insertContentBody(contentType, contentData, state);
+    return $mapViewContent;
   }
 
-  window.mapViewContent.createMapContent = createMapContent;
+  window.$mapViewContent.createMapContent = createMapContent;
 });

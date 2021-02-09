@@ -38,7 +38,7 @@ $(() => {
   </form>
   `);
 
-  windows.$registerForm = $registerForm;
+  window.$registerForm = $registerForm;
 
   //on submit listener
   //on cancel listener

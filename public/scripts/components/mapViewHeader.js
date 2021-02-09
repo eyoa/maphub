@@ -1,10 +1,11 @@
 $(() => {
+  mapViewHeader = {};
   const createMapHeader = function (map, currentUser, state, collabs) {
-    let headerTitle = '';
+    let headerTitle = map.title;
     let headerButton = '';
     let favToggle = '';
 
-    if (collabs.includes(currentUser.id)) {
+    if (collabs.includes(currentUser)) {
       if (state === 'view') {
         headerTitle = map.title;
         headerButton = `<button class="btn btn-primary" id="edit-map">edit map</button>`;
@@ -16,7 +17,6 @@ $(() => {
         headerTitle = `Configure Map Details for ${map.title}`;
         headerButton = `<button class="btn btn-primary" id="exit-editor">exit-editor</button>`
       }
-
     }
     return `
       <div class="container row" id="map-header">

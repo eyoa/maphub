@@ -1,4 +1,5 @@
 $(() => {
+  window.profileUserInfoItem = {};
   const createUserInfoItem = function (user, currentUser) {
     const editBtn = '';
     const emailDiv = '';

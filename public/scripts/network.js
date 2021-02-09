@@ -1,5 +1,12 @@
 // users ajax requests
 
+const getCurrentUser = function(){
+  return $.ajax({
+    method:"GET",
+    url: "users/me"
+  });
+};
+
 const logIn = function(data) {
   return $.ajax({
     method: "PUT",
@@ -56,10 +63,17 @@ function getMapList(params) {
   })
 }
 
+function getMapById(params) {
+  return $.ajax({
+    method: "GET",
+    url: "/api/map/info?" + params,
+  });
+}
+
 function getMapDetails(params) {
   return $.ajax({
     method: "GET",
-    url: "/api/map?" + params,
+    url: "/api/map/details?" + params,
   });
 }
 
@@ -83,6 +97,13 @@ function removeMap(params) {
   return $.ajax({
     method: "DELETE",
     url: "/api/map?" + params,
+  });
+}
+
+function getMapPins(params) {
+  return $.ajax({
+    method: "GET",
+    url: "/api/map/pin?" + params
   });
 }
 
