@@ -27,7 +27,6 @@ $(() => {
             <img id="map-preview" src="${map.preview_img_url}">
           </div>
           <div class="col" id="map-owner">${map.title}</div>
-          <div class="col" id="map-owner">by ${map.owner_id}</div>
           <div class="col">
             ${changeButton}
           </div>

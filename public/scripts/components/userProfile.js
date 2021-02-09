@@ -21,11 +21,14 @@ $(() => {
   const insertUserInfo = function(user, currentUser) {
     const userId = res.userId;
     $userInfoContainer.empty();
-    const userInfo = $(`
-
-    `);
-    if (user === currentUser)// add css style change code for when current user = user vs not
+    const userInfo = profileUserInfoItem.createUserInfoItem(user, currentUser);
     $userInfoContainer.append(userInfo);
+  };
+
+  const insertEditProfileForm = function(user) {
+    $userInfoContainer.empty();
+    const editForm = profileUserInfoItem.createEditProfileItem(user);
+    $userInfoContainer.append(editForm);
   };
 
   const insertMapInfo = function (user, currentUser, mapCategory) {
@@ -68,8 +71,7 @@ $(() => {
     });
   }
 
-  //on click listener for userprofile edit button
-
+  //on click listener for userprofile edit button, cancel edit ,and save changes
 
   //on click listener for mapItems and buttons
 

@@ -31,5 +31,10 @@ $(() => {
     `;
   }
 
+  const createEditProfileItem = function(user) {
+
+  };
+
   window.profileMapItem.createUserInfoItem = createUserInfoItem;
+  window.profileMapItem.createEditProfileItem = createEditProfileItem;
 });
