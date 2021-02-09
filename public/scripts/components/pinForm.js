@@ -28,8 +28,8 @@ $(() => {
 
           ${isNew ?
             `<button type="submit" class="btn btn-primary" name="btnMethod" value="put">Add Pin!</button>`
-            : `<button type="submit" class="btn btn-primary" name="btnMethod" value="patch">Edit Pin</button>
-               <button type="submit" class="btn btn-danger" name="btnMethod" value="delete">Delete Pin</button>`}
+            : `<button type="submit" class="btn btn-primary" name="btnMethod" value="patch">Save Changes</button>
+               <button type="submit" class="btn btn-danger" name="btnMethod" value="delete">Cancel Edit</button>`}
 
         </form>
       </section>

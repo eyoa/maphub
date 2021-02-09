@@ -124,11 +124,10 @@ exports.getMapList = getMapList;
 // only allow map detail query based on id
 // this might be specific case for getMapList
 const getMapDetails = function (map) {
-  // , p.title AS pin_description, p.img_url, p.latitude AS pin_latitude, p.longitude AS pin_longitude ... in case we need
   let queryStr = `
     SELECT
       m.id AS map_id, m.latitude AS map_latitude, m.longitude AS map_longitude, m.title AS map_title, m.zoom_lv, m.description AS map_description, m.owner_id,
-      p.id AS pin_id
+      p.id AS pin_id, p.title AS pin_description, p.img_url, p.latitude AS pin_latitude, p.longitude AS pin_longitude
     FROM maps m JOIN pins p ON p.map_id = m.id
     WHERE m.id = $1;
   `;
