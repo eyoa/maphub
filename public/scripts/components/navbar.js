@@ -17,7 +17,7 @@ $(() => {
     <div class="collapse navbar-collapse " id="navbarMenu">
       <ul class = "navbar-nav mr-auto mt-2 mt-md-0"
         <li class="nav-item">
-          <a class="nav-link active" href="/api/">Browse</a>
+          <a class="nav-link active" href="/api/" id="nav-browse">Browse</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/api/map/?=">Map</a>
@@ -45,10 +45,18 @@ $(() => {
   // event listeners
 
   // for mini test view_manager
-  $('navbar').on("click", function(event) {
+  $('#nav-browse').on("click", function(event) {
+    event.preventDefault();
     console.log('click detetected');
     console.log(event);
 
+    getMapList()
+    .then( (data) =>{
+      console.log(data);
+      // mapList.addMapEntries(JSON);
+      // views_manager.show('mapList');
+    })
+    .catch(error => console.error(error));
 
   });
 

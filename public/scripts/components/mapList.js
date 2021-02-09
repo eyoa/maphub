@@ -9,7 +9,7 @@ $(() => {
 
   //TEST CODE
   // fake JSON data
-  const data = [{"title":"Toronto","description":"this is Toronto"},{"title":"New York","description":"this is New York"},{"title":"Seoul","description":"this is Seoul"}];
+  // const data = [{"title":"Toronto","description":"this is Toronto"},{"title":"New York","description":"this is New York"},{"title":"Seoul","description":"this is Seoul"}];
 
   const $mapList = $(`
   <section class="map-list" id="map-list">
@@ -37,7 +37,7 @@ $(() => {
 
   // currently will append as long as script is in index.html
   // $main.append($mapList);
-  addMapEntries(data);
+  // addMapEntries(data);
 
 
 });

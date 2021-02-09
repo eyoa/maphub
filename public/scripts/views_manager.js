@@ -29,7 +29,6 @@ $(() => {
       case 'editMap':
         break;
 
-
     }
   }
   window.views_manager.show = show;
