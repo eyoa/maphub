@@ -17,7 +17,7 @@ $(() => {
   </form>
   `);
 
-  windows.$logInForm = $logInForm;
+  window.$logInForm = $logInForm;
 
   //onclick listener for login button
   //onclick listener for signup
