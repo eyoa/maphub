@@ -10,8 +10,8 @@ $(() => {
     <article class="pinForm">
       <section class="d-flex justify-content-center my-3">
         <form action="/api/pin" method="">
-          <input type=""hidden" name="longitude" value="" hidden>
-          <input type=""hidden" name="latitude" value="" hidden>
+          <input type="hidden" name="longitude" value="" hidden>
+          <input type="hidden" name="latitude" value="" hidden>
 
           <div class="form-group">
             <label for="pin-title">Name</label>
@@ -28,8 +28,8 @@ $(() => {
 
           ${isNew ?
             `<button type="submit" class="btn btn-primary" name="btnMethod" value="put">Add Pin!</button>`
-            : `<button type="submit" class="btn btn-primary" name="btnMethod" value="patch">Edit Pin</button>
-               <button type="submit" class="btn btn-danger" name="btnMethod" value="delete">Delete Pin</button>`}
+            : `<button type="submit" class="btn btn-primary" name="btnMethod" value="patch">Save Changes</button>
+               <button type="submit" class="btn btn-danger" name="btnMethod" value="delete">Cancel Edit</button>`}
 
         </form>
       </section>
