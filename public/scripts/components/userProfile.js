@@ -19,7 +19,6 @@ $(() => {
   };
 
   const insertUserInfo = function(user, currentUser) {
-    const userId = res.userId;
     $userInfoContainer.empty();
     const userInfo = profileUserInfoItem.createUserInfoItem(user, currentUser);
     $userInfoContainer.append(userInfo);
