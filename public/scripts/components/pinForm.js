@@ -10,8 +10,8 @@ $(() => {
     <article class="pinForm">
       <section class="d-flex justify-content-center my-3">
         <form action="/api/pin" method="">
-          <input type=""hidden" name="longitude" value="" hidden>
-          <input type=""hidden" name="latitude" value="" hidden>
+          <input type="hidden" name="longitude" value="" hidden>
+          <input type="hidden" name="latitude" value="" hidden>
 
           <div class="form-group">
             <label for="pin-title">Name</label>

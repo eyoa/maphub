@@ -13,7 +13,7 @@ $(() => {
   const $contentContainer = $(`#mapView-content-container`);
 
   //mapView state: view, editDetail, editMap
-  window.mapViewState = 'view';
+  window.currMapViewState = 'view';
 
   const fetchLeafletMap = function (mapDetails) {
     // figure this out later.....
@@ -44,6 +44,7 @@ $(() => {
 
   //default display:
   // view, editDetails -> pinList | editMap -> mapForm
+    //displays default page of a given state. use this for buttons that change mapView state
   const displayMapView = function (map, currentUser, state) {
     Promise.all(getPins(map), getCollab(map)).then(res=> {
       const pins = res[0];
@@ -59,8 +60,6 @@ $(() => {
     });
   };
 
-  window.mapView.displayMapView = displayMapView;
-  //displays default page of a given state. use this for buttons that change mapView state
   //for buttons that manipulate content, use insertHeader and insertContent
 
   /*
@@ -79,6 +78,9 @@ $(() => {
   we can attach/remove event listeners on click based on buttons that changes states
 
   event elemnt (accessible state & permission) : resulting action
+  - dont care about permissions for event listeners
+  - permissions should be covered by displaying correct buttons/elements accordingly
+
     header
       - onclick favToggle (view & logged in user) : update fav for currentUser
       - onclick edit map (view & owner/collab) :
@@ -107,4 +109,6 @@ $(() => {
       - onclick cancel edit button : (editDetail & owner/collab) : show pin list
 
   */
+
+  window.mapView.displayMapView = displayMapView;
 });
