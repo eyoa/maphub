@@ -39,4 +39,5 @@ $(() => {
   $main.append($mapList);
   addMapEntries(data);
 
+
 });
