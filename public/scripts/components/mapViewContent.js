@@ -27,12 +27,9 @@ $(() => {
       } else {
         $ListContainer.append(createCollabListItem(item));
       }
-
     }
     $mapContentBody.append($pinListContainer);
   };
-
-
 
   const createMapContent = function (map, currentUser, state, pins, collaborators) {
     switch (state) {
