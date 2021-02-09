@@ -7,22 +7,24 @@
 
 const express = require('express');
 const router  = express.Router();
-
+const bcrypt = require('bcrypt');
+const cookieSession = require('cookie-session');
 //NOTE: need method override for put
 
 module.exports = (db) => {
 
   //login function
   const login = function(email, password) {
-    /*
-      return db.getUser(email)
-      .then(user => {
+      return db.getUser({email})
+      .then(result => {
+        const user = result[0];
         if (bcrypt.compareSync(password, user.password)) {
+          console.log("user put in right password");
           return user;
         }
         return null;
       })
-    */
+      .catch(e => console.log("login function error", e))
   }
 
   //get user data
@@ -47,19 +49,20 @@ module.exports = (db) => {
 
   //login
   router.put("/login", (req, res) => {
-    /*
     const {email, password} = req.body;
     login(email, password)
     .then(user => {
+      console.log("user returned", user);
+      console.log(user.id);
       if (!user) {
         res. send({error: "error"});
         return;
       }
       req.session.userId = user.id;
-      res.send(....);
+      res.send({user})
     })
     .catch(e => res.send(e));
-    */
+
   });
 
   //logout

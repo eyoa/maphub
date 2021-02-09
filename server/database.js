@@ -14,19 +14,26 @@ const getUser = function(user) {
     FROM users
     WHERE
   `;
-  let appended = false;
-  if (user.id) {
-    queryStr += ` id = $1`;
-    queryParams.push(id);
-    appended = true;
+
+  const keys = getActiveKeys(user);
+
+  if (keys.includes('id')){
+      queryParams.push(user.id);
+      queryStr += ` id = $${queryParams.length}`;
   }
-  if (user.email) {
-    queryStr += appended ? ` AND email = $1`: `email = $1`;
-    queryParams.push(email);
+
+  if (keys.includes('email')) {
+    queryParams.push(user.email);
+    queryStr += `email = $${queryParams.length}`;
   }
+
   queryStr += ';';
-  return query(queryStr, queryParams)
-  .then(res => res.rows[0]);
+
+  return pool.query(queryStr, queryParams)
+    .then(data => {
+      return data.rows;
+    })
+    .catch(e => console.log("get user error", e));
 };
 exports.getUser = getUser;
 
