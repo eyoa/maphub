@@ -36,7 +36,7 @@ $(() => {
   };
 
   // currently will append as long as script is in index.html
-  $main.append($mapList);
+  // $main.append($mapList);
   addMapEntries(data);
 
 

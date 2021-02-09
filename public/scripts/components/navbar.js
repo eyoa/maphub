@@ -42,4 +42,15 @@ $(() => {
 
   $navbar.append(navbarSnippet);
 
+  // event listeners
+
+  // for mini test view_manager
+  $('navbar').on("click", function(event) {
+    console.log('click detetected');
+    console.log(event);
+
+
+  });
+
+
 });
