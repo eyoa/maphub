@@ -41,18 +41,19 @@ const updateUser = function(params, data) {
     method: "PUT",
     url,
     data
-  });
+  })
 };
 
 
 //  api ajax requests
 
 function getMapList(params) {
-  let url  = params ? "/api/maps?" + params : "/api/";
+  console.log("called getMapList");
+  // let url  = params ? "/api/maps?=" + params : "/api/";
   return $.ajax({
     method: "GET",
-    url
-  });
+    url: "/api/maps"
+  })
 }
 
 function getMapDetails(params) {
