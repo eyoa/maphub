@@ -5,14 +5,17 @@ $(() => {
 
   const show = function(view){
     // or $main.empty?
-    $mapList.detach();
-    $registerForm.detach();
-    $userProfile.detach();
+    // $mapList.detach();
+    // $registerForm.detach();
+    // $userProfile.detach();
 
+    $(`<p>append is working fine</p>`).appendTo($main);
 
     switch(view){
       case 'mapList':
-        $mapList.appendTo($main);
+        console.log($main);
+        console.log("mapList has ", $mapList);
+        // $mapList.appendTo($('main-content'));
         break;
       case 'login':
         break;

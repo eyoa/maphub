@@ -52,9 +52,9 @@ $(() => {
 
     getMapList()
     .then( (data) =>{
-      console.log(data);
-      // mapList.addMapEntries(JSON);
-      // views_manager.show('mapList');
+      console.log("data is", data);
+      mapList.addMapEntries(data);
+      views_manager.show('mapList');
     })
     .catch(error => console.error(error));
 

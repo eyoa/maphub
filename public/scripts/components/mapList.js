@@ -1,6 +1,6 @@
 $(() => {
   // For use with views manager later?
-  const $main = $("#main-content");
+  // const $main = $("#main-content");
   // getMapList()
   // .then()
 
@@ -17,7 +17,8 @@ $(() => {
   </section>
   `);
 
-  window.mapList = $mapList;
+  window.$mapList = $mapList;
+  window.mapList = {};
 
   function clearList() {
     $mapList.empty();
@@ -32,11 +33,11 @@ $(() => {
       // console.log("mapEntry is ", mapRow);
       // console.log(entry);
     }
-
+    $('#main_content').append($mapList);
   };
+  window.mapList.addMapEntries = addMapEntries;
 
   // currently will append as long as script is in index.html
-  // $main.append($mapList);
   // addMapEntries(data);
 
 
