@@ -1,5 +1,3 @@
-const { getMapDetails } = require("../../../server/database");
-
 $(() => {
   const $mapView = $(`
   <div class="container" id="userProfile">
@@ -21,14 +19,10 @@ $(() => {
     // figure this out later.....
   };
 
-  const insertHeader = function(map, currentUser, state) {
-    //need this in network
-    getMapCollaborators(/*params*/).then(json => {
-      const mapCollaborators = [];//json...
-      $headerContainer.empty();
-      const mapHeader = mapViewHeader.createMapHeader(map, currentUser, state, mapCollaborators);
-      $headerContainer.append(mapHeader);
-    });
+  const insertHeader = function(map, currentUser, state, collabs) {
+    $headerContainer.empty();
+    const mapHeader = mapViewHeader.createMapHeader(map, currentUser, state, collabs);
+    $headerContainer.append(mapHeader);
   }
 
   const insertMapDisplay = function (map) {
@@ -42,19 +36,32 @@ $(() => {
     }
   };
 
-  const insertContent = function(map, currentUser, state) {
+  const insertContent = function(map, currentUser, state, contentType, contentData){
     $contentContainer.empty();
-    const mapContent = mapViewContent.createMapContent(map, currentUser, state);
+    const mapContent = mapViewContent.createMapContent(map, currentUser, state, contentType, contentData);
     $contentContainer.append(mapContent);
   }
 
+  //default display:
+  // view, editDetails -> pinList | editMap -> mapForm
   const displayMapView = function (map, currentUser, state) {
-    insertHeader(map, currentUser, state);
-    insertMapDisplay(map);
-    insertContent(map, currentUser, state);
+    Promise.all(getPins(map), getCollab(map)).then(res=> {
+      const pins = res[0];
+      const collabs = res[1];
+
+      insertHeader(map, currentUser, state, collabs);
+      insertMapDisplay(map);
+      if(state === "view" || state === "editDetail") {
+        insertContent(map, currentUser, state, "pinList", pins);
+      } else {
+        insertContent(map, currentUser, state, "mapForm", map);
+      }
+    });
   };
 
   window.mapView.displayMapView = displayMapView;
+  //displays default page of a given state. use this for buttons that change mapView state
+  //for buttons that manipulate content, use insertHeader and insertContent
 
   /*
   //mapView state: view, editDetail, editMap
