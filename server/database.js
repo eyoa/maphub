@@ -198,7 +198,7 @@ const updateMap = function(mapParams) {
 
   for (const key of keys) {
     if (key !== 'id') {
-      console.log("==============", key);
+      // console.log("==============", key);
 
       updateParams.push(mapParams[key]);
       updateString += key + ' = ' + `$${updateParams.length}`;
@@ -236,7 +236,7 @@ const removeMap = function(mapParams) {
   const paramMapid = [];
   let removeQuery = '';
   // to ensure there is a valid condition before sending remove query
-  console.log(mapParams.id);
+  // console.log(mapParams.id);
 
   if (mapParams.id) {
     paramMapid.push(mapParams.id);
@@ -247,12 +247,12 @@ const removeMap = function(mapParams) {
     `;
   }
 
-  console.log("removeMap query is ", removeQuery);
-  console.log("map id to remove is ", paramMapid);
+  // console.log("removeMap query is ", removeQuery);
+  // console.log("map id to remove is ", paramMapid);
 
   return pool.query(removeQuery, paramMapid)
     .then(data => {
-      console.log(data);
+      // console.log(data);
       return data.rows;
     })
     .catch(e => console.log("Map remove error", e));
@@ -269,7 +269,7 @@ const getPinDetails = function(mapParams) {
   const params = [];
   let queryString = '';
 
-  console.log(mapParams);
+  // console.log(mapParams);
 
   //  ====================================================== If we are doing this by pin id
   //  adjust
@@ -282,12 +282,12 @@ const getPinDetails = function(mapParams) {
     `;
   }
 
-  console.log("pin details query is ", queryString);
-  console.log("parameters sent is ", params);
+  // console.log("pin details query is ", queryString);
+  // console.log("parameters sent is ", params);
 
   return pool.query(queryString, params)
     .then(data => {
-      console.log(data);
+      // console.log(data);
       return data.rows;
     })
     .catch(e => console.log("Pin query error", e));
@@ -331,8 +331,8 @@ const addPin = function(mapParams) {
 
   queryString += `RETURNING *;`;
 
-  console.log("addPin query is ", queryString);
-  console.log("addPin parameters ", params);
+  // console.log("addPin query is ", queryString);
+  // console.log("addPin parameters ", params);
 
   return pool.query(queryString, params)
     .then(data => {
