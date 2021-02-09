@@ -1,22 +1,45 @@
 $(() => {
-  const createPinList = function(pins) {
-    return ``;
+  const createPinItem = function (pin, state) {
+    let editRemoveBtn = ``;
+    if (state === 'editDetail') {
+      editRemoveBtn = `
+      <div class="col">
+        <button id="pin-edit">edit</button>
+        <button id="pin-remove">remove</button>
+      </div>
+      `;
+    }
+
+    return `
+      <div class="container row" id="pin-item">
+        <div class="col" id="${pin.id}">${pin.title}</div>
+        ${editRemoveBtn}
+      </div>
+    `;
+  };
+
+  const createPinList = function(pins, state) {
+    let pinList = '';
+    for (const pin of pins) {
+      pinList += `
+        ${createPinItem(pin, state)}
+      `;
+    }
+
+    let addBtn = '';
+    if (state === 'editDetail') {
+      addBtn = `<button class="btn btn-primary" id="add-pin">add a new pin</button>`;
+    }
+
+    let pinContainer = `
+      <div class="container" id="pin-list">
+        <div>All pins</div>
+        ${pinList}
+        ${addBtn}
+      </div>
+    `;
+    return pinContainer;
   }
 
   window.pinList.createPinList = createPinList;
 });
-
-
-
-const createPinList = function (items, itemType) {
-  $mapContentBody.append(`<div>All ${itemTyps}s</div>`);
-  const $ListContainer = $(`<div class="container row" id="list-container"></div>`);
-  for (const item of items) {
-    if (itemType === 'pin') {
-      $ListContainer.append(createPinListItem(item));
-    } else {
-      $ListContainer.append(createCollabListItem(item));
-    }
-  }
-  $mapContentBody.append($pinListContainer);
-};

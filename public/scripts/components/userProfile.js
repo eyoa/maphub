@@ -9,13 +9,13 @@ $(() => {
   </div>
   `);
   window.$userProfile = $userProfile;
-  $userInfoContainer = $(`#user-info`);
-  $mapsOwnedContainer = $(`#user-maps-owned`);
-  $mapsCollabContainer = $(`#user-maps-owned`);
-  $mapsFavContainer = $(`#user-maps-owned`);
+  const $userInfoContainer = $(`#user-info`);
+  const $mapsOwnedContainer = $(`#user-maps-owned`);
+  const $mapsCollabContainer = $(`#user-maps-owned`);
+  const $mapsFavContainer = $(`#user-maps-owned`);
 
   const clearLoadingMessage = function () {
-    $(`$loading-message`).remove();
+    $(`#loading-message`).remove();
   };
 
   const insertUserInfo = function(user, currentUser) {
