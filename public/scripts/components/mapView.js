@@ -49,8 +49,11 @@ $(() => {
 
         const popUp = `
         <h3>${pin.title}</h3>
-        <img src="${pin.img_url}" width="100" height="100"></img>
-        <p>${pin.description}</p>`;
+        <div class="d-flex flex-row">
+          <img src="${pin.img_url}" width="100" height="100"></img>
+          <p class ="mx-3">${pin.description}</p>
+        </div>
+        `;
 
 
         const marker = L.marker(latlon).bindPopup(popUp).addTo(leafMap);
