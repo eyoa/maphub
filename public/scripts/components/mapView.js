@@ -79,7 +79,7 @@ $(() => {
   // view -> editMap/editDetails
   $(document).on('click', '#edit-map', function(event) {
     event.preventDefault();
-    if (window.currentMap === window.currentMap.owner_id) {
+    if (window.currentUser === window.currentMap.owner_id) {
       window.currMapViewState = "editMap"
     } else {
       window.currMapViewState = "editDetail"
@@ -158,8 +158,6 @@ $(() => {
     HEADER EVENTS
       - onclick favToggle (view & logged in user) : update fav for currentUser
 
-      - onclick exit editor (editDetail & owner/collab) : editDetail -> view
-
     CONTENT EVENTS
       - onclick pin item (view & anyone) : display pinDetail
       - onclick back to pin list button (view & anyone): display pinList
@@ -179,6 +177,5 @@ $(() => {
       - onclick cancel edit button : (editDetail & owner/collab) : show pin list
 
   */
-
   window.$mapView.displayMapView = displayMapView;
 });
