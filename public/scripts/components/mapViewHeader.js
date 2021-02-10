@@ -25,7 +25,7 @@ $(() => {
         headerTitle = `Edit Map`;
       } else {
         headerTitle = `Configure Map Details for ${map.title}`;
-        headerButton = `<button class="btn btn-primary" id="exit-editor">exit-editor</button>`
+        headerButton = `<button class="btn btn-primary" id="exit-editor">exit editor</button>`
       }
     }
     return `

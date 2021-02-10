@@ -311,7 +311,6 @@ const getPinDetails = function(mapParams) {
 
   return pool.query(queryString, params)
     .then(data => {
-      // console.log(data);
       return data.rows;
     })
     .catch(e => console.log("Pin query error", e));

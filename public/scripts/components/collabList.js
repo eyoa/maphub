@@ -2,7 +2,7 @@ $(() => {
   window.collaboratorList = {};
 
 
-  const createCollabList = function(collaborators) {
+  const createCollabList = function(collaborators, state) {
     let coList = `
     <article class="pinDetail my-3">
       <section class="w-50 m-auto">

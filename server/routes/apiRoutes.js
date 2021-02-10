@@ -147,12 +147,9 @@ module.exports = (db) => {
   });
 
   router.get("/pin", (req, res) => {
-    // console.log("Get pin details route");
-
-    db.getPinDetails({params})
+    db.getPinDetails(req.query)
       .then(data => {
-        // console.log("pin details is ", data);
-        res.json(data);
+        res.send(data);
       })
       .catch(err => {
         res

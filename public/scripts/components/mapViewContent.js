@@ -31,7 +31,7 @@ $(() => {
       $mapContentHeader.append($pinCollabToggle);
     } else if (state === 'editMap') {
       $mapContentHeader.append($searchOnMapForm);
-    } else if (!map || currentUser.id === map.owner_id) {
+    } else if (!map || currentUser === map.owner_id) {
       $mapContentHeader.append($pinCollabToggle);
     }
   };
@@ -40,11 +40,14 @@ $(() => {
     $mapContentBody.empty();
     let $content;
     switch(contentType){
+      case "pinDetail":
+        $content = pinDetail.createPinDetail(contentData);
+        break;
       case "pinList":
         $content = pinList.createPinList(contentData, state);
         break;
       case "collabList":
-        $content = collabList.createCollabList(contentData, state);
+        $content = collaboratorList.createCollabList(contentData, state);
         break;
       case "pinForm":
         $content = pinForm.createForm(contentData); //pinForm not state dependent

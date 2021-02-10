@@ -33,9 +33,11 @@ $(() => {
     Promise.all([getMapById(`id=${mapId}`), getCurrentUser()])
     .then((output) => {
       const map = output[0]
-      const currentUser = 1;
-      window.currentUser = currentUser;
+      const currUser = 1;
+
+      window.currentUser = currUser;
       window.currentMap = map;
+      currentState = 'view';
 
       window.$mapView.displayMapView(map, currentUser, 'view');
       window.views_manager.show('mapDetails');

@@ -70,7 +70,7 @@ $(() => {
     window.currentUser = 1;
     window.currentMap = null;
     window.currMapViewState = "editMap"
-    $mapView.displayMapView(window.currentMap, window.currentUser, window.currMapViewState);
+    $mapView.displayMapView(window.currentMap, window.currentUser, "editMap");
     views_manager.show('mapDetails');
   });
 //=================================================================

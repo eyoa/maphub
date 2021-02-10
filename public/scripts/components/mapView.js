@@ -13,7 +13,7 @@ $(() => {
   const $contentContainer = $mapView.find(`#mapView-content-container`);
 
   //mapView state: view, editDetail, editMap
-  window.currMapViewState = 'view';
+  window.currentState = 'view';
 
   const fetchLeafletMap = function (mapDetails) {
     // figure this out later.....
@@ -73,18 +73,21 @@ $(() => {
 
   //for buttons that manipulate content, use insertHeader and insertContent
 
+//////////////////////////////////// EVENT LISTENERS ////////////////////////////////////////////////////////////
 
   //on click listener for navigating mapView ======================================================================
 
   // view -> editMap/editDetails
   $(document).on('click', '#edit-map', function(event) {
     event.preventDefault();
-    if (window.currentUser === window.currentMap.owner_id) {
-      window.currMapViewState = "editMap"
+    console.log(currentUser)
+    console.log(currentMap.owner_id)
+    if (currentUser === currentMap.owner_id) {
+      currentState = "editMap"
     } else {
-      window.currMapViewState = "editDetail"
+      currentState = "editDetail"
     }
-    displayMapView(window.currentMap, window.currentUser, window.currMapViewState);
+    displayMapView(currentMap, currentUser, currentState);
   });
 
   // editMap -> editDetails
@@ -95,6 +98,7 @@ $(() => {
         console.log("data is", data);
         mapList.addMapEntries(data);
         views_manager.show('mapList');
+        currentState = 'view';
       })
       .catch(error => console.error(error));
   });
@@ -102,18 +106,21 @@ $(() => {
   //this one needs to update db
   $(document).on('click', '#save-continue-map-edit', function(event) {
     event.preventDefault();
-    if (!window.currentMap) {
+    if (!currentMap) {
+      //TO DO
       //create map
     } else {
+      //TO DO
       //update map
     }
     //window.currentMap = result of update/edit
-    window.currMapViewState = "editDetail";
-    displayMapView(window.currentMap, window.currentUser, window.currMapViewState)
+    currentState = 'editDetail';
+    displayMapView(currentMap, currentUser, 'editDetail')
   });
 
   //this one needs to update db
   $(document).on('click', '#delete-map', function(event) {
+    //TO DO
     //delete current map from db
 
     event.preventDefault();
@@ -121,6 +128,8 @@ $(() => {
       .then((data) =>{
         console.log("data is", data);
         mapList.addMapEntries(data);
+        currentState = 'view';
+        currentMap = null;
         views_manager.show('mapList');
       })
       .catch(error => console.error(error));
@@ -128,13 +137,101 @@ $(() => {
 
   $(document).on('click', '#exit-editor', function(event) {
     event.preventDefault();
-    window.currMapViewState = "view"
-    displayMapView(window.currentMap, window.currentUser, window.currMapViewState);
+    currentState = 'view';
+    displayMapView(currentMap, currentUser, 'view');
   });
 
-  //=================================================================================================================
+  //======on click events without database interaction (strictly displays)========================================
 
-  //CONTENT EVENTS
+  // display pinlist
+  $(document).on('click', '#get-pin-list', function(event) {
+    event.preventDefault();
+    getMapPins(`id=${currentMap.id}`).then(output => {
+      const pins = output;
+      insertContent(currentMap, currentUser, currentState, "pinList", pins);
+    });
+  });
+
+  //display collaborators
+  $(document).on('click', '#get-collab-list', function(event) {
+    event.preventDefault();
+    getCollaborators(`id=${currentMap.id}`).then(output => {
+      const collabs = output;
+      insertContent(currentMap, currentUser, currentState, "collabList", collabs);
+    });
+  });
+
+  //display pin detail when pin clicked
+  $(document).on('click', '.pin-title', function(event){
+    event.preventDefault();
+    const pinId = $(this).closest('.pin-item').attr('id');
+    getPinDetails(`id=${pinId}`).then(output => {
+      const pin = output[0];
+      insertContent(currentMap, currentUser, currentState, "pinDetail", pin);
+    });
+  });
+
+  //display pin list when pin detail closed
+  $(document).on('click', '#close-pin-detail', function(event){
+    event.preventDefault();
+    getMapPins(`id=${currentMap.id}`).then(output => {
+      const pins = output;
+      insertContent(currentMap, currentUser, currentState, "pinList", pins);
+    });
+  });
+
+  //display pin form when click add pin
+  $(document).on('click', '#pin-add-prompt', function(event) {
+    event.preventDefault();
+    insertContent(currentMap, currentUser, currentState, "pinForm", null);
+  });
+
+  //display pin form when click edit pin
+  $(document).on('click', '#pin-edit-prompt', function(event) {
+    event.preventDefault();
+    const pinId = $(this).closest(".pin-item").attr('id');
+    getPinDetails(`id=${pinId}`).then(output => {
+      const pin = output[0];
+      insertContent(currentMap, currentUser, currentState, "pinForm", pin);
+    });
+  });
+
+  //display pin list when edit/add is canceled
+  $(document).on('click', '#cancel-pin-detail-edit', function(event){
+    event.preventDefault();
+    getMapPins(`id=${currentMap.id}`).then(output => {
+      const pins = output;
+      insertContent(currentMap, currentUser, currentState, "pinList", pins);
+    });
+  });
+
+  //======on click events with db changes ========================================================================================
+
+  $(document).on('click', '.add-pin-detail', function(event){
+    event.preventDefault();
+    //TO DO
+    //add pin to db
+
+    //display pin list
+    getMapPins(`id=${currentMap.id}`).then(output => {
+      const pins = output;
+      insertContent(currentMap, currentUser, currentState, "pinList", pins);
+    });
+  });
+
+  $(document).on('click', '.edit-pin-detail', function(event){
+    event.preventDefault();
+
+    const pinId = $(this).closest(".pinForm").attr("id");
+    //TO DO
+    //update this pin id in db
+
+    //display pin list
+    getMapPins(`id=${currentMap.id}`).then(output => {
+      const pins = output;
+      insertContent(currentMap, currentUser, currentState, "pinList", pins);
+    });
+  });
 
   /*
   //mapView state: view, editDetail, editMap
@@ -159,22 +256,15 @@ $(() => {
       - onclick favToggle (view & logged in user) : update fav for currentUser
 
     CONTENT EVENTS
-      - onclick pin item (view & anyone) : display pinDetail
-      - onclick back to pin list button (view & anyone): display pinList
-
       - onclick search button: (editMap & owner/anyone) : update coords in form and leaflet map
 
       - onclick add collab button (editDetail & owner) : update db, append to collab list
-      - onclick deelet collab button (editDetail & owner) : update db, remove from collab list
+      - onclick delete collab button (editDetail & owner) : update db, remove from collab list
 
-      - onclick pin list (editDetail & owner) : show pin list
-      - onclick collab list (editDetail & owner) : show collab list
       - onclick search button: (editDetail & owner/collab) : show pinForm, update coords in form and leaflet map
 
-      - onclick edit pin button : (editDetail & owner/collab) : show pinForm
       - onclick delete pin button : (editDetail & owner/collab) : update db, refresh pin list
       - onclick add pin button : (editDetail & owner/collab) : update db, refresh pin list
-      - onclick cancel edit button : (editDetail & owner/collab) : show pin list
 
   */
   window.$mapView.displayMapView = displayMapView;

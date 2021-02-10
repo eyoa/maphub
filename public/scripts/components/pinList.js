@@ -5,15 +5,15 @@ $(() => {
     if (state === 'editDetail') {
       editRemoveBtn = `
       <div class="col">
-        <button id="pin-edit">edit</button>
+        <button id="pin-edit-prompt">edit</button>
         <button id="pin-remove">remove</button>
       </div>
       `;
     }
 
     return `
-      <div class="container row" id="pin-item">
-        <div class="col" id="${pin.id}">${pin.title}</div>
+      <div class="container row pin-item" id="${pin.id}">
+        <div class="col pin-title">${pin.title}</div>
         ${editRemoveBtn}
       </div>
     `;
@@ -29,7 +29,7 @@ $(() => {
 
     let addBtn = '';
     if (state === 'editDetail') {
-      addBtn = `<button class="btn btn-primary" id="add-pin">add a new pin</button>`;
+      addBtn = `<button class="btn btn-primary" id="pin-add-prompt">add a new pin</button>`;
     }
 
     let pinContainer = `

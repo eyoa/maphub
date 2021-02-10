@@ -15,7 +15,7 @@ $(() => {
               <p>${pin.description}</p>
             </div>
           </div>
-          <button class="btn btn-primary">back to pin list</button>
+          <button class="btn btn-primary" id="close-pin-detail">close</button>
         </div>
       </section>
     </article>
