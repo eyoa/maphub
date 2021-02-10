@@ -1,6 +1,16 @@
 $(() => {
   mapViewHeader = {};
   const createMapHeader = function (map, currentUser, state, collabs) {
+    if(!map) {
+      return `
+      <div class="container row" id="map-header">
+        <div class="row">
+          <div id="header-title">Create Map</div>
+        </div>
+      </div>
+    `;
+    }
+
     let headerTitle = map.title;
     let headerButton = '';
     let favToggle = '';
@@ -12,7 +22,7 @@ $(() => {
         favToggle = '<div id="fav-toggle">⭐</div>';
 
       } else if (state === 'editMap') {
-        headerTitle = map ? `Edit Map` : `Create Map`;
+        headerTitle = `Edit Map`;
       } else {
         headerTitle = `Configure Map Details for ${map.title}`;
         headerButton = `<button class="btn btn-primary" id="exit-editor">exit-editor</button>`
@@ -21,11 +31,9 @@ $(() => {
     return `
       <div class="container row" id="map-header">
         <div class="row">
-          <div class="col" id="header-title">${headerTitle}</div>
-          <div class="row">
+          <div id="header-title">${headerTitle}</div>
             ${favToggle}
             ${headerButton}
-          </div>
         </div>
       </div>
     `;

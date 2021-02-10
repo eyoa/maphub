@@ -19,6 +19,12 @@ $(() => {
         <li class="nav-item">
           <a class="nav-link active" href="/api/" id="nav-browse">Browse</a>
         </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/api/" id="nav-create-map">Create Map</a>
+        </li>
+
+
         <li class="nav-item">
           <a class="nav-link" href="/api/map/?=" id="nav-mapDetails">Map</a>
         </li>
@@ -57,6 +63,17 @@ $(() => {
       .catch(error => console.error(error));
 
   });
+
+//================================================================
+  $('#nav-create-map').on("click", function(event) {
+    event.preventDefault();
+    window.currentUser = 1;
+    window.currentMap = null;
+    window.currMapViewState = "editMap"
+    $mapView.displayMapView(window.currentMap, window.currentUser, window.currMapViewState);
+    views_manager.show('mapDetails');
+  });
+//=================================================================
 
   $('#nav-login').on("click", function(event) {
     event.preventDefault();

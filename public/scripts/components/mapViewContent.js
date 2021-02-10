@@ -30,8 +30,8 @@ $(() => {
     if (state === "view") {
       $mapContentHeader.append($pinCollabToggle);
     } else if (state === 'editMap') {
-      $mapContentHeader.append($searchOnMap);
-    } else if (currentUser.id === map.owner_id) {
+      $mapContentHeader.append($searchOnMapForm);
+    } else if (!map || currentUser.id === map.owner_id) {
       $mapContentHeader.append($pinCollabToggle);
     }
   };
