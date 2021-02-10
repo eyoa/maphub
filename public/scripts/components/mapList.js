@@ -22,7 +22,7 @@ $(() => {
   };
 
   //===============================
-  // testing global vars
+  // initializing global vars
   window.currentMap = {};
   window.currentUser = null;
   //===============================
