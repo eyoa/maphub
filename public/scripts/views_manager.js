@@ -6,11 +6,6 @@ $(() => {
   // $main.append('<p>Will implement a intial state sometime</p>');
 
   const show = function(view) {
-    if(window.map){
-      map.off();
-      map.remove();
-    }
-
 
     $mapList.detach();
     $logInForm.detach();
