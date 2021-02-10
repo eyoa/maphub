@@ -81,8 +81,6 @@ $(() => {
   //clicking edit map will send you to either editMap (mapinfo edit) or editDetail (pins) depending on if youre owner or not
   $(document).on('click', '#edit-map', function(event) {
     event.preventDefault();
-    console.log(currentUser)
-    console.log(currentMap.owner_id)
     if (currentUser === currentMap.owner_id) {
       currentState = "editMap"
     } else {

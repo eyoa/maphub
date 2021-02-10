@@ -19,14 +19,11 @@ $(() => {
           buttonId = 'remove-fav';
           break;
       }
-      changeButton = `<button class="btn btn-secondary" id="${buttonId}">${changeCommand}</button>`;
+      changeButton = `<button class="btn btn-secondary" id="${buttonId}">${buttonMsg}</button>`;
     }
 
     return `
       <div class="container row" id="user-map-item">
-          <div class="col">
-            <img id="map-preview" src="${map.preview_img_url}">
-          </div>
           <div class="col" id="map-owner">${map.title}</div>
           <div class="col">
             ${changeButton}
@@ -35,5 +32,12 @@ $(() => {
     `;
   }
 
+  /**
+   *
+   *      <div class="col">
+            <img id="map-preview" src="${map.preview_img_url}">
+          </div>
+   *
+   */
   window.profileMapItem.createMapItem = createMapItem;
 });

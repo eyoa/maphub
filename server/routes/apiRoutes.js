@@ -35,10 +35,9 @@ module.exports = (db) => {
     // res.send("Get maps list route");
 
     // ================================================ params format not checked yet
-    db.getMapList(req.params)
+    db.getMapList(req.query)
       .then(data =>{
-        // console.log("data is ", data);
-        res.json(data);
+        res.send(data);
       })
       .catch(err => {
         res

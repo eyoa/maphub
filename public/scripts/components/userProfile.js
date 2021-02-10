@@ -3,19 +3,22 @@ $(() => {
   <div class="container" id="userProfile">
     <div class="container" id="user-info"></div>
     <p id="loading-message">fetching user map data...</p>
-    <div class="container" id="user-maps-owned">Maps owned by this user</div>
-    <div class="container" id="user-maps-collaborated">Maps this user has collaborated in</div>
-    <div class="container" id="user-maps-favourited">Maps favourited by this user</div>
+    <div>Maps owned by this user</div>
+    <div class="container" id="user-maps-owned"></div>
+    <div>Maps this user has collaborated in</div>
+    <div class="container" id="user-maps-collaborated"></div>
+    <div>Maps favourited by this user</div>
+    <div class="container" id="user-maps-favourited"></div>
   </div>
   `);
   window.$userProfile = $userProfile;
-  const $userInfoContainer = $(`#user-info`);
-  const $mapsOwnedContainer = $(`#user-maps-owned`);
-  const $mapsCollabContainer = $(`#user-maps-owned`);
-  const $mapsFavContainer = $(`#user-maps-owned`);
+  const $userInfoContainer = $userProfile.find(`#user-info`);
+  const $mapsOwnedContainer = $userProfile.find(`#user-maps-owned`);
+  const $mapsCollabContainer = $userProfile.find(`#user-maps-collaborated`);
+  const $mapsFavContainer = $userProfile.find(`#user-maps-favourited`);
 
   const clearLoadingMessage = function () {
-    $(`#loading-message`).remove();
+    $userProfile.find(`#loading-message`).remove();
   };
 
   const insertUserInfo = function(user, currentUser) {
@@ -34,43 +37,47 @@ $(() => {
     let params, $container;
     switch(mapCategory) {
       case 'owned':
-        params = '';
+        params = `owner_id=${user.id}`;
         $container = $mapsOwnedContainer;
         break;
       case 'collab':
-        params = '';
+        params = `collab_id=${user.id}`;
         $container = $mapsCollabContainer;
         break;
       case 'fav':
-        params = '';
+        params = `user_id=${user.id}`;
         $container = $mapsFavContainer;
         break;
     }
 
     $container.empty();
-    getMapList(/*params*/)
-    .then(json => {
-      const mapList = json.maps;
-      for (const map in mapList) {
+    getMapList(params)
+    .then(output => {
+      const mapList = output;
+      for (const mapKey in mapList) {
+        const map = mapList[mapKey];
         const mapItem = profileMapItem.createMapItem(map, user, currentUser, mapCategory);
         $container.append(mapItem);
       }
     });
   };
 
-  const displayUserProfile = function (user) {
-    getUserWithCookies()
-    .then(res => {
-      const currentUser = res.user;
+  const displayUserProfile = function (user, currentUser) {
       insertUserInfo(user, currentUser);
       clearLoadingMessage();
       insertMapInfo(user, currentUser, 'owned');
       insertMapInfo(user, currentUser, 'collab');
       insertMapInfo(user, currentUser, 'fav');
-    });
-  }
+  };
 
   //on click listener for userprofile edit button, cancel edit ,and save changes
+  $userProfile.on('click', '#profile-edit-btn', function(event) {
+    event.preventDefault();
+    getUserWithCookies().then(output => {
+      const user = output.user;
+      insertEditProfileForm(user);
+    });
+  });
 
   //on click listener for mapItems and buttons
 

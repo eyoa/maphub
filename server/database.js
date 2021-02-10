@@ -97,7 +97,7 @@ exports.addUser = addUser;
 const getMapList = (params) => {
   const queryParams = [];
   let queryString = `
-  SELECT id, title, description
+  SELECT DISTINCT maps.id, maps.title, maps.description
   FROM maps
   `;
 
@@ -111,6 +111,17 @@ const getMapList = (params) => {
     WHERE favorites.user_id = $${queryParams.length}
     `;
 
+  } else if (keys.includes('collab_id')) {
+    queryParams.push(params['collab_id']);
+    queryString += `
+    JOIN collaborators ON maps.id = collaborators.map_id
+    WHERE collaborators.user_id = $${queryParams.length}
+    AND maps.owner_id != $${queryParams.length}
+    `;
+
+    // console.log('params is: ' , params);
+    // console.log("queryString is ", queryString);
+
   } else if (keys.includes('owner_id')) {
     // owned maps list
     queryParams.push(params['owner_id']);
@@ -118,14 +129,11 @@ const getMapList = (params) => {
     `;
   }
 
-  queryString += `;`;
-
-  // console.log("queryString is ", queryString);
+  queryString += `ORDER BY maps.id;`;
 
   return pool.query(queryString, queryParams)
     .then(data => {
-      // console.log("GOT the goods - map list");
-      // console.log(data.rows);
+      //console.log(data.rows);
       return data.rows;
     })
     .catch(e => console.log("Map query error", e));
