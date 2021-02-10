@@ -2,7 +2,7 @@ $(() => {
   window.$mapView = $(`
   <div class="container" id="mapView">
     <div class="container" id="mapView-header-container"></div>
-    <div class="container" id="mapView-display-container"></div>
+    <div class="container" style="height:500px; margin:3rem" id="mapView-display-container"></div>
     <div class="container" id="mapView-content-container"></div>
   </div>
   `);
@@ -15,8 +15,31 @@ $(() => {
   //mapView state: view, editDetail, editMap
   window.currentState = 'view';
 
+
   const loadMap = function (mapDetails) {
-    console.log(mapDetails);
+    // extract for easier reading
+    const zoom_lv = mapDetails.zoom_lv;
+    const lon = mapDetails.longitude;
+    const lat = mapDetails.latitude;
+
+      // checking for previous instance of the map(leaflet) and kill it
+      if (window.mapView.leafMap != null){
+        window.mapView.leafMap.off();
+        window.mapView.leafMap.remove();
+      }
+
+    // setup leaflet map
+    var leafMap = L.map('mapView-display-container').setView([lat, lon], zoom_lv);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+    }).addTo(leafMap);
+
+    // show the scale bar on the lower left corner
+    L.control.scale().addTo(leafMap);
+
+    // set global to control map and check if an instance already exists
+    window.mapView.leafMap = leafMap;
   };
 
   const insertHeader = function(map, currentUser, state, collabs) {
@@ -27,18 +50,14 @@ $(() => {
 
   const insertMapDisplay = function (map) {
     $displayContainer.empty();
-    console.log("passed to mapdisplay", map);
+
     if (!map) {
-      $displayContainer.append(`<div>map goes here :)</div>`)
-      // display default map @ default coord & default zoom level
+      // default values are toronto
+      loadMap({latitude: "43.653274", longitude: "-79.381397", zoom_lv: 8});
     } else {
-      getMapDetails(map).then(json => {
-        console.log(json)
-        loadMap(json);
-        //$displayContainer.append(fetchLeafletMap(json.data))
-        $displayContainer.append(`<div class="h-50" id="mapView-display"></div>`)
-      });
+      loadMap(map);
     }
+
   };
 
   const insertContent = function(map, currentUser, state, contentType, contentData){
@@ -84,8 +103,6 @@ $(() => {
   //clicking edit map will send you to either editMap (mapinfo edit) or editDetail (pins) depending on if youre owner or not
   $(document).on('click', '#edit-map', function(event) {
     event.preventDefault();
-    console.log(currentUser)
-    console.log(currentMap.owner_id)
     if (currentUser === currentMap.owner_id) {
       currentState = "editMap"
     } else {
@@ -99,7 +116,6 @@ $(() => {
     event.preventDefault();
     getMapList()
       .then((data) =>{
-        console.log("data is", data);
         mapList.addMapEntries(data);
         views_manager.show('mapList');
         currentState = 'view';
@@ -130,7 +146,6 @@ $(() => {
     event.preventDefault();
     getMapList()
       .then((data) =>{
-        console.log("data is", data);
         mapList.addMapEntries(data);
         currentState = 'view';
         currentMap = null;

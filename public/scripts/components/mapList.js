@@ -41,6 +41,7 @@ $(() => {
       window.currentMap = map;
       currentState = 'view';
 
+
       window.$mapView.displayMapView(map, currentUser, 'view');
       window.views_manager.show('mapDetails');
     })
