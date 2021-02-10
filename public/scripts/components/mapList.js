@@ -35,8 +35,6 @@ $(() => {
       const map = output[0]
       const currUser = output[1].user[0].id;
 
-      console.log(currUser);
-
       window.currentUser = currUser;
       window.currentMap = map;
       currentState = 'view';
