@@ -28,7 +28,7 @@ const getUser = function(user) {
 
   queryStr += ';';
 
-  console.log("getUser db querystr", queryStr);
+  //console.log("getUser db querystr", queryStr);
   return pool.query(queryStr, queryParams)
     .then(data => {
       return data.rows[0];
@@ -39,7 +39,7 @@ exports.getUser = getUser;
 
 const setUser = function(user) {
   const copyWithoutId = getObjWithoutId(user);
-  const userAttr = ['username', 'email', 'password', 'description', 'profile_img_url'];
+  const userAttr = ['username', 'email', 'description', 'profile_img_url'];
   const queryParams = [user.id];
 
   let queryStr = `

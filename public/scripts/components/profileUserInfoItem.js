@@ -18,7 +18,7 @@ $(() => {
           </div>
 
           <div class="col">
-            <div id="username">username</div>
+            <div id="username">${user.username}</div>
             ${emailDiv}
           </div>
 
@@ -57,10 +57,10 @@ $(() => {
 
           <div class="row">
             <div class="col">
-              <button type="submit" class="btn btn-primary" id="save-changes">save changes</button>
+              <button type="submit" class="btn btn-primary" id="save-profile-edit-changes">save changes</button>
             </div>
             <div class="col">
-              <button class="btn btn-primary" id="cancel-changes">discard changes</button>
+              <button class="btn btn-primary" id="cancel-profile-edit-changes">discard changes</button>
             </div>
           </div>
         </form>

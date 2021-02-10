@@ -70,7 +70,10 @@ $(() => {
       insertMapInfo(user, currentUser, 'fav');
   };
 
-  //on click listener for userprofile edit button, cancel edit ,and save changes
+  window.$userProfile.displayUserProfile = displayUserProfile;
+
+  /////////////////////profile edit on click listeners ///////////////////////////////////////////////
+  //show edit profile form
   $userProfile.on('click', '#profile-edit-btn', function(event) {
     event.preventDefault();
     getUserWithCookies().then(output => {
@@ -79,7 +82,48 @@ $(() => {
     });
   });
 
+  //updates display for profile image
+  $userProfile.on('click', '#refresh-profile-image', function(event) {
+    event.preventDefault();
+    const newUrl = $(this).closest('.col').find('#edit-profile-img').val();
+    const imgElement = $(this).closest('.col').find('#user-profile-img');
+    console.log(newUrl);
+    console.log(imgElement);
+    imgElement.attr('src', newUrl);
+  });
+
+  //save changes and edit profile & refresh display
+  $userProfile.on('click', '#save-profile-edit-changes', function(event) {
+    event.preventDefault();
+    getUserWithCookies().then(output => {
+      const id = output.user.id;
+
+      $form = $(this).closest('#edit-user-profile');
+      const username = $form.find('#edit-username').val();
+      const email = $form.find('#edit-email').val();
+      const description = $form.find('#edit-description').val();
+      const profile_img_url = $form.find('#edit-profile-img').val();
+
+      const user = {id, username, email, description, profile_img_url};
+      updateUser(user)
+      .then(updatedUser => {
+        console.log(updatedUser);
+        insertUserInfo(updatedUser, updatedUser);
+      });
+    });
+  });
+
+  //just go to original profile view
+  $userProfile.on('click', '#cancel-profile-edit-changes', function(event) {
+    event.preventDefault();
+    getUserWithCookies().then(output => {
+      const user = output.user;
+      insertUserInfo(user, user);
+    });
+  });
+  ////////////////////user map edit on click listeners//////////////////////////////////////////////
+
   //on click listener for mapItems and buttons
 
-  window.$userProfile.displayUserProfile = displayUserProfile;
+
 });

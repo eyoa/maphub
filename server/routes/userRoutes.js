@@ -26,11 +26,11 @@ module.exports = (db) => {
 
   //getData via cookies
   router.get("/currentUser", (req, res) => {
-    console.log("currentUser Route server");
+    //console.log("currentUser Route server");
 
     const userId = req.session.userId;
 
-    console.log(userId);
+    //console.log(userId);
     if (!userId){
       res.send(null);
       return;
@@ -56,12 +56,9 @@ module.exports = (db) => {
 
   //update user data
   router.put("/", (req, res) => {
-    /*
-    db.setUser(username, password, email ....)
-    .then(updatedUser => updatedUser)
-    .catch(err => ...)
-      db query UPDATE users SET... WHERE id=id
-    */
+    return db.setUser(req.body)
+    .then(user => res.send(user))
+    .catch(e => res.send(e));
   });
 
   //login

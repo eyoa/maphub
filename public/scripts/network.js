@@ -42,9 +42,8 @@ const getProfile = function(params) {
   });
 };
 
-const updateUser = function(params, data) {
+const updateUser = function(data) {
   let url = "/users/";
-  url += "?" + params;
   return $.ajax({
     method: "PUT",
     url,
