@@ -94,11 +94,15 @@ $(() => {
 
   $navbar.on("click", "#nav-create-map", function(event) {
     event.preventDefault();
-    window.currentUser = 1;
-    window.currentMap = null;
-    window.currMapViewState = "editMap"
-    $mapView.displayMapView(window.currentMap, window.currentUser, "editMap");
-    views_manager.show('mapDetails');
+    getUserWithCookies().then(output => {
+      if (output.user) {
+        window.currentMap = null;
+        currentUser = output.user.id;
+        window.currMapViewState = "editMap"
+        $mapView.displayMapView(window.currentMap, window.currentUser, "editMap");
+        views_manager.show('mapDetails');
+      }
+    });
   });
 
   $navbar.on("click", "#nav-login", function(event) {

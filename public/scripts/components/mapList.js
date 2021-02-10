@@ -33,7 +33,7 @@ $(() => {
     Promise.all([getMapById(`id=${mapId}`), getUserWithCookies()])
     .then((output) => {
       const map = output[0]
-      const currUser = output[1].user[0].id;
+      const currUser = output[1].user.id;
 
       window.currentUser = currUser;
       window.currentMap = map;

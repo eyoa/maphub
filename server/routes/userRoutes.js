@@ -15,7 +15,7 @@ module.exports = (db) => {
   const login = function(email, password) {
     return db.getUser({email})
       .then(result => {
-        const user = result[0];
+        const user = result;
         if (bcrypt.compareSync(password, user.password)) {
           return user;
         }
@@ -32,7 +32,7 @@ module.exports = (db) => {
 
     console.log(userId);
     if (!userId){
-      res.send({message: "not logged in"});
+      res.send(null);
       return;
     }
 
