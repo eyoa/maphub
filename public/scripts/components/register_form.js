@@ -44,25 +44,34 @@ $(() => {
 
   window.$registerForm = $registerForm;
 
-  $registerForm.on('submit', function(event) {
+  $registerForm.on('submit', "#sign-up-form", function(event) {
     event.preventDefault();
-    const form = $(this).find('#sign-up-form');
-
+    console.log("submit event listener");
+    const form = $(this);
+    const username = form.find('#register-username').val();
+    const email = form.find('#register-email').val();
     const verify = form.find('#register-verify-password').val();
     const pass = form.find('#register-password').val();
 
-    if(verify === pass){
-      const data = $(this).find('#sign-up-form').serialize();
-      register(data)
-        .then(result => {
-          views_manager.show('mapList');
-        })
-        .catch(() => {
 
-        });
-    } else {
-      alert("verify password doesn't match");
-    }
+    if(!username || !email || !pass || !verify) {
+      alert("fields cannot be empty");
+    } else if(verify === pass){
+      const data = form.serialize();
+      console.log("passing data to register", data);
+        register(data)
+          .then(user => {
+            console.log("reply from server", user);
+            window.navbar.updateNav(user.user);
+            views_manager.show('mapList');
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } else {
+        alert("verify password doesn't match");
+      }
+
   });
 
   $registerForm.find('#register-cancel').on('click', function(event) {

@@ -84,19 +84,21 @@ module.exports = (db) => {
     res.send({});
   });
 
-
   //create new user
   router.put("/register", (req, res) => {
+    console.log("serverside userRoutes");
     const user = req.body;
     user.password = bcrypt.hashSync(user.password, 12);
     db.addUser(user)
-    .then(user => {
-
+    .then(result => {
+      const user = result[0];
+      console.log ("from db addUser", user);
       if (!user) {
         res.send({error: "error"});
         return;
       }
       req.session.userId = user.id;
+      res.send({user});
     })
     .catch(e => res.send(e));
 
