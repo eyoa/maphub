@@ -49,7 +49,7 @@ $(() => {
   //displays default page of a given state. use this for buttons that change mapView state
   //if map is empty sends you straight to editMap (create/edit page)
   const displayMapView = function (map, currentUser, state) {
-    if (!map) {
+    if (!map) { //no map -> send to create page
       insertHeader(map, currentUser, state);
       insertMapDisplay(map);
       insertContent(map, currentUser, state, "mapForm", map);
@@ -61,6 +61,8 @@ $(() => {
       output[1];
       const collabs = [];
       for (const collab of output[1]) collabs.push(collab.id);
+
+      console.log('making map...');
 
       insertHeader(map, currentUser, state, collabs);
       insertMapDisplay(map);
