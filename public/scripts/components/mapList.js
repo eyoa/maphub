@@ -32,6 +32,7 @@ $(() => {
     event.preventDefault();
     Promise.all([getMapById(`id=${mapId}`), getUserWithCookies()])
     .then((output) => {
+      console.log("mapList returned with getMapById", output);
       const map = output[0]
       const currUser = output[1].user[0].id;
 

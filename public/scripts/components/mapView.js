@@ -15,8 +15,8 @@ $(() => {
   //mapView state: view, editDetail, editMap
   window.currentState = 'view';
 
-  const fetchLeafletMap = function (mapDetails) {
-    // figure this out later.....
+  const loadMap = function (mapDetails) {
+    console.log(mapDetails);
   };
 
   const insertHeader = function(map, currentUser, state, collabs) {
@@ -27,13 +27,16 @@ $(() => {
 
   const insertMapDisplay = function (map) {
     $displayContainer.empty();
+    console.log("passed to mapdisplay", map);
     if (!map) {
       $displayContainer.append(`<div>map goes here :)</div>`)
       // display default map @ default coord & default zoom level
     } else {
       getMapDetails(map).then(json => {
+        console.log(json)
+        loadMap(json);
         //$displayContainer.append(fetchLeafletMap(json.data))
-        $displayContainer.append(`<div>map goes here :)</div>`)
+        $displayContainer.append(`<div class="h-50" id="mapView-display"></div>`)
       });
     }
   };

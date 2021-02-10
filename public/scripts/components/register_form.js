@@ -46,7 +46,6 @@ $(() => {
 
   $registerForm.on('click', "#registerBtn", function(event) {
     event.preventDefault();
-    console.log("submit event listener");
 
     const form = $(this).closest('#sign-up-form');
     const username = form.find('#register-username').val();
@@ -59,10 +58,8 @@ $(() => {
       alert("fields cannot be empty");
     } else if(verify === pass){
       const data = form.serialize();
-      console.log("passing data to register", data);
         register(data)
           .then(user => {
-            console.log("reply from server", user);
             window.navbar.updateNav(user.user);
             views_manager.show('mapList');
           })

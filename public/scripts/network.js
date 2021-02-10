@@ -1,7 +1,5 @@
 // users ajax requests
 const logIn = function(data) {
-  console.log("ajax request with data");
-  console.log(data);
   return $.ajax({
     method: 'PUT',
     url: "/users/login/",
@@ -56,11 +54,10 @@ const updateUser = function(params, data) {
 //  api ajax requests
 
 function getMapList(params) {
-  console.log("called getMapList");
-  // let url  = params ? "/api/maps?=" + params : "/api/";
+  let url  = params ? "/api/maps?=" + params : "/api/";
   return $.ajax({
     method: "GET",
-    url: "/api/maps"
+    url
   })
 }
 

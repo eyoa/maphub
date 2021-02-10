@@ -2,7 +2,6 @@ $(() => {
   window.mapEntry = {};
 
   const createMapEntry = function(maps) {
-    console.log("making map entry", maps);
     return `
     <article class="mapEntry m-auto" id="${maps.id}">
       <section class ="container-fluid">
