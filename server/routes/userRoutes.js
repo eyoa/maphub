@@ -29,12 +29,14 @@ module.exports = (db) => {
     console.log("currentUser Route server");
 
     const userId = req.session.userId;
+
+    console.log(userId);
     if (!userId){
       res.send({message: "not logged in"});
       return;
     }
 
-    return db.getUser(userId)
+    return db.getUser({id:userId})
     .then(user => {
       if(!userId){
         res.send({error: "no such user"})
