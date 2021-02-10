@@ -1,10 +1,15 @@
 // users ajax requests
 
+// const json = require("body-parser/lib/types/json");
+
 const logIn = function(data) {
+  console.log("ajax request with data");
+  console.log(data);
   return $.ajax({
-    method: "PUT",
-    url: "/users/login",
-    data
+    method: 'PUT',
+    url: "/users/login/",
+    dataType: 'json',
+    data: data
   });
 };
 
@@ -23,6 +28,12 @@ const register = function(data) {
   });
 };
 
+const getUserWithCookies = function(){
+  return $.ajax({
+    method: "GET",
+    url: "users/currentUser"
+  })
+}
 
 const getProfile = function(params) {
   // params sent in url query like an api
