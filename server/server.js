@@ -9,12 +9,7 @@ const bodyParser = require("body-parser");
 const sass       = require("node-sass-middleware");
 const app        = express();
 const morgan     = require('morgan');
-
-// PG database client/connection setup
-// const { Pool } = require('pg');
-// const dbParams = require('./lib/db.js');
-// const db = new Pool(dbParams);
-// db.connect();
+const cookieSession = require('cookie-session');
 
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
@@ -31,6 +26,10 @@ app.use("/styles", sass({
   outputStyle: 'expanded'
 }));
 app.use(express.static("public"));
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2', 'hawaiian', 'pizza', 'donuts']
+}));
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own

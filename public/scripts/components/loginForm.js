@@ -27,14 +27,14 @@ $(() => {
     event.preventDefault();
     const data = $(this).find('#login-form').serialize();
     logIn(data)
-    .then(json => {
-      console.log("back in event handler", json);
-      views_manager.show('mapList');
-    })
-    .catch(() => {
+      .then(json => {
+        console.log("back in event handler", json);
+        views_manager.show('mapList');
+      })
+      .catch(() => {
 
-    });
-  })
+      });
+  });
 
 
 });
