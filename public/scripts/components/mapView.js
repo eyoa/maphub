@@ -62,8 +62,6 @@ $(() => {
       const collabs = [];
       for (const collab of output[1]) collabs.push(collab.id);
 
-      console.log('making map...');
-
       insertHeader(map, currentUser, state, collabs);
       insertMapDisplay(map);
       if(state === "view" || state === "editDetail") {

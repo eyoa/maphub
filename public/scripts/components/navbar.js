@@ -125,7 +125,6 @@ $(() => {
     navbar.updateNav(null);
   });
 
-  //not sure if we need this tbh
   $('#nav-mapDetails').on("click", function(event) {
     event.preventDefault();
     console.log('Lets go to mapDetails');
