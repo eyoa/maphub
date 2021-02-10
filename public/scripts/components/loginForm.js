@@ -1,24 +1,60 @@
 $(() => {
   const $logInForm = $(`
-  <form id="login-form" class="login-form">
-    <div class="form-group">
-      <label for="register-email">email</label>
-      <input type="email" class="form-control" id="register-email" placeholder="example@email.com">
-    </div>
+    <article >
+      <section class="w-50 my-5 mx-auto">
+        <form id="login-form" class="login-form" action="/users/login" method="POST">
+          <div class="form-group">
+            <label for="register-email">email</label>
+            <input type="email" class="form-control" id="login-email" placeholder="example@email.com" name="email">
+          </div>
 
-    <div class="form-group">
-      <label for="register-password">password</label>
-      <input type="password" class="form-control" id="register-password" placeholder="password">
-    </div>
-    <button type="submit" class="btn btn-primary" id="login-btn">log in</button>
-    <div>Not Registerd?</div>
-    <div id="register-page-link">sign up!</div>
-    </div>
-  </form>
+          <div class="form-group">
+            <label for="register-password">password</label>
+            <input type="password" class="form-control" id="login-password" placeholder="password" name="password">
+          </div>
+          <button type="submit" class="btn btn-primary" id="login-btn">log in</button>
+          <div>Not Registerd?</div>
+            <a href="/users/register" id="register-page-link">sign up!</a>
+          </div>
+        </form>
+      </section>
+    </article>
   `);
 
   window.$logInForm = $logInForm;
 
-  //onclick listener for login button
-  //onclick listener for signup
+  $logInForm.on('submit', '#login-form', function(event) {
+    event.preventDefault();
+    const email = $(this).find("#login-email").val();
+    const pass = $(this).find("#login-password").val();
+
+    if(!email || !pass){
+      alert("fields blank");
+    } else {
+      const data = $(this).serialize();
+      logIn(data)
+        .then(user => {
+          if (!user.user){
+            alert("login invalid");
+            window.navbar.updateNav();
+            views_manager.show('login');
+            return;
+          }
+          console.log("back in event handler");
+          window.navbar.updateNav(user.user);
+          views_manager.show('mapList');
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+
+
+  });
+
+  $logInForm.on('click', '#register-page-link', function(event) {
+    event.preventDefault();
+    views_manager.show('signUp');
+  });
+
 });

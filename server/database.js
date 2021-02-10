@@ -14,19 +14,27 @@ const getUser = function(user) {
     FROM users
     WHERE
   `;
-  let appended = false;
-  if (user.id) {
-    queryStr += ` id = $1`;
-    queryParams.push(id);
-    appended = true;
+
+  const keys = getActiveKeys(user);
+
+  if (keys.includes('id')) {
+    queryParams.push(user.id);
+    queryStr += ` id = $${queryParams.length}`;
   }
-  if (user.email) {
-    queryStr += appended ? ` AND email = $1`: `email = $1`;
-    queryParams.push(email);
+
+  if (keys.includes('email')) {
+    queryParams.push(user.email);
+    queryStr += `email = $${queryParams.length}`;
   }
+
   queryStr += ';';
-  return query(queryStr, queryParams)
-  .then(res => res.rows[0]);
+
+  console.log("getUser db querystr", queryStr);
+  return pool.query(queryStr, queryParams)
+    .then(data => {
+      return data.rows;
+    })
+    .catch(e => console.log("get user error", e));
 };
 exports.getUser = getUser;
 
@@ -43,7 +51,7 @@ const setUser = function(user) {
   let counter = 0;
   for (let key in copyWithoutId) {
     let val = copyWithoutId[key];
-    queryStr += counter === 0 ? ` ${key} = $${counter+2} ` : ` ,${key} = $${counter+2} `;
+    queryStr += counter === 0 ? ` ${key} = $${counter + 2} ` : ` ,${key} = $${counter + 2} `;
     queryParams.push(val);
     counter++;
   }
@@ -54,22 +62,27 @@ const setUser = function(user) {
   `;
 
   return query(queryStr, queryParams)
-  .then(res => res.rows[0]);
+    .then(res => res.rows[0]);
 };
 exports.setUser = setUser;
 
 const addUser = function(user) {
   let queryStr = `
     INSERT INTO users (${Object.keys(user)})
-    VALUES ($1, $2, $3, $4, $5)
+    VALUES ($1, $2, $3)
     RETURNING *;
   `;
+
   const queryParams = [];
   for (let key in user) {
     queryParams.push(user[key]);
   }
-  return query(queryStr, queryParams)
-  .then(res => res.rows[0]);
+
+  return pool.query(queryStr, queryParams)
+    .then(data => {
+      return data.rows;
+    })
+    .catch(e => console.log("add user error", e));
 };
 exports.addUser = addUser;
 
@@ -90,7 +103,6 @@ const getMapList = (params) => {
   `;
 
   const keys = getActiveKeys(params);
-  // console.log("keys array is", keys);
 
   if (keys.includes('user_id')) {
     //favorites list
@@ -145,7 +157,7 @@ const getMapDetails = function (map) {
   `;
   const queryParams = [map.id];
   return query(queryStr, queryParams)
-  .then(res => res.rows);
+    .then(res => res.rows);
 };
 exports.getMapDetails = getMapDetails;
 
@@ -369,17 +381,17 @@ exports.addPin = addPin;
 // addPin({latitude: 43.653274, longitude: -79.381397, title: 'I am a pin!', img_url: './images/fake_image.png', description : 'This is the best and only spot', map_id : 1});
 
 //update pin details
-const editPinDetails = function (pin) {
+const editPinDetails = function(pin) {
   const copyWithoutId = getObjWithoutId(pin);
   const queryParams = [pin.id];
   let queryStr = `
     UPDATE pins
     SET
-  `
+  `;
   let counter = 0;
   for (let key in copyWithoutId) {
     let val = copyWithoutId[key];
-    queryStr += counter === 0 ? ` ${key} = $${counter+2} ` : ` ,${key} = $${counter+2} `;
+    queryStr += counter === 0 ? ` ${key} = $${counter + 2} ` : ` ,${key} = $${counter + 2} `;
     queryParams.push(val);
     counter++;
   }
@@ -391,13 +403,13 @@ const editPinDetails = function (pin) {
   `;
 
   return query(queryStr, queryParams)
-  .then(res => res.rows[0]);
+    .then(res => res.rows[0]);
 };
 
 exports.editPinDetails = editPinDetails;
 
 //remove pin
-const removePin = function (pin) {
+const removePin = function(pin) {
   let queryStr = `
     DELETE
     FROM pins
@@ -406,12 +418,12 @@ const removePin = function (pin) {
   `;
   const queryParams = [pin.id];
   return query(queryStr, queryParams)
-  .then(res => res.rows[0]);
+    .then(res => res.rows[0]);
 };
 exports.removePin = removePin;
 
 //get all collaborators of a map
-const getMapCollaborators = function (map) {
+const getMapCollaborators = function(map) {
   let queryStr = `
     SELECT u.*
     FROM
@@ -421,12 +433,12 @@ const getMapCollaborators = function (map) {
   `;
   const queryParams = [map.id];
   return query(queryStr, queryParams)
-  .then(res => res.rows);
+    .then(res => res.rows);
 };
 exports.getMapCollaborators = getMapCollaborators;
 
 //get every user that has collaborated with a user
-const getAllUserCollaborators = function (user, limit=10) {
+const getAllUserCollaborators = function(user, limit = 10) {
   let queryStr = `
     SELECT DISTINCT u.*
     FROM collaborators c1
@@ -438,12 +450,12 @@ const getAllUserCollaborators = function (user, limit=10) {
   `;
   const queryParams = [user.id, limit];
   return query(queryStr, queryParams)
-  .then(res => res.rows);
+    .then(res => res.rows);
 };
 exports.getAllUserCollaborators = getAllUserCollaborators;
 
 //add new collaborator
-const addCollaborator = function (map, user) {
+const addCollaborator = function(map, user) {
   let queryStr = `
     INSERT INTO collaborators (map_id, user_id)
     VALUES ($1, $2)
@@ -451,14 +463,14 @@ const addCollaborator = function (map, user) {
   `;
   const queryParams = [map.id, user.id];
   return query(queryStr, queryParams)
-  .then(res => res.rows[0]);
+    .then(res => res.rows[0]);
 };
 exports.addCollaborator = addCollaborator;
 
 // delete from collaborators
 // this function might need better input parameters:
 //i.e. we probably want to remove by mapid and userid?
-const removeCollaborator = function (map, user) {
+const removeCollaborator = function(map, user) {
   let queryStr = `
     DELETE
     FROM Collaborators
@@ -467,6 +479,6 @@ const removeCollaborator = function (map, user) {
   `;
   const queryParams = [map.id, user.id];
   return query(queryStr, queryParams)
-  .then(res => res.rows[0]);
+    .then(res => res.rows[0]);
 };
 exports.removeCollaborator = removeCollaborator;

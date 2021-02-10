@@ -30,10 +30,10 @@ $(() => {
   $(document).on('click','.mapEntry', function(event) {
     const mapId = $(this).attr('id');
     event.preventDefault();
-    Promise.all([getMapById(`id=${mapId}`), getCurrentUser()])
+    Promise.all([getMapById(`id=${mapId}`), getUserWithCookies()])
     .then((output) => {
       const map = output[0]
-      const currUser = 1;
+      const currUser = output[1];
 
       window.currentUser = currUser;
       window.currentMap = map;
@@ -45,5 +45,4 @@ $(() => {
   });
 
   window.mapList.addMapEntries = addMapEntries;
-
 });

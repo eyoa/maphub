@@ -59,7 +59,7 @@ $(() => {
   };
 
   const displayUserProfile = function (user) {
-    getCurrentUser()
+    getUserWithCookies()
     .then(res => {
       const currentUser = res.user;
       insertUserInfo(user, currentUser);
