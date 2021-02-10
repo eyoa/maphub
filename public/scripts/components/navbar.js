@@ -92,11 +92,23 @@ $(() => {
 
   $navbar.on("click", "#nav-create-map", function(event) {
     event.preventDefault();
-    window.currentUser = 1;
-    window.currentMap = null;
-    window.currMapViewState = "editMap"
-    $mapView.displayMapView(window.currentMap, window.currentUser, "editMap");
-    views_manager.show('mapDetails');
+    getUserWithCookies().then(output => {
+      if (output.user) { //if logged in, we let them make a thing
+        window.currentMap = null;
+        currentUser = output.user.id;
+        window.currMapViewState = "editMap"
+        $mapView.displayMapView(window.currentMap, window.currentUser, "editMap");
+        views_manager.show('mapDetails');
+      } else {          //if not logged in we ship them back to browse
+        getMapList()
+        .then((data) =>{
+          console.log("data is", data);
+          mapList.addMapEntries(data);
+          views_manager.show('mapList');
+        })
+        .catch(error => console.error(error));
+      }
+    });
   });
 
   $navbar.on("click", "#nav-login", function(event) {
@@ -110,7 +122,6 @@ $(() => {
     navbar.updateNav(null);
   });
 
-
   $('#nav-mapDetails').on("click", function(event) {
     event.preventDefault();
     // views_manager.show('login');
@@ -119,19 +130,34 @@ $(() => {
 
   $('#nav-profile').on("click", function(event) {
     event.preventDefault();
-    console.log('Lets go to profile ');
-    // views_manager.show('login');
+    getUserWithCookies().then(output => {
+      if (output.user) { //if logged in, we send them to profile
+
+      } else {          //if not logged in send them to login
+        views_manager.show('login');
+      }
+    });
   });
 
   $('#nav-myMaps').on("click", function(event) {
     event.preventDefault();
-    console.log('Lets go to myMaps ');
-    // views_manager.show('login');
+    getUserWithCookies().then(output => {
+      if (output.user) { //if logged in, we show their(collab/owned maps?)
+
+      } else {          //if not send to login
+        views_manager.show('login');
+      }
+    });
   });
 
   $('#nav-myFavs').on("click", function(event) {
     event.preventDefault();
-    console.log('Lets go to myFavs ');
-    // views_manager.show('login');
+    getUserWithCookies().then(output => {
+      if (output.user) { //if logged in, we show their fav maps
+
+      } else {          //if not send to login
+        views_manager.show('login');
+      }
+    });
   });
 });

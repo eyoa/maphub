@@ -31,7 +31,7 @@ const getUser = function(user) {
   console.log("getUser db querystr", queryStr);
   return pool.query(queryStr, queryParams)
     .then(data => {
-      return data.rows;
+      return data.rows[0];
     })
     .catch(e => console.log("get user error", e));
 };
