@@ -31,7 +31,7 @@ $(() => {
 
         <div class="row">
           <div class="col">
-            <button type="submit" id"registerBtn" class="btn btn-primary">Submit</button>
+            <button type="submit" id="registerBtn" class="btn btn-primary">Submit</button>
           </div>
           <div class="col">
             <a href="/users/login" class="btn btn-primary" id="register-cancel" role="button">Cancel</a>
@@ -44,10 +44,11 @@ $(() => {
 
   window.$registerForm = $registerForm;
 
-  $registerForm.on('submit', "#sign-up-form", function(event) {
+  $registerForm.on('click', "#registerBtn", function(event) {
     event.preventDefault();
     console.log("submit event listener");
-    const form = $(this);
+
+    const form = $(this).closest('#sign-up-form');
     const username = form.find('#register-username').val();
     const email = form.find('#register-email').val();
     const verify = form.find('#register-verify-password').val();

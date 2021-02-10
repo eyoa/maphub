@@ -7,7 +7,6 @@ $(() => {
             <label for="register-email">email</label>
             <input type="email" class="form-control" id="login-email" placeholder="example@email.com" name="email">
           </div>
-
           <div class="form-group">
             <label for="register-password">password</label>
             <input type="password" class="form-control" id="login-password" placeholder="password" name="password">
@@ -23,15 +22,19 @@ $(() => {
 
   window.$logInForm = $logInForm;
 
-  $logInForm.on('submit', '#login-form', function(event) {
+  $logInForm.on('click', '#login-btn', function(event) {
+    const $loginForm = $(this).closest('#login-form');
+
+    console.log($logInForm);
+
     event.preventDefault();
-    const email = $(this).find("#login-email").val();
-    const pass = $(this).find("#login-password").val();
+    const email = $loginForm.find("#login-email").val();
+    const pass = $loginForm.find("#login-password").val();
 
     if(!email || !pass){
       alert("fields blank");
     } else {
-      const data = $(this).serialize();
+      const data = $loginForm.serialize();
       logIn(data)
         .then(user => {
           if (!user.user){
