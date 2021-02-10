@@ -1,7 +1,12 @@
 $(() => {
   const $logInForm = $(`
     <article >
-      <section class="w-50 my-5 mx-auto">
+      <section class="w-50 mx-auto">
+        <div class="alert alert-warning alert-dismissible h-auto " role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         <form id="login-form" class="login-form" action="/users/login" method="POST">
           <div class="form-group">
             <label for="register-email">email</label>
@@ -25,11 +30,13 @@ $(() => {
 
   $logInForm.on('submit', '#login-form', function(event) {
     event.preventDefault();
+    const $alert = $(this).siblings(".alert");
     const email = $(this).find("#login-email").val();
     const pass = $(this).find("#login-password").val();
 
     if(!email || !pass){
-      alert("fields blank");
+      $alert.val() = "fields blank";
+      $(this).closest(".alert").alert();
     } else {
       const data = $(this).serialize();
       logIn(data)
