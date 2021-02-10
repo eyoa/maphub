@@ -16,7 +16,7 @@ $(() => {
   window.currentState = 'view';
 
 
-  const loadMap = function (mapDetails) {
+  const loadMap = function (mapDetails, pins = null) {
     // extract for easier reading
     const zoom_lv = mapDetails.zoom_lv;
     const lon = mapDetails.longitude;
@@ -38,6 +38,32 @@ $(() => {
     // show the scale bar on the lower left corner
     L.control.scale().addTo(leafMap);
 
+
+    if (pins){
+      const pinsArray = [];
+
+      for (const pin of pins){
+        const latlon = [];
+        latlon.push(Number(pin.latitude));
+        latlon.push(Number(pin.longitude));
+
+        const popUp = `
+        <h3>${pin.title}</h3>
+        <img src="${pin.img_url}" width="100" height="100"></img>
+        <p>${pin.description}</p>`;
+
+
+        const marker = L.marker(latlon).bindPopup(popUp).addTo(leafMap);
+
+        pinsArray.push(marker);
+      }
+
+      // for more adjustements probably better as a layer to adjust
+      // const allThePins = L.layerGroup(pinsArray);
+      // L.control.layers(allThePins).addTo(leafMap);
+
+    }
+
     // set global to control map and check if an instance already exists
     window.mapView.leafMap = leafMap;
   };
@@ -48,14 +74,14 @@ $(() => {
     $headerContainer.append(mapHeader);
   }
 
-  const insertMapDisplay = function (map) {
+  const insertMapDisplay = function (map, pins) {
     $displayContainer.empty();
 
     if (!map) {
       // default values are toronto
       loadMap({latitude: "43.653274", longitude: "-79.381397", zoom_lv: 8});
     } else {
-      loadMap(map);
+      loadMap(map, pins);
     }
 
   };
@@ -85,7 +111,7 @@ $(() => {
       for (const collab of output[1]) collabs.push(collab.id);
 
       insertHeader(map, currentUser, state, collabs);
-      insertMapDisplay(map);
+      insertMapDisplay(map, pins);
       if(state === "view" || state === "editDetail") {
         insertContent(map, currentUser, state, "pinList", pins);
       } else {
