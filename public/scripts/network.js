@@ -28,6 +28,12 @@ const register = function(data) {
   });
 };
 
+const getUserWithCookies = function(){
+  return $.ajax({
+    method: "GET",
+    url: "users/currentUser"
+  })
+}
 
 const getProfile = function(params) {
   // params sent in url query like an api

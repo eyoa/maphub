@@ -24,14 +24,32 @@ module.exports = (db) => {
       .catch(e => res.send(e));
   };
 
+  //getData via cookies
+  router.get("/currentUser", (req, res) => {
+    console.log("currentUser Route server");
+
+    const userId = req.session.userId;
+    if (!userId){
+      res.send({message: "not logged in"});
+      return;
+    }
+
+    return db.getUser(userId)
+    .then(user => {
+      if(!userId){
+        res.send({error: "no such user"})
+        return;
+      }
+      res.send({user});
+    })
+    .catch(e => res.send(e))
+  });
+
   //get user data
   router.get("/", (req, res) => {
-    /*
     return db.getUser(userId)
-    .then(user => user);
-    .catch(err => ....)
-    db query SELECT * FORM users where id = id
-    */
+    .then(user => user)
+    .catch(e => res.send(e))
   });
 
   //update user data
@@ -50,7 +68,7 @@ module.exports = (db) => {
     login(email, password)
       .then(user => {
         if (!user) {
-          res. send({error: "error"});
+          res. send({error: "login error"});
           return;
         }
         req.session.userId = user.id;

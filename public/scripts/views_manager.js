@@ -6,7 +6,9 @@ $(() => {
   $main.append('<p>Will implement a intial state sometime</p>');
 
   const show = function(view) {
-    $main.empty();
+    $mapList.detach();
+    $logInForm.detach();
+    $registerForm.detach();
 
     switch (view) {
     case 'mapList':

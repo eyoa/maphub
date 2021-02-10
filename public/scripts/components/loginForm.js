@@ -23,12 +23,18 @@ $(() => {
 
   window.$logInForm = $logInForm;
 
-  $logInForm.on('submit', function(event) {
+  $logInForm.on('submit', '#login-form', function(event) {
     event.preventDefault();
-    const data = $(this).find('#login-form').serialize();
+    const data = $(this).serialize();
     logIn(data)
-      .then(json => {
-        console.log("back in event handler", json);
+      .then(user => {
+        if (!user.user){
+          window.navbar.updateNav();
+          views_manager.show('login');
+          return;
+        }
+        console.log("back in event handler");
+        window.navbar.updateNav(user.user);
         views_manager.show('mapList');
       })
       .catch(() => {
@@ -36,7 +42,7 @@ $(() => {
       });
   });
 
-  $logInForm.find('#register-page-link').on('click', function(event) {
+  $logInForm.on('click', '#register-page-link', function(event) {
     event.preventDefault();
     views_manager.show('signUp');
   });

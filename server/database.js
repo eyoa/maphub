@@ -29,6 +29,7 @@ const getUser = function(user) {
 
   queryStr += ';';
 
+  console.log("getUser db querystr", queryStr);
   return pool.query(queryStr, queryParams)
     .then(data => {
       return data.rows;
