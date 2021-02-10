@@ -25,9 +25,4 @@ const getObjWithoutId = function (obj) {
   return res;
 };
 
-const query = function (queryStr, queryParams) {
-  // return pool.query(queryStr, queryParams)
-  // .catch(err => console.log(`query error: ${Error(err)}`));
-};
-
-module.exports = {getActiveKeys, getObjWithoutId, query};
+module.exports = {getActiveKeys, getObjWithoutId};

@@ -2,7 +2,6 @@ const pool = require('./lib/pool');
 const {
   getActiveKeys,
   getObjWithoutId,
-  query
 } = require('./qHelpers');
 
 
@@ -61,7 +60,7 @@ const setUser = function(user) {
     RETURNING *;
   `;
 
-  return query(queryStr, queryParams)
+  return pool.query(queryStr, queryParams)
     .then(res => res.rows[0]);
 };
 exports.setUser = setUser;
@@ -139,8 +138,9 @@ const getMapById = function(map){
     FROM maps
     WHERE id = $1;
   `;
+
   const queryParams = [map.id];
-  return query(queryStr, queryParams)
+  return pool.query(queryStr, queryParams)
   .then(res => res.rows[0]);
 }
 exports.getMapById = getMapById;
@@ -156,7 +156,7 @@ const getMapDetails = function (map) {
     WHERE m.id = $1;
   `;
   const queryParams = [map.id];
-  return query(queryStr, queryParams)
+  return pool.query(queryStr, queryParams)
     .then(res => res.rows);
 };
 exports.getMapDetails = getMapDetails;
@@ -296,7 +296,7 @@ const getMapPins = function(map) {
     WHERE m.id = $1
   `;
   const queryParams = [map.id];
-  return query(queryStr, queryParams)
+  return pool.query(queryStr, queryParams)
   .then(res => res.rows);
 }
 exports.getMapPins = getMapPins;
@@ -402,7 +402,7 @@ const editPinDetails = function(pin) {
     RETURNING *;
   `;
 
-  return query(queryStr, queryParams)
+  return pool.query(queryStr, queryParams)
     .then(res => res.rows[0]);
 };
 
@@ -417,7 +417,7 @@ const removePin = function(pin) {
     RETURNING *;
   `;
   const queryParams = [pin.id];
-  return query(queryStr, queryParams)
+  return pool.query(queryStr, queryParams)
     .then(res => res.rows[0]);
 };
 exports.removePin = removePin;
@@ -432,7 +432,7 @@ const getMapCollaborators = function(map) {
       c.map_id = $1;
   `;
   const queryParams = [map.id];
-  return query(queryStr, queryParams)
+  return pool.query(queryStr, queryParams)
     .then(res => res.rows);
 };
 exports.getMapCollaborators = getMapCollaborators;
@@ -449,7 +449,7 @@ const getAllUserCollaborators = function(user, limit = 10) {
     LIMIT $2;
   `;
   const queryParams = [user.id, limit];
-  return query(queryStr, queryParams)
+  return pool.query(queryStr, queryParams)
     .then(res => res.rows);
 };
 exports.getAllUserCollaborators = getAllUserCollaborators;
@@ -462,7 +462,7 @@ const addCollaborator = function(map, user) {
     RETURNING *;
   `;
   const queryParams = [map.id, user.id];
-  return query(queryStr, queryParams)
+  return pool.query(queryStr, queryParams)
     .then(res => res.rows[0]);
 };
 exports.addCollaborator = addCollaborator;
@@ -478,7 +478,7 @@ const removeCollaborator = function(map, user) {
     RETURNING *;
   `;
   const queryParams = [map.id, user.id];
-  return query(queryStr, queryParams)
+  return pool.query(queryStr, queryParams)
     .then(res => res.rows[0]);
 };
 exports.removeCollaborator = removeCollaborator;
