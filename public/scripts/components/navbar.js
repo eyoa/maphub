@@ -92,8 +92,7 @@ $(() => {
 
   });
 
-//================================================================
-  $('#nav-create-map').on("click", function(event) {
+  $navbar.on("click", "#nav-create-map", function(event) {
     event.preventDefault();
     window.currentUser = 1;
     window.currentMap = null;
@@ -101,7 +100,6 @@ $(() => {
     $mapView.displayMapView(window.currentMap, window.currentUser, "editMap");
     views_manager.show('mapDetails');
   });
-//=================================================================
 
   $navbar.on("click", "#nav-login", function(event) {
     event.preventDefault();
