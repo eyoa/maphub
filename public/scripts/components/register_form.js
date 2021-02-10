@@ -26,7 +26,7 @@ $(() => {
         <div class="form-group">
           <label for="register-verify-password">Verify Password</label>
           <input type="password" class="form-control" id="register-verify-password" placeholder="re-enter password" aria-describedby="verify-password-help">
-          <small id="verify-password-help" class="form-text text-muted  >Please verify your password.</small>
+          <small id="verify-password-help" class="form-text text-muted"  >Please verify your password.</small>
         </div>
 
         <div class="row">
@@ -34,7 +34,7 @@ $(() => {
             <button type="submit" id"registerBtn" class="btn btn-primary">Submit</button>
           </div>
           <div class="col">
-            <a class="btn btn-primary" href="/users/login" id="register-cancel" role="button">Cancel</a>
+            <a href="/users/login" class="btn btn-primary" id="register-cancel" role="button">Cancel</a>
           </div>
         </div>
       </form>
@@ -54,7 +54,7 @@ $(() => {
     if(verify === pass){
       const data = $(this).find('#sign-up-form').serialize();
       register(data)
-        .then(json => {
+        .then(result => {
           views_manager.show('mapList');
         })
         .catch(() => {

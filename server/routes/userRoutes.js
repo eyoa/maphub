@@ -17,12 +17,11 @@ module.exports = (db) => {
       .then(result => {
         const user = result[0];
         if (bcrypt.compareSync(password, user.password)) {
-          console.log("user put in right password");
           return user;
         }
         return null;
       })
-      .catch(e => console.log("login function error", e));
+      .catch(e => res.send(e));
   };
 
   //get user data
@@ -50,8 +49,6 @@ module.exports = (db) => {
     const {email, password} = req.body;
     login(email, password)
       .then(user => {
-        console.log("user returned", user);
-        console.log(user.id);
         if (!user) {
           res. send({error: "error"});
           return;
@@ -72,13 +69,10 @@ module.exports = (db) => {
 
   //create new user
   router.put("/register", (req, res) => {
-    console.log("got to put register route");
     const user = req.body;
-    console.log("user is", user);
     user.password = bcrypt.hashSync(user.password, 12);
     db.addUser(user)
     .then(user => {
-      console.log(user);
 
       if (!user) {
         res.send({error: "error"});
