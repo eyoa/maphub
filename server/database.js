@@ -68,15 +68,20 @@ exports.setUser = setUser;
 const addUser = function(user) {
   let queryStr = `
     INSERT INTO users (${Object.keys(user)})
-    VALUES ($1, $2, $3, $4, $5)
+    VALUES ($1, $2, $3)
     RETURNING *;
   `;
+
   const queryParams = [];
   for (let key in user) {
     queryParams.push(user[key]);
   }
-  return query(queryStr, queryParams)
-    .then(res => res.rows[0]);
+
+  return pool.query(queryStr, queryParams)
+    .then(data => {
+      return data.rows;
+    })
+    .catch(e => console.log("add user error", e));
 };
 exports.addUser = addUser;
 
@@ -97,7 +102,6 @@ const getMapList = (params) => {
   `;
 
   const keys = getActiveKeys(params);
-  // console.log("keys array is", keys);
 
   if (keys.includes('user_id')) {
     //favorites list

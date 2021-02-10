@@ -72,11 +72,14 @@ module.exports = (db) => {
 
   //create new user
   router.put("/register", (req, res) => {
-    /*
+    console.log("got to put register route");
     const user = req.body;
+    console.log("user is", user);
     user.password = bcrypt.hashSync(user.password, 12);
     db.addUser(user)
     .then(user => {
+      console.log(user);
+
       if (!user) {
         res.send({error: "error"});
         return;
@@ -84,7 +87,7 @@ module.exports = (db) => {
       req.session.userId = user.id;
     })
     .catch(e => res.send(e));
-    */
+
   });
 
   return router;
