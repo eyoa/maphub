@@ -46,7 +46,8 @@ $(() => {
 
   //default display:
   // view, editDetails -> pinList | editMap -> mapForm
-    //displays default page of a given state. use this for buttons that change mapView state
+  //displays default page of a given state. use this for buttons that change mapView state
+  //if map is empty sends you straight to editMap (create/edit page)
   const displayMapView = function (map, currentUser, state) {
     if (!map) {
       insertHeader(map, currentUser, state);
@@ -77,7 +78,7 @@ $(() => {
 
   //on click listener for navigating mapView ======================================================================
 
-  // view -> editMap/editDetails
+  //clicking edit map will send you to either editMap (mapinfo edit) or editDetail (pins) depending on if youre owner or not
   $(document).on('click', '#edit-map', function(event) {
     event.preventDefault();
     console.log(currentUser)
@@ -90,7 +91,7 @@ $(() => {
     displayMapView(currentMap, currentUser, currentState);
   });
 
-  // editMap -> editDetails
+  //quitting creation will send you back to browse
   $(document).on('click', '#quit-map-edit', function(event) {
     event.preventDefault();
     getMapList()
@@ -103,7 +104,7 @@ $(() => {
       .catch(error => console.error(error));
   });
 
-  //this one needs to update db
+  //create new map/update map
   $(document).on('click', '#save-continue-map-edit', function(event) {
     event.preventDefault();
     if (!currentMap) {
@@ -118,7 +119,7 @@ $(() => {
     displayMapView(currentMap, currentUser, 'editDetail')
   });
 
-  //this one needs to update db
+  //delete map
   $(document).on('click', '#delete-map', function(event) {
     //TO DO
     //delete current map from db
@@ -135,6 +136,7 @@ $(() => {
       .catch(error => console.error(error));
   });
 
+  //exiting editor will send you to the map detail view of the map you were working on
   $(document).on('click', '#exit-editor', function(event) {
     event.preventDefault();
     currentState = 'view';
@@ -207,6 +209,7 @@ $(() => {
 
   //======on click events with db changes ========================================================================================
 
+  //clicking add pin will add it in the db and display pinlist once done
   $(document).on('click', '.add-pin-detail', function(event){
     event.preventDefault();
     //TO DO
@@ -219,6 +222,7 @@ $(() => {
     });
   });
 
+  //saving your edit changes will update db and display pinList once done
   $(document).on('click', '.edit-pin-detail', function(event){
     event.preventDefault();
 
@@ -231,6 +235,26 @@ $(() => {
       const pins = output;
       insertContent(currentMap, currentUser, currentState, "pinList", pins);
     });
+  });
+
+  //delete pin - update db and refresh pinList
+  $(document).on('click', '', function(event) {
+    event.preventDefault();
+  });
+
+  //add collab - update db and refresh collabList
+  $(document).on('click', '', function(event) {
+    event.preventDefault();
+  });
+
+  //delete collab - update db and refresh collabList
+  $(document).on('click', '', function(event) {
+    event.preventDefault();
+  });
+
+  //fav toggle - update db and update visuals
+  $(document).on('click', '', function(event) {
+    event.preventDefault();
   });
 
   /*
@@ -246,26 +270,10 @@ $(() => {
         - editMap: nothing
         - editDetail: and update coords in pinForm
 
-  we can attach/remove event listeners on click based on buttons that changes states
-
-  event elemnt (accessible state & permission) : resulting action
-  - dont care about permissions for event listeners
-  - permissions should be covered by displaying correct buttons/elements accordingly
-
-    HEADER EVENTS
-      - onclick favToggle (view & logged in user) : update fav for currentUser
-
-    CONTENT EVENTS
+    search buttons.... stretch.
       - onclick search button: (editMap & owner/anyone) : update coords in form and leaflet map
-
-      - onclick add collab button (editDetail & owner) : update db, append to collab list
-      - onclick delete collab button (editDetail & owner) : update db, remove from collab list
-
       - onclick search button: (editDetail & owner/collab) : show pinForm, update coords in form and leaflet map
-
-      - onclick delete pin button : (editDetail & owner/collab) : update db, refresh pin list
-      - onclick add pin button : (editDetail & owner/collab) : update db, refresh pin list
-
   */
+
   window.$mapView.displayMapView = displayMapView;
 });
