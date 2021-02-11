@@ -40,7 +40,6 @@ $(() => {
     });
   };
 
-  window.mapList.addMapEntries = addMapEntries;
   //===============================
   // initializing global var
   window.currentMap = {};
@@ -86,4 +85,5 @@ $(() => {
     });
   });
 
+  window.mapList.addMapEntries = addMapEntries;
 });

@@ -41,7 +41,11 @@ $(() => {
             return;
           }
           window.navbar.updateNav(user.user);
-          views_manager.show('mapList');
+
+          getMapList().then(res => {
+            mapList.addMapEntries(res);
+            views_manager.show('mapList');
+          });
         })
         .catch((e) => {
           console.log(e);

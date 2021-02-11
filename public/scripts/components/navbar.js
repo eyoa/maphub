@@ -120,6 +120,12 @@ $(() => {
     event.preventDefault();
     logOut();
     navbar.updateNav(null);
+
+    currentMap = null;
+    getMapList().then(res => {
+      mapList.addMapEntries(res);
+      views_manager.show('mapList');
+    });
   });
 
   $('#nav-mapDetails').on("click", function(event) {
