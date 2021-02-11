@@ -247,8 +247,15 @@ $(() => {
   $mapView.on('click', '#pin-edit-prompt', function(event) {
     event.preventDefault();
     const pinId = $(this).closest(".pin-item").attr('id');
+
+
     getPinDetails(`id=${pinId}`).then(output => {
       const pin = output[0];
+      const point = L.latLng(Number(pin.latitude), Number(pin.longitude));
+
+      // check there's no extra ones somehow?
+      const editPin = L.marker(point, {draggable: true}).addTo(window.mapView.leafMap);
+      window.mapView.editPin = editPin;
       insertContent(currentMap, currentUser, currentState, "pinForm", pin);
     });
   });
@@ -274,16 +281,12 @@ $(() => {
       formdata.push({name: "longitude", value: lng});
       formdata.push({name: "map_id", value: currentMap.id});
 
-      console.log(formdata);
-
       addPin(formdata)
       .then(result =>{
-        console.log("back to event handler");
-        console.log(result);
         getMapPins(`id=${currentMap.id}`).then(output => {
-          console.log("getMapPins success?");
         //display pin list
         const pins = output;
+        insertContent(currentMap, currentUser, currentState, "pinList", pins);
         displayMapView(currentMap, currentUser, 'editDetail');
       })
       .catch(e => console.log(e))
@@ -292,25 +295,38 @@ $(() => {
     });
   });
 
-  //saving your edit changes will update db and display pinList once done
+  // saving your edit changes will update db and display pinList once done
+  // currently doesn't track changes? just all the fields?
   $mapView.on('click', '.edit-pin-detail', function(event){
     event.preventDefault();
+    const pinId = $(this).closest('#pin-Form').attr("value");
 
-    const pinId = $(this).closest(".pinForm").attr("id");
-    //TO DO
-    //update this pin id in db
+    const {lat, lng} = window.mapView.editPin.getLatLng();
+    const formdata = $(this).parent("#pin-Form").serializeArray();
+    formdata.push({name: "id", value: pinId});
+    formdata.push({name: "latitude", value: lat});
+    formdata.push({name: "longitude", value: lng});
+    formdata.push({name: "map_id", value: currentMap.id});
 
-    //display pin list
-    getMapPins(`id=${currentMap.id}`).then(output => {
-      const pins = output;
-      insertContent(currentMap, currentUser, currentState, "pinList", pins);
+
+    editPin(formdata)
+      .then(result =>{
+        getMapPins(`id=${currentMap.id}`).then(output => {
+        //display pin list
+        const pins = output;
+        displayMapView(currentMap, currentUser, 'editDetail');
+      })
+      .catch(e => console.log(e))
+
+
     });
+
+
   });
 
   //delete pin - update db and refresh pinList
   $mapView.on('click', '#pin-remove', function(event) {
     event.preventDefault();
-    console.log("pin remove clicked!");
 
     const idAttr =$(this).closest('.pin-item').attr('id');
     const pinId = {id: idAttr}
@@ -320,7 +336,6 @@ $(() => {
       displayMapView(currentMap, currentUser, 'editDetail');
     })
     .catch(e => console.log(e));
-
   });
 
   //add collab - update db and refresh collabList

@@ -28,7 +28,6 @@ const getUser = function(user) {
 
   queryStr += ';';
 
-  console.log("getUser db querystr", queryStr);
   return pool.query(queryStr, queryParams)
     .then(data => {
       return data.rows[0];
@@ -120,12 +119,8 @@ const getMapList = (params) => {
 
   queryString += `;`;
 
-  // console.log("queryString is ", queryString);
-
   return pool.query(queryString, queryParams)
     .then(data => {
-      // console.log("GOT the goods - map list");
-      // console.log(data.rows);
       return data.rows;
     })
     .catch(e => console.log("Map query error", e));
@@ -221,7 +216,6 @@ const updateMap = function(mapParams) {
 
   for (const key of keys) {
     if (key !== 'id') {
-      // console.log("==============", key);
 
       updateParams.push(mapParams[key]);
       updateString += key + ' = ' + `$${updateParams.length}`;
@@ -312,7 +306,7 @@ const getPinDetails = function(mapParams) {
   if (mapParams.id) {
     params.push(mapParams.id);
     queryString = `
-    SELECT title, description, img_url
+    SELECT *
     FROM pins
     WHERE id = $1;
     `;
@@ -334,7 +328,6 @@ exports.getPinDetails = getPinDetails;
 
 
 const addPin = function(mapParams) {
-  console.log("server add pin mapParams are", mapParams);
   const params = [];
   let queryString = `INSERT INTO pins (`;
 
@@ -349,7 +342,6 @@ const addPin = function(mapParams) {
   }
   queryString +=  `VALUES (`;
 
-  console.log(queryString);
   for (const key of keys) {
     // check to push correct type to db
     const numRegex = new RegExp("^[1-9]\d*(\.\d+)?$", "gm");
@@ -368,9 +360,6 @@ const addPin = function(mapParams) {
 
   queryString += `RETURNING *;`;
 
-  console.log("addPin query is ", queryString);
-  console.log("addPin parameters ", params);
-
   return pool.query(queryString, params)
     .then(data => {
       return data.rows;
@@ -378,9 +367,6 @@ const addPin = function(mapParams) {
     .catch(e => console.log("Pin create error", e));
 };
 exports.addPin = addPin;
-
-// TEST CODE
-// addPin({latitude: 43.653274, longitude: -79.381397, title: 'I am a pin!', img_url: './images/fake_image.png', description : 'This is the best and only spot', map_id : 1});
 
 //update pin details
 const editPinDetails = function(pin) {

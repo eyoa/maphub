@@ -120,10 +120,10 @@ function addPin(data) {
   });
 }
 
-function editPin(params, data) {
+function editPin(data) {
   return $.ajax({
     method: "PATCH",
-    url: "/api/pin?" + params,
+    url: "/api/pin",
     data
   });
 }
