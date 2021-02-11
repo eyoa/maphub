@@ -419,6 +419,7 @@ const removePin = function(pin) {
     RETURNING *;
   `;
   const queryParams = [pin.id];
+
   return pool.query(queryStr, queryParams)
     .then(res => res.rows[0]);
 };

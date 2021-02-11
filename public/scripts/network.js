@@ -128,10 +128,11 @@ function editPin(params, data) {
   });
 }
 
-function removePin(params) {
+function removePin(data) {
   return $.ajax({
     method: "DELETE",
-    url: "/api/pin?" + params
+    url: "/api/pin",
+    data
   });
 }
 

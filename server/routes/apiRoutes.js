@@ -194,16 +194,21 @@ module.exports = (db) => {
 
   // remove pin
   router.delete("/pin", (req, res) => {
-    // console.log("pin removed route");
-    res.send("pin removed route");
+
+    console.log(req.query);
+    console.log(req.body);
+
+    console.log("pin removed route");
+    // res.send("pin removed route");
     // removePin
 
-    // will query the db for pin details
-    // db.thePinQuery({params})
-    //     .then(data => {
-    //     })
-    //     .catch(err => {
-    //     });
+    db.removePin(req.body)
+        .then(data => {
+          console.log("query delete pin success");
+          res.send(data.rows);
+        })
+        .catch(err => {
+        });
   });
 
   // queries for collaborator list
