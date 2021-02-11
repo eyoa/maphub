@@ -134,8 +134,8 @@ $(() => {
       currentUser = output[1].user.id;
       currentMap = map;
       currentState = 'view';
-      window.$mapView.displayMapView(map, 'view');
-      window.views_manager.show('mapDetails');
+      mapView.displayMapView(map, 'view');
+      views_manager.show('mapDetails');
     })
   });
 
