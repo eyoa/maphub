@@ -3,9 +3,10 @@ $(() => {
   const $main = $('#main_content');
   window.views_manager = {};
 
-  $main.append('<p>Will implement a intial state sometime</p>');
+  // $main.append('<p>Will implement a intial state sometime</p>');
 
   const show = function(view) {
+
     $mapList.detach();
     $logInForm.detach();
     $registerForm.detach();

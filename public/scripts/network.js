@@ -1,7 +1,5 @@
 // users ajax requests
 const logIn = function(data) {
-  console.log("ajax request with data");
-  console.log(data);
   return $.ajax({
     method: 'PUT',
     url: "/users/login/",

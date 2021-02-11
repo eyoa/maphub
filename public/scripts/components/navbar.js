@@ -68,7 +68,6 @@ $(() => {
         updateNav();
         return;
       }
-      console.log(user);
       updateNav(user);
     })
   };
@@ -84,7 +83,6 @@ $(() => {
 
     getMapList()
       .then((data) =>{
-        console.log("data is", data);
         mapList.addMapEntries(data);
         views_manager.show('mapList');
       })
@@ -120,14 +118,12 @@ $(() => {
 
   $navbar.on("click", "#nav-logout", function(event) {
     event.preventDefault();
-    console.log("event logout detected");
     logOut();
     navbar.updateNav(null);
   });
 
   $('#nav-mapDetails').on("click", function(event) {
     event.preventDefault();
-    console.log('Lets go to mapDetails');
     // views_manager.show('login');
 
   });

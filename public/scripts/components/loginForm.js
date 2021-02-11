@@ -24,9 +24,6 @@ $(() => {
 
   $logInForm.on('click', '#login-btn', function(event) {
     const $loginForm = $(this).closest('#login-form');
-
-    console.log($logInForm);
-
     event.preventDefault();
     const email = $loginForm.find("#login-email").val();
     const pass = $loginForm.find("#login-password").val();
@@ -43,7 +40,6 @@ $(() => {
             views_manager.show('login');
             return;
           }
-          console.log("back in event handler");
           window.navbar.updateNav(user.user);
           views_manager.show('mapList');
         })

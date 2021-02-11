@@ -2,7 +2,7 @@ $(() => {
   window.$mapView = $(`
   <div class="container" id="mapView">
     <div class="container" id="mapView-header-container"></div>
-    <div class="container" id="mapView-display-container"></div>
+    <div class="container" style="height:500px; margin:3rem" id="mapView-display-container"></div>
     <div class="container" id="mapView-content-container"></div>
   </div>
   `);
@@ -15,8 +15,60 @@ $(() => {
   //mapView state: view, editDetail, editMap
   window.currentState = 'view';
 
-  const fetchLeafletMap = function (mapDetails) {
-    // figure this out later.....
+
+  const loadMap = function (mapDetails, pins = null) {
+    // extract for easier reading
+    const zoom_lv = mapDetails.zoom_lv;
+    const lon = mapDetails.longitude;
+    const lat = mapDetails.latitude;
+
+      // checking for previous instance of the map(leaflet) and kill it
+      if (window.mapView.leafMap != null){
+        window.mapView.leafMap.off();
+        window.mapView.leafMap.remove();
+      }
+
+    // setup leaflet map
+    var leafMap = L.map('mapView-display-container').setView([lat, lon], zoom_lv);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+    }).addTo(leafMap);
+
+    // show the scale bar on the lower left corner
+    L.control.scale().addTo(leafMap);
+
+
+    if (pins){
+      const pinsArray = [];
+
+      for (const pin of pins){
+        const latlon = [];
+        latlon.push(Number(pin.latitude));
+        latlon.push(Number(pin.longitude));
+
+        const popUp = `
+        <h3>${pin.title}</h3>
+        <div class="d-flex flex-row">
+          <img src="${pin.img_url}" width="100" height="100"></img>
+          <p class ="mx-3">${pin.description}</p>
+        </div>
+        `;
+
+
+        const marker = L.marker(latlon).bindPopup(popUp).addTo(leafMap);
+
+        pinsArray.push(marker);
+      }
+
+      // for more adjustements probably better as a layer to adjust
+      // const allThePins = L.layerGroup(pinsArray);
+      // L.control.layers(allThePins).addTo(leafMap);
+
+    }
+
+    // set global to control map and check if an instance already exists
+    window.mapView.leafMap = leafMap;
   };
 
   const insertHeader = function(map, currentUser, state, collabs) {
@@ -25,17 +77,16 @@ $(() => {
     $headerContainer.append(mapHeader);
   }
 
-  const insertMapDisplay = function (map) {
+  const insertMapDisplay = function (map, pins) {
     $displayContainer.empty();
+
     if (!map) {
-      $displayContainer.append(`<div>map goes here :)</div>`)
-      // display default map @ default coord & default zoom level
+      // default values are toronto
+      loadMap({latitude: "43.653274", longitude: "-79.381397", zoom_lv: 8});
     } else {
-      getMapDetails(map).then(json => {
-        //$displayContainer.append(fetchLeafletMap(json.data))
-        $displayContainer.append(`<div>map goes here :)</div>`)
-      });
+      loadMap(map, pins);
     }
+
   };
 
   const insertContent = function(map, currentUser, state, contentType, contentData){
@@ -63,7 +114,7 @@ $(() => {
       for (const collab of output[1]) collabs.push(collab.id);
 
       insertHeader(map, currentUser, state, collabs);
-      insertMapDisplay(map);
+      insertMapDisplay(map, pins);
       if(state === "view" || state === "editDetail") {
         insertContent(map, currentUser, state, "pinList", pins);
       } else {
@@ -94,7 +145,6 @@ $(() => {
     event.preventDefault();
     getMapList()
       .then((data) =>{
-        console.log("data is", data);
         mapList.addMapEntries(data);
         views_manager.show('mapList');
         currentState = 'view';
@@ -125,7 +175,6 @@ $(() => {
     event.preventDefault();
     getMapList()
       .then((data) =>{
-        console.log("data is", data);
         mapList.addMapEntries(data);
         currentState = 'view';
         currentMap = null;
