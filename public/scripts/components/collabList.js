@@ -1,7 +1,7 @@
 $(() => {
   window.collaboratorList = {};
 
-  const createCollabList = function(currentUser, collaborators, state) {
+  const createCollabList = function(owner_id, collaborators, state) {
     let deleteBtn = '';
     let addBtn = '';
 
@@ -38,13 +38,13 @@ $(() => {
         <li class = "list-group-item d-flex flex-row collab-item-container" id="${entry.id}">
           <div class="list-group-item-action mr-auto" data-toggle="collapse" data-target="#deleteBtn${count}">
             <a class="list-group-item-action" href="/users/?id=${entry.id}">
-              ${entry.id === currentUser ? `${entry.username} (owner)`: entry.username}
+              ${entry.id === owner_id ? `${entry.username} (owner)`: entry.username}
             </a>
           </div>
           <div class="collapse ml-auto my-auto" id="deleteBtn${count}">
             <form action="/api/collaborators/" method"delete">
               <input type="hidden" class="hidden" name="user_id" value="${entry.id}">
-              ${entry.id === currentUser ? '' : deleteBtn}
+              ${entry.id === owner_id ? '' : deleteBtn}
             </form>
           </div>
         </li>
