@@ -26,11 +26,11 @@ const register = function(data) {
 const getUserWithCookies = function(){
   return $.ajax({
     method: "GET",
-    url: "users/currentUser"
+    url: "/users/currentUser"
   })
 }
 
-const getProfile = function(params) {
+const getUser = function(params) {
   // params sent in url query like an api
   let url = "/users/";
   url += "?" + params;
@@ -143,11 +143,10 @@ function getCollaborators(params) {
   });
 }
 
-function addCollaborator(data) {
+function addCollaborator(params) {
   return $.ajax({
     method: "PUT",
-    url: "/api/collaborators",
-    data
+    url: "/api/collaborators?" + params,
   });
 }
 

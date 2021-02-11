@@ -223,22 +223,31 @@ $(() => {
 
   //======on click events without database interaction (strictly displays)========================================
 
-  // display pinlist
-  $mapView.on('click', '#get-pin-list', function(event) {
-    event.preventDefault();
+  ///////these two show up a lot//////////////////////////////////////////////////////
+  const displayPinList = function () {
     getMapPins(`id=${currentMap.id}`).then(output => {
       const pins = output;
       insertContent(currentMap, currentState, "pinList", pins);
     });
+  }
+  const displayCollabList = function () {
+    getCollaborators(`id=${currentMap.id}`).then(output => {
+      const collabs = output;
+      insertContent(currentMap, currentState, "collabList", collabs);
+    });
+  }
+  /////////////////////////////////////////////////////////////////////////
+
+  // display pinlist
+  $mapView.on('click', '#get-pin-list', function(event) {
+    event.preventDefault();
+    displayPinList();
   });
 
   //display collaborators
   $mapView.on('click', '#get-collab-list', function(event) {
     event.preventDefault();
-    getCollaborators(`id=${currentMap.id}`).then(output => {
-      const collabs = output;
-      insertContent(currentMap, currentState, "collabList", collabs);
-    });
+    displayCollabList();
   });
 
   //display pin detail when pin clicked
@@ -254,10 +263,7 @@ $(() => {
   //display pin list when pin detail closed
   $mapView.on('click', '#close-pin-detail', function(event){
     event.preventDefault();
-    getMapPins(`id=${currentMap.id}`).then(output => {
-      const pins = output;
-      insertContent(currentMap, currentState, "pinList", pins);
-    });
+    displayPinList();
   });
 
   //display pin form when click add pin
@@ -294,10 +300,7 @@ $(() => {
   //display pin list when edit/add is canceled
   $mapView.on('click', '#cancel-pin-detail-edit', function(event){
     event.preventDefault();
-    getMapPins(`id=${currentMap.id}`).then(output => {
-      const pins = output;
-      insertContent(currentMap, currentState, "pinList", pins);
-    });
+    displayPinList();
   });
 
   //======on click events with db changes ========================================================================================
@@ -372,14 +375,25 @@ $(() => {
 //========collab events===================================================================================
 
   //add collab - update db and refresh collabList
-  $mapView.on('click', '', function(event) {
+  $mapView.on('click', '#addCollabBtn', function(event) {
     event.preventDefault();
+    const username = $(this).closest('.new-collab-container').find('#new-collab-username').val();
+    getUser(`username=${username}`).then(user => {
+      if (user) {
+        addCollaborator(`map_id=${currentMap.id}&user_id=${user.id}`)
+        .then(output => displayCollabList());
+      } else {
+        alert('not a valid user!');
+      }
+    })
   });
 
   //delete collab - update db and refresh collabList
-  $mapView.on('click', '#deleteCollabBtn', function(event) {
+  $mapView.on('click', '.delete-collab-btn', function(event) {
     event.preventDefault();
-    console.log('delete!');
+    const userId = $(this).closest('.collab-item-container').attr('id');
+    removeCollaborator(`map_id=${currentMap.id}&user_id=${userId}`)
+    .then(output => displayCollabList());
   });
 
 //========fav events==========================================================================================
