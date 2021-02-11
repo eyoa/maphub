@@ -22,9 +22,6 @@ $(() => {
           <a class="nav-link" href="/api/" id="nav-create-map">Create Map</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/api/map/?=" id="nav-mapDetails">Map</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="/users/?=" id="nav-profile">My Profile</a>
           </li>
           <li class="nav-item">
@@ -131,13 +128,7 @@ $(() => {
     });
   });
 
-  $('#nav-mapDetails').on("click", function(event) {
-    event.preventDefault();
-    // views_manager.show('login');
-
-  });
-
-  $('#nav-profile').on("click", function(event) {
+  $navbar.on("click", "#nav-profile", function(event) {
     event.preventDefault();
     getUserWithCookies().then(output => {
       if (output.user) { //if logged in, we send them to profile
@@ -149,23 +140,41 @@ $(() => {
     });
   });
 
-  $('#nav-myMaps').on("click", function(event) {
+
+  $navbar.on("click", "#nav-myMaps", function(event) {
     event.preventDefault();
     getUserWithCookies().then(output => {
-      if (output.user) { //if logged in, we show their(collab/owned maps?)
+      if (output.user) {
+        //if logged in, we show owned maps use owner_id
+        console.log(output.user.id);
 
-      } else {          //if not send to login
+        getMapList(`owner_id=${output.user.id}`)
+        .then(data => {
+          mapList.addMapEntries(data);
+          views_manager.show('mapList');
+        })
+        .catch();
+      } else {
         views_manager.show('login');
       }
     });
   });
 
-  $('#nav-myFavs').on("click", function(event) {
+
+  $navbar.on("click", "#nav-myFavs", function(event) {
     event.preventDefault();
     getUserWithCookies().then(output => {
-      if (output.user) { //if logged in, we show their fav maps
+      if (output.user) {
+        //if logged in, we show owned maps use owner_id
+        console.log(output.user.id);
 
-      } else {          //if not send to login
+        getMapList(`user_id=${output.user.id}`)
+        .then(data => {
+          mapList.addMapEntries(data);
+          views_manager.show('mapList');
+        })
+        .catch();
+      } else {
         views_manager.show('login');
       }
     });
