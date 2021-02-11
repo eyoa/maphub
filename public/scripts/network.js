@@ -40,9 +40,8 @@ const getProfile = function(params) {
   });
 };
 
-const updateUser = function(params, data) {
+const updateUser = function(data) {
   let url = "/users/";
-  url += "?" + params;
   return $.ajax({
     method: "PUT",
     url,
@@ -54,7 +53,8 @@ const updateUser = function(params, data) {
 //  api ajax requests
 
 function getMapList(params) {
-  let url  = params ? "/api/maps?=" + params : "/api/";
+  console.log("called getMapList");
+  let url  = params ? "/api/maps?" + params : "/api/maps";
   return $.ajax({
     method: "GET",
     url
@@ -155,5 +155,19 @@ function removeCollaborator(params) {
   return $.ajax({
     method: "DELETE",
     url: "/api/collaborators?" + params
+  });
+}
+
+function addFav(params) {
+  return $.ajax({
+    method: "PUT",
+    url: "/api/fav?" + params
+  });
+}
+
+function removeFav(params) {
+  return $.ajax({
+    method: "DELETE",
+    url: "/api/fav?" + params
   });
 }

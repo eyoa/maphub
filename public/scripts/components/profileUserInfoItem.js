@@ -1,14 +1,12 @@
 $(() => {
   window.profileUserInfoItem = {};
   const createUserInfoItem = function (user, currentUser) {
-    const editBtn = '';
-    const emailDiv = '';
-    const passwordDiv = '';
+    let editBtn = '';
+    let emailDiv = '';
 
     if (currentUser.id === user.id) {
       editBtn = `<button class="btn btn-primary" id="profile-edit-btn">edit</button>`;
       emailDiv = `<div id="email">${user.email}</div>`;
-      passwordDiv = `<div id="password">${user.password}</div>`;
     }
 
     return `
@@ -20,9 +18,8 @@ $(() => {
           </div>
 
           <div class="col">
-            <div id="username">username</div>
+            <div id="username">${user.username}</div>
             ${emailDiv}
-            ${passwordDiv}
           </div>
 
         </div>
@@ -50,9 +47,6 @@ $(() => {
               <label for="edit-username">new username: </label>
               <input type="text" class="form-control" id="edit-username" value="${user.username}">
 
-              <label for="edit-password">new password: </label>
-              <input type="password" class="form-control" id="edit-password" value="${user.password}">
-
               <label for="edit-email">new email: </label>
               <input type="email" class="form-control" id="edit-email" value="${user.email}">
             </div>
@@ -63,10 +57,10 @@ $(() => {
 
           <div class="row">
             <div class="col">
-              <button type="submit" class="btn btn-primary" id="save-changes">save changes</button>
+              <button type="submit" class="btn btn-primary" id="save-profile-edit-changes">save changes</button>
             </div>
             <div class="col">
-              <button class="btn btn-primary" id="cancel-changes">discard changes</button>
+              <button class="btn btn-primary" id="cancel-profile-edit-changes">discard changes</button>
             </div>
           </div>
         </form>
@@ -74,6 +68,6 @@ $(() => {
     `;
   };
 
-  window.profileMapItem.createUserInfoItem = createUserInfoItem;
-  window.profileMapItem.createEditProfileItem = createEditProfileItem;
+  window.profileUserInfoItem.createUserInfoItem = createUserInfoItem;
+  window.profileUserInfoItem.createEditProfileItem = createEditProfileItem;
 });

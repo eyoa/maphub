@@ -132,7 +132,8 @@ $(() => {
     event.preventDefault();
     getUserWithCookies().then(output => {
       if (output.user) { //if logged in, we send them to profile
-
+        $userProfile.displayUserProfile(output.user, output.user);
+        views_manager.show('profile');
       } else {          //if not logged in send them to login
         views_manager.show('login');
       }

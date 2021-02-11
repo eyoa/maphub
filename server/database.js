@@ -38,7 +38,7 @@ exports.getUser = getUser;
 
 const setUser = function(user) {
   const copyWithoutId = getObjWithoutId(user);
-  const userAttr = ['username', 'email', 'password', 'description', 'profile_img_url'];
+  const userAttr = ['username', 'email', 'description', 'profile_img_url'];
   const queryParams = [user.id];
 
   let queryStr = `
@@ -96,7 +96,7 @@ exports.addUser = addUser;
 const getMapList = (params) => {
   const queryParams = [];
   let queryString = `
-  SELECT id, title, description
+  SELECT DISTINCT maps.id, maps.title, maps.description
   FROM maps
   `;
 
@@ -110,6 +110,17 @@ const getMapList = (params) => {
     WHERE favorites.user_id = $${queryParams.length}
     `;
 
+  } else if (keys.includes('collab_id')) {
+    queryParams.push(params['collab_id']);
+    queryString += `
+    JOIN collaborators ON maps.id = collaborators.map_id
+    WHERE collaborators.user_id = $${queryParams.length}
+    AND maps.owner_id != $${queryParams.length}
+    `;
+
+    // console.log('params is: ' , params);
+    // console.log("queryString is ", queryString);
+
   } else if (keys.includes('owner_id')) {
     // owned maps list
     queryParams.push(params['owner_id']);
@@ -117,7 +128,7 @@ const getMapList = (params) => {
     `;
   }
 
-  queryString += `;`;
+  queryString += `ORDER BY maps.id;`;
 
   return pool.query(queryString, queryParams)
     .then(data => {
@@ -266,6 +277,8 @@ const removeMap = function(mapParams) {
 
   // console.log("removeMap query is ", removeQuery);
   // console.log("map id to remove is ", paramMapid);
+  console.log(removeQuery)
+  console.log(paramMapid);
 
   return pool.query(removeQuery, paramMapid)
     .then(data => {
@@ -459,15 +472,42 @@ exports.addCollaborator = addCollaborator;
 // delete from collaborators
 // this function might need better input parameters:
 //i.e. we probably want to remove by mapid and userid?
-const removeCollaborator = function(map, user) {
+const removeCollaborator = function(params) {
   let queryStr = `
     DELETE
-    FROM Collaborators
+    FROM collaborators
     WHERE map_id = $1 AND user_id = $2
     RETURNING *;
   `;
-  const queryParams = [map.id, user.id];
+  const queryParams = [params.map_id, params.user_id];
   return pool.query(queryStr, queryParams)
     .then(res => res.rows[0]);
 };
 exports.removeCollaborator = removeCollaborator;
+
+//add Fav
+const addFav = function(params) {
+  let queryStr = `
+    INSERT INTO favorites (map_id, user_id)
+    VALUES ($1, $2)
+    RETURNING *;
+  `;
+  const queryParams = [params.map_id, params.user_id];
+  return pool.query(queryStr, queryParams)
+    .then(res => res.rows[0]);
+};
+exports.addFav = addFav;
+
+//remove Fav
+const removeFav = function(params) {
+  let queryStr = `
+    DELETE
+    FROM favorites
+    WHERE map_id = $1 AND user_id = $2
+    RETURNING *;
+  `;
+  const queryParams = [params.map_id, params.user_id];
+  return pool.query(queryStr, queryParams)
+    .then(res => res.rows[0]);
+};
+exports.removeFav = removeFav;
