@@ -2,10 +2,7 @@ $(() => {
   window.pinForm = {};
 
   // isNew is boolean to differentiate if a new pin is being created or editing existing info
-  // 2 hidden input fields for longitude and latitude values for pin creation/editing
-  // the form currently has 2 submit buttons... set a value on them
-  // but will need code to deifferentiate the two and remove that key value pair before sending params
-
+  // the values and the conditionals at the top are so we can reuse the form for edit as well.
 
   const createForm = function(pin) {
     const id = pin ? pin.id : '';

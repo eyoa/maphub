@@ -14,15 +14,13 @@ $(() => {
     }
 
     return `
-      <form>
-        <input type="hidden" name="longitude" value="" hidden>
-        <input type="hidden" name="latitude" value="" hidden>
+      <form id="map-detailForm">
 
         <label for="edit-map-title">map title</label>
-        <input type="text" class="form-control" id="edit-map-title" value="${titlePlaceholder}">
+        <input type="text" class="form-control" id="edit-map-title" name="title" value="${titlePlaceholder}">
 
         <label for="edit-map-description">map description</label>
-        <input type="text" class="form-control" id="edit-map-description" value="${descPlaceholder}">
+        <input type="text" class="form-control" id="edit-map-description" name="description" value="${descPlaceholder}">
         <button type="submit" class="btn btn-primary" id="save-continue-map-edit">save and continue</button>
         <button class="btn btn-primary" id="${btnId}">${btnText}</button>
       </form>

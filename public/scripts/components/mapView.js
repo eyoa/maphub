@@ -156,15 +156,58 @@ $(() => {
   $mapView.on('click', '#save-continue-map-edit', function(event) {
     event.preventDefault();
     if (!currentMap) {
-      //TO DO
-      //create map
+      // get map center and zoom lv and put together with form fields
+      const zoom = window.mapView.leafMap.getZoom();
+      const {lat, lng} = window.mapView.leafMap.getCenter();
+      const formdata = $(this).closest('#map-detailForm').serializeArray();
+
+      formdata.push({name: "latitude", value: lat});
+      formdata.push({name: "longitude", value: lng});
+      formdata.push({name: "zoom_lv", value: zoom});
+
+      addMap(formdata)
+      .then( result => {
+        console.log("Map added successfully?");
+        console.log(result);
+
+
+        // ========================================================================
+        // needs to go to where you can add pins....
+
+        displayMapView(result.id, currentUser, 'editDetail');
+        insertContent(result.id, currentUser, currentState, "pinList", pins);
+
+
+      })
+      .catch(e => console.log(e));
+
     } else {
-      //TO DO
-      //update map
+      // get map center and zoom lv and put together with form fields
+      const zoom = window.mapView.leafMap.getZoom();
+      const {lat, lng} = window.mapView.leafMap.getCenter();
+      const formdata = $(this).closest('#map-detailForm').serializeArray();
+
+      formdata.push({name: "latitude", value: lat});
+      formdata.push({name: "longitude", value: lng});
+      formdata.push({name: "zoom_lv", value: zoom});
+      formdata.push({name: "id", value: currentMap.id});
+
+      editMap(formdata)
+      .then( result => {
+        console.log("back in handler");
+        console.log(result);
+
+        getMapPins(result.id).then(output => {
+        //display pin list
+        const pins = output;
+        displayMapView(currentMap, currentUser, 'editDetail');
+        insertContent(currentMap, currentUser, currentState, "pinList", pins);
+        })
+
+      })
+      .catch(e => console.log(e));
+
     }
-    //window.currentMap = result of update/edit
-    currentState = 'editDetail';
-    displayMapView(currentMap, currentUser, 'editDetail')
   });
 
   //delete map

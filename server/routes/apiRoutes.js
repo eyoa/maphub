@@ -74,13 +74,12 @@ module.exports = (db) => {
 
   // put create map entry
   router.put("/map", (req, res) => {
-    // console.log("Create map route");
-    // res.send("Create map route");
+    const owner_id = req.session.userId;
 
-    // ================================================ params format not checked yet
-    db.addMap({params})
+
+    db.addMap({...req.body, owner_id})
       .then(data => {
-        // console.log("data is ", data);
+        console.log("map added db response is ", data);
         res.json(data);
       })
       .catch(err => {
@@ -92,14 +91,10 @@ module.exports = (db) => {
 
   // edit map entry details
   router.patch("/map", (req, res) => {
-    // console.log("map details edited! route");
-    // res.send("Map details edited! route");
+    console.log(req.body);
 
-    // updateMap
-    // ================================================ params format not checked yet
-    db.updateMap({params})
+    db.updateMap(req.body)
       .then(data => {
-        // console.log("data is ", data);
         res.json(data);
       })
       .catch(err => {

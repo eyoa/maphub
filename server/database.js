@@ -168,6 +168,7 @@ const getMapDetails = function (map) {
 exports.getMapDetails = getMapDetails;
 
 const addMap = function(mapParams) {
+  console.log("in add map query db mapParams are", mapParams);
   const params = [];
   let queryString = `INSERT INTO maps (`;
 
@@ -200,8 +201,8 @@ const addMap = function(mapParams) {
 
   queryString += `RETURNING *;`;
 
-  // console.log("addMap query is ", queryString);
-  // console.log("addMap parameters ", params);
+  console.log("addMap query is ", queryString);
+  console.log("addMap parameters ", params);
 
   return pool.query(queryString, params)
     .then(data => {
@@ -211,19 +212,16 @@ const addMap = function(mapParams) {
 };
 exports.addMap = addMap;
 
-// TEST CODE
-// addMap({latitude: 43.653274, longitude: -79.381397, title: 'somewhere', zoom_lv: 8, description : 'This is a testplace totally fake', owner_id : 3});
-
-
 
 // update entry in map table
 //mapParams is an object with key values pairs matching db
 const updateMap = function(mapParams) {
+
   const updateParams = [];
   let updateString = `UPDATE maps SET `;
 
   const keys = getActiveKeys(mapParams);
-  // console.log(keys);
+  console.log(keys);
 
   for (const key of keys) {
     if (key !== 'id') {
@@ -231,7 +229,8 @@ const updateMap = function(mapParams) {
       updateParams.push(mapParams[key]);
       updateString += key + ' = ' + `$${updateParams.length}`;
 
-      if (keys.indexOf(key) !==  keys.length - 1) {
+      // keys.length -2 to account for the id key
+      if (keys.indexOf(key) !==  keys.length - 2) {
         updateString +=  `, `;
       }
     }
@@ -242,8 +241,8 @@ const updateMap = function(mapParams) {
   updateString += ` WHERE id = $${updateParams.length} `;
   updateString += `RETURNING *;`;
 
-  // console.log("updateMap query is ", updateString);
-  // console.log("updateMap parameters ", updateParams);
+  console.log("updateMap query is ", updateString);
+  console.log("updateMap parameters ", updateParams);
 
   return pool.query(updateString, updateParams)
     .then(data => {
@@ -252,10 +251,6 @@ const updateMap = function(mapParams) {
     .catch(e => console.log("Map update error", e));
 };
 exports.updateMap = updateMap;
-
-// TEST CODE
-// updateMap({id : 2, description : 'This is New York again'});
-
 
 
 // remove a map

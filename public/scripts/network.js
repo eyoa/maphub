@@ -83,10 +83,10 @@ function addMap(data) {
   });
 }
 
-function editMap(params, data) {
+function editMap(data) {
   return $.ajax({
     method: "PATCH",
-    url: "/api/map?" + params,
+    url: "/api/map",
     data
   });
 }
