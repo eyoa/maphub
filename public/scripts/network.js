@@ -91,10 +91,12 @@ function editMap(data) {
   });
 }
 
-function removeMap(params) {
+function removeMap(data) {
+  console.log(data);
   return $.ajax({
     method: "DELETE",
-    url: "/api/map?" + params,
+    url: "/api/map",
+    data
   });
 }
 

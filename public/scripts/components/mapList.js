@@ -47,9 +47,8 @@ $(() => {
 
   //on click listener for clicking on map item
   $mapList.on('click','#view-map', function(event) {
-    const mapId = $(this).closest(".mapEntry").attr('id');
-
     event.preventDefault();
+    const mapId = $(this).closest(".mapEntry").attr('id');
     getMapById(`id=${mapId}`)
     .then((output) => {
       const map = output;

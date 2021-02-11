@@ -184,10 +184,10 @@ $(() => {
 
   //clicking edit map will send you to either editMap (mapinfo edit) or editDetail (pins) depending on if youre owner or not
   $mapView.on('click', '#edit-map', function(event) {
+    event.preventDefault();
     getUserWithCookies()
     .then(output => {
       const currUser = output.user ? output.user.id : null;
-      event.preventDefault();
       if (currUser === currentMap.owner_id) {
         currentState = "editMap"
       } else {
@@ -227,17 +227,17 @@ $(() => {
 
       addMap(formdata)
       .then( result => {
-        console.log("Map added successfully?");
-        console.log(result);
-
-
+        const map = result[0];
         // ========================================================================
         // needs to go to where you can add pins....
-
-        displayMapView(result.id, 'editDetail');
-        insertContent(result.id, currentState, "pinList", pins);
-
-
+        getUserWithCookies().then(output => {
+          const currentUser = output.user ? output.user.id : null;
+          console.log(`newmap id : ${map.id}, currentUser: ${currentUser}`);
+          addCollaborator(`map_id=${map.id}&user_id=${currentUser}`);
+        });
+        displayMapView(map, 'editDetail');
+        insertContent(map, currentState, "pinList", pins);
+        currentMap = map;
       })
       .catch(e => console.log(e));
 
@@ -275,18 +275,22 @@ $(() => {
 
   //delete map
   $mapView.on('click', '#delete-map', function(event) {
-    //TO DO
-    //delete current map from db
-
     event.preventDefault();
-    getMapList()
+
+    const id = currentMap.id
+    removeMap({id})
+    .then(result => {
+      console.log("map deleted!");
+      getMapList()
       .then((data) =>{
         mapList.addMapEntries(data);
         currentState = 'view';
         currentMap = null;
         views_manager.show('mapList');
       })
-      .catch(error => console.error(error));
+    })
+    .catch(error => console.error(error));
+
   });
 
   //exiting editor will send you to the map detail view of the map you were working on
@@ -452,10 +456,31 @@ $(() => {
     event.preventDefault();
   });
 
-  //delete collab - update db and refresh collabList
-  $(document).on('click', '', function(event) {
+//========collab events===================================================================================
+
+  //add collab - update db and refresh collabList
+  $mapView.on('click', '#addCollabBtn', function(event) {
     event.preventDefault();
+    const username = $(this).closest('.new-collab-container').find('#new-collab-username').val();
+    getUser(`username=${username}`).then(user => {
+      if (user) {
+        addCollaborator(`map_id=${currentMap.id}&user_id=${user.id}`)
+        .then(output => displayCollabList());
+      } else {
+        alert('not a valid user!');
+      }
+    })
   });
+
+  //delete collab - update db and refresh collabList
+  $mapView.on('click', '.delete-collab-btn', function(event) {
+    event.preventDefault();
+    const userId = $(this).closest('.collab-item-container').attr('id');
+    removeCollaborator(`map_id=${currentMap.id}&user_id=${userId}`)
+    .then(output => displayCollabList());
+  });
+
+//========fav events==========================================================================================
 
   //fav toggle - update db and update visuals
   $mapView.on('click', '.fav-Toggle', function(event){
@@ -480,6 +505,7 @@ $(() => {
       }
     });
   });
+
 
   /*
   //mapView state: view, editDetail, editMap

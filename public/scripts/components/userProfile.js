@@ -142,15 +142,20 @@ $(() => {
   //delete map
   $userProfile.on('click', '#remove-map', function(event){
     event.preventDefault();
-    const mapId = $(this).closest('.user-map-item').attr('id');
+    const id = $(this).closest('.user-map-item').attr('id');
+
     getUserWithCookies()
     .then(output=> {
       currentUser = output.user;
-      removeMap(`id=${mapId}`)
-      .then(res => {
+      console.log("mapid is", id);
+      removeMap({id})
+      .then(result =>{
+        console.log('deleted!');
         insertMapInfo(currentUser, currentUser, 'owned');
-      });
-    });
+      })
+    })
+    .catch(e => console.error);
+
   });
 
   //stop collaborating

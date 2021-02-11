@@ -256,6 +256,7 @@ exports.updateMap = updateMap;
 // remove a map
 //mapParams is an object with key values pairs (needs for map id)
 const removeMap = function(mapParams) {
+  console.log(mapParams);
   const paramMapid = [];
   let removeQuery = '';
   // to ensure there is a valid condition before sending remove query
@@ -270,10 +271,8 @@ const removeMap = function(mapParams) {
     `;
   }
 
-  // console.log("removeMap query is ", removeQuery);
-  // console.log("map id to remove is ", paramMapid);
-  console.log(removeQuery)
-  console.log(paramMapid);
+  console.log("removeMap query is ", removeQuery);
+  console.log("map id to remove is ", paramMapid);
 
   return pool.query(removeQuery, paramMapid)
     .then(data => {
@@ -429,8 +428,6 @@ const getMapCollaborators = function(map) {
       c.map_id = $1;
   `;
   const queryParams = [map.id];
-
-  console.log(queryStr);
   return pool.query(queryStr, queryParams)
     .then(res => res.rows)
     .catch(e => console.log(e))

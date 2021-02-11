@@ -105,11 +105,10 @@ module.exports = (db) => {
   });
 
 
-  // remove a map
-  // by map id
-  // ================================================ params format not checked yet
   router.delete("/map", (req, res) => {
-    return db.removeMap(req.query)
+    console.log("what was sent to delete map", req.body);
+
+    return db.removeMap(req.body)
       .then(data => {
         res.json(data);
       })
