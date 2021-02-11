@@ -193,11 +193,10 @@ $(() => {
       } else {
         currentState = "editDetail"
       }
-      console.log("clicked edit map button, current map is ", currentMap);
-      console.log("current state is ", currentState);
-
       displayMapView(currentMap, currentState);
     })
+
+
   });
 
   //quitting creation will send you back to browse
@@ -451,9 +450,20 @@ $(() => {
     .catch(e => console.log(e));
   });
 
+//========collab events===================================================================================
+
   //add collab - update db and refresh collabList
-  $mapView.on('click', '', function(event) {
+  $mapView.on('click', '#addCollabBtn', function(event) {
     event.preventDefault();
+    const username = $(this).closest('.new-collab-container').find('#new-collab-username').val();
+    getUser(`username=${username}`).then(user => {
+      if (user) {
+        addCollaborator(`map_id=${currentMap.id}&user_id=${user.id}`)
+        .then(output => displayCollabList());
+      } else {
+        alert('not a valid user!');
+      }
+    })
   });
 
 //========collab events===================================================================================

@@ -200,16 +200,15 @@ module.exports = (db) => {
 
   // add collaborator to map
   router.put("/collaborators", (req, res) => {
-    // console.log("Get collaborators list route");
-    res.send("Get collaborators list route");
-    //addCollaborator
-
-    // will query the db for map specific stuff
-    // db.theQuery({params})
-    //     .then(data => {
-    //     })
-    //     .catch(err => {
-    //     });
+    return db.addCollaborator(req.query)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
   });
 
   // remove collaborator from map

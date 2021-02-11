@@ -49,8 +49,8 @@ module.exports = (db) => {
 
   //get user data
   router.get("/", (req, res) => {
-    return db.getUser(userId)
-    .then(user => user)
+    return db.getUser(req.query)
+    .then(user => res.send(user))
     .catch(e => res.send(e))
   });
 

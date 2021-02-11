@@ -38,7 +38,7 @@ $(() => {
     }
   };
 
-  const insertContentBody = function (contentType, contentData, state) {
+  const insertContentBody = function (currentUser, contentType, contentData, state) {
     $mapContentBody.empty();
     let $content;
     switch(contentType){
@@ -49,7 +49,7 @@ $(() => {
         $content = pinList.createPinList(contentData, state);
         break;
       case "collabList":
-        $content = collaboratorList.createCollabList(contentData, state);
+        $content = collaboratorList.createCollabList(currentUser, contentData, state);
         break;
       case "pinForm":
         $content = pinForm.createForm(contentData); //pinForm not state dependent
@@ -63,7 +63,7 @@ $(() => {
 
   const createMapContent = function (map, currentUser, state, contentType, contentData) {
     insertContentHeader(map, currentUser, state);
-    insertContentBody(contentType, contentData, state);
+    insertContentBody(currentUser, contentType, contentData, state);
     return $mapViewContent;
   }
 

@@ -26,6 +26,11 @@ const getUser = function(user) {
     queryStr += `email = $${queryParams.length}`;
   }
 
+  if (keys.includes('username')) {
+    queryParams.push(user.username);
+    queryStr += `username = $${queryParams.length}`;
+  }
+
   queryStr += ';';
 
   return pool.query(queryStr, queryParams)
@@ -452,13 +457,13 @@ const getAllUserCollaborators = function(user, limit = 10) {
 exports.getAllUserCollaborators = getAllUserCollaborators;
 
 //add new collaborator
-const addCollaborator = function(map, user) {
+const addCollaborator = function(params) {
   let queryStr = `
     INSERT INTO collaborators (map_id, user_id)
     VALUES ($1, $2)
     RETURNING *;
   `;
-  const queryParams = [map.id, user.id];
+  const queryParams = [params.map_id, params.user_id];
   return pool.query(queryStr, queryParams)
     .then(res => res.rows[0]);
 };
