@@ -42,9 +42,8 @@ $(() => {
 
   window.mapList.addMapEntries = addMapEntries;
   //===============================
-  // initializing global vars
+  // initializing global var
   window.currentMap = {};
-  window.currentUser = null;
   //===============================
 
   //on click listener for clicking on map item
@@ -52,17 +51,13 @@ $(() => {
     const mapId = $(this).closest(".mapEntry").attr('id');
 
     event.preventDefault();
-    Promise.all([getMapById(`id=${mapId}`), getUserWithCookies()])
+    getMapById(`id=${mapId}`)
     .then((output) => {
-      const map = output[0];
-      const currUser =  output[1] ? output[1].user.id : null;
-
-      window.currentUser = currUser;
+      const map = output;
       window.currentMap = map;
       currentState = 'view';
 
-
-      window.$mapView.displayMapView(map, currentUser, 'view');
+      window.$mapView.displayMapView(map, 'view');
       window.views_manager.show('mapDetails');
     })
   });

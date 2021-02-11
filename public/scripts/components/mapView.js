@@ -78,7 +78,7 @@ $(() => {
   const insertHeader = function(map, state) {
     Promise.all([getUserWithCookies(), getCollaborators(`id=${map.id}`)])
     .then(res1 => {
-      const currentUser = res1[0].user.id;
+      const currentUser = res1[0].user? res1[0].user.id : null;
       const collabs = []
       for (const collab of res1[1]) {
         collabs.push(collab.id);
@@ -110,21 +110,25 @@ $(() => {
 
   };
 
-  const insertContent = function(map, currentUser, state, contentType, contentData){
-    $contentContainer.empty();
-    const mapContent = $mapViewContent.createMapContent(map, currentUser, state, contentType, contentData);
-    $contentContainer.append(mapContent);
+  const insertContent = function(map, state, contentType, contentData){
+    getUserWithCookies()
+    .then(output => {
+      const currentUser = output.user ? output.user.id : null;
+      $contentContainer.empty();
+      const mapContent = $mapViewContent.createMapContent(map, currentUser, state, contentType, contentData);
+      $contentContainer.append(mapContent);
+    })
   }
 
   //default display:
   // view, editDetails -> pinList | editMap -> mapForm
   //displays default page of a given state. use this for buttons that change mapView state
   //if map is empty sends you straight to editMap (create/edit page)
-  const displayMapView = function (map, currentUser, state) {
+  const displayMapView = function (map, state) {
     if (!map) { //no map -> send to create page
       insertHeader(map, state);
       insertMapDisplay(map);
-      insertContent(map, currentUser, state, "mapForm", map);
+      insertContent(map, state, "mapForm", map);
       return;
     }
 
@@ -137,9 +141,9 @@ $(() => {
       insertHeader(map, state);
       insertMapDisplay(map, pins);
       if(state === "view" || state === "editDetail") {
-        insertContent(map, currentUser, state, "pinList", pins);
+        insertContent(map, state, "pinList", pins);
       } else {
-        insertContent(map, currentUser, state, "mapForm", map);
+        insertContent(map, state, "mapForm", map);
       }
     });
   };
@@ -158,7 +162,7 @@ $(() => {
     } else {
       currentState = "editDetail"
     }
-    displayMapView(currentMap, currentUser, currentState);
+    displayMapView(currentMap, currentState);
   });
 
   //quitting creation will send you back to browse
@@ -185,7 +189,7 @@ $(() => {
     }
     //window.currentMap = result of update/edit
     currentState = 'editDetail';
-    displayMapView(currentMap, currentUser, 'editDetail')
+    displayMapView(currentMap, 'editDetail')
   });
 
   //delete map
@@ -208,7 +212,7 @@ $(() => {
   $mapView.on('click', '#exit-editor', function(event) {
     event.preventDefault();
     currentState = 'view';
-    displayMapView(currentMap, currentUser, 'view');
+    displayMapView(currentMap, 'view');
   });
 
   //======on click events without database interaction (strictly displays)========================================
@@ -218,7 +222,7 @@ $(() => {
     event.preventDefault();
     getMapPins(`id=${currentMap.id}`).then(output => {
       const pins = output;
-      insertContent(currentMap, currentUser, currentState, "pinList", pins);
+      insertContent(currentMap, currentState, "pinList", pins);
     });
   });
 
@@ -227,7 +231,7 @@ $(() => {
     event.preventDefault();
     getCollaborators(`id=${currentMap.id}`).then(output => {
       const collabs = output;
-      insertContent(currentMap, currentUser, currentState, "collabList", collabs);
+      insertContent(currentMap, currentState, "collabList", collabs);
     });
   });
 
@@ -237,7 +241,7 @@ $(() => {
     const pinId = $(this).closest('.pin-item').attr('id');
     getPinDetails(`id=${pinId}`).then(output => {
       const pin = output[0];
-      insertContent(currentMap, currentUser, currentState, "pinDetail", pin);
+      insertContent(currentMap, currentState, "pinDetail", pin);
     });
   });
 
@@ -246,14 +250,14 @@ $(() => {
     event.preventDefault();
     getMapPins(`id=${currentMap.id}`).then(output => {
       const pins = output;
-      insertContent(currentMap, currentUser, currentState, "pinList", pins);
+      insertContent(currentMap, currentState, "pinList", pins);
     });
   });
 
   //display pin form when click add pin
   $mapView.on('click', '#pin-add-prompt', function(event) {
     event.preventDefault();
-    insertContent(currentMap, currentUser, currentState, "pinForm", null);
+    insertContent(currentMap, currentState, "pinForm", null);
 
     const mapCenter = window.mapView.leafMap.getCenter();
 
@@ -277,7 +281,7 @@ $(() => {
       // check there's no extra ones somehow?
       const editPin = L.marker(point, {draggable: true}).addTo(window.mapView.leafMap);
       window.mapView.editPin = editPin;
-      insertContent(currentMap, currentUser, currentState, "pinForm", pin);
+      insertContent(currentMap, currentState, "pinForm", pin);
     });
   });
 
@@ -286,7 +290,7 @@ $(() => {
     event.preventDefault();
     getMapPins(`id=${currentMap.id}`).then(output => {
       const pins = output;
-      insertContent(currentMap, currentUser, currentState, "pinList", pins);
+      insertContent(currentMap, currentState, "pinList", pins);
     });
   });
 
@@ -307,8 +311,8 @@ $(() => {
         getMapPins(`id=${currentMap.id}`).then(output => {
         //display pin list
         const pins = output;
-        insertContent(currentMap, currentUser, currentState, "pinList", pins);
-        displayMapView(currentMap, currentUser, 'editDetail');
+        insertContent(currentMap, currentState, "pinList", pins);
+        displayMapView(currentMap, 'editDetail');
       })
       .catch(e => console.log(e))
 
@@ -335,7 +339,7 @@ $(() => {
         getMapPins(`id=${currentMap.id}`).then(output => {
         //display pin list
         const pins = output;
-        displayMapView(currentMap, currentUser, 'editDetail');
+        displayMapView(currentMap, 'editDetail');
       })
       .catch(e => console.log(e))
 
@@ -354,7 +358,7 @@ $(() => {
 
     removePin(pinId)
     .then(result => {
-      displayMapView(currentMap, currentUser, 'editDetail');
+      displayMapView(currentMap, 'editDetail');
     })
     .catch(e => console.log(e));
   });

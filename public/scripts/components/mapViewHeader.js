@@ -1,6 +1,7 @@
 $(() => {
   mapViewHeader = {};
   const createMapHeader = function (map, currentUser, state, collabs, favList) {
+
     if(!map) {
       return `
       <div class="container row" id="map-header">
