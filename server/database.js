@@ -280,6 +280,8 @@ const removeMap = function(mapParams) {
 
   // console.log("removeMap query is ", removeQuery);
   // console.log("map id to remove is ", paramMapid);
+  console.log(removeQuery)
+  console.log(paramMapid);
 
   return pool.query(removeQuery, paramMapid)
     .then(data => {
@@ -478,15 +480,42 @@ exports.addCollaborator = addCollaborator;
 // delete from collaborators
 // this function might need better input parameters:
 //i.e. we probably want to remove by mapid and userid?
-const removeCollaborator = function(map, user) {
+const removeCollaborator = function(params) {
   let queryStr = `
     DELETE
-    FROM Collaborators
+    FROM collaborators
     WHERE map_id = $1 AND user_id = $2
     RETURNING *;
   `;
-  const queryParams = [map.id, user.id];
+  const queryParams = [params.map_id, params.user_id];
   return pool.query(queryStr, queryParams)
     .then(res => res.rows[0]);
 };
 exports.removeCollaborator = removeCollaborator;
+
+//add Fav
+const addFav = function(params) {
+  let queryStr = `
+    INSERT INTO favorites (map_id, user_id)
+    VALUES ($1, $2)
+    RETURNING *;
+  `;
+  const queryParams = [params.map_id, params.user_id];
+  return pool.query(queryStr, queryParams)
+    .then(res => res.rows[0]);
+};
+exports.addFav = addFav;
+
+//remove Fav
+const removeFav = function(params) {
+  let queryStr = `
+    DELETE
+    FROM favorites
+    WHERE map_id = $1 AND user_id = $2
+    RETURNING *;
+  `;
+  const queryParams = [params.map_id, params.user_id];
+  return pool.query(queryStr, queryParams)
+    .then(res => res.rows[0]);
+};
+exports.removeFav = removeFav;

@@ -121,9 +121,64 @@ $(() => {
       insertUserInfo(user, user);
     });
   });
+
   ////////////////////user map edit on click listeners//////////////////////////////////////////////
 
-  //on click listener for mapItems and buttons
+  //clicking title will send you to mapView
+  $userProfile.on('click', '#map-title', function(event){
+    event.preventDefault();
+    mapId = $(this).closest('.user-map-item').attr('id');
+    Promise.all([getMapById(`id=${mapId}`), getUserWithCookies()])
+    .then(output => {
+      const map = output[0];
+      currentUser = output[1].user.id;
+      currentMap = map;
+      currentState = 'view';
+      window.$mapView.displayMapView(map, currentUser, 'view');
+      window.views_manager.show('mapDetails');
+    })
+  });
 
+  //delete map
+  $userProfile.on('click', '#remove-map', function(event){
+    event.preventDefault();
+    const mapId = $(this).closest('.user-map-item').attr('id');
+    getUserWithCookies()
+    .then(output=> {
+      currentUser = output.user;
+      removeMap(`id=${mapId}`)
+      .then(res => {
+        insertMapInfo(currentUser, currentUser, 'owned');
+      });
+    });
+  });
+
+  //stop collaborating
+  $userProfile.on('click', '#remove-collab', function(event){
+    event.preventDefault();
+    const mapId = $(this).closest('.user-map-item').attr('id');
+    getUserWithCookies()
+    .then(output=> {
+      currentUser = output.user;
+      removeCollaborator(`map_id=${mapId}&user_id=${currentUser.id}`)
+      .then(res => {
+        insertMapInfo(currentUser, currentUser, 'collab');
+      });
+    });
+  });
+
+  //remove from fav
+  $userProfile.on('click', '#remove-fav', function(event){
+    event.preventDefault();
+    const mapId = $(this).closest('.user-map-item').attr('id');
+    getUserWithCookies()
+    .then(output=> {
+      currentUser = output.user;
+      removeFav(`map_id=${mapId}&user_id=${currentUser.id}`)
+      .then(res => {
+        insertMapInfo(currentUser, currentUser, 'fav');
+      });
+    });
+  });
 
 });

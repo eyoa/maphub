@@ -23,8 +23,8 @@ $(() => {
     }
 
     return `
-      <div class="container row" id="user-map-item">
-          <div class="col" id="map-owner">${map.title}</div>
+      <div class="container row user-map-item" id="${map.id}">
+          <div class="col" id="map-title">${map.title}</div>
           <div class="col">
             ${changeButton}
           </div>

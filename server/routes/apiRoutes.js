@@ -114,13 +114,9 @@ module.exports = (db) => {
   // by map id
   // ================================================ params format not checked yet
   router.delete("/map", (req, res) => {
-    // console.log("Map deleted route");
-    res.send("Map deleted route");
-    //removeMap
-
-    db.removeMap({params})
+    return db.removeMap(req.query)
       .then(data => {
-        // console.log("successful delete returned ", data);
+        res.json(data);
       })
       .catch(err => {
         res
@@ -237,17 +233,49 @@ module.exports = (db) => {
 
   // remove collaborator from map
   router.delete("/collaborators", (req, res) => {
-    // console.log("Collaborator removed from list route");
-    res.send("Collaborator removed from list route");
-    // removeCollaborator
-
-    // will query the db for map specific stuff
-    // db.theQuery({params})
-    //     .then(data => {
-    //     })
-    //     .catch(err => {
-    //     });
+    return db.removeCollaborator(req.query)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
   });
+
+
+  /////fav routes ///////////////////////
+  //add fav
+  router.put("/fav", (req, res) => {
+    return db.addFav(req.query)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
+  });
+
+  //remove fav
+  router.delete("/fav", (req, res) => {
+    return db.removeFav(req.query)
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
+  });
+
+
+  ///////////////////////////////////////
+
 
   return router;
 };
+

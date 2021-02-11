@@ -158,3 +158,17 @@ function removeCollaborator(params) {
     url: "/api/collaborators?" + params
   });
 }
+
+function addFav(params) {
+  return $.ajax({
+    method: "PUT",
+    url: "/api/fav?" + params
+  });
+}
+
+function removeFav(params) {
+  return $.ajax({
+    method: "DELETE",
+    url: "/api/fav?" + params
+  });
+}
