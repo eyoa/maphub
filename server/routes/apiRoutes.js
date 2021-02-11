@@ -158,13 +158,9 @@ module.exports = (db) => {
   // ================================================ params format not checked yet
 
   router.put("/pin", (req, res) => {
-    // console.log("creat new pin route");
-    // res.send("Create new pin route");
-
     //addPin returns new created pin row
-    db.addPin({params})
+    db.addPin(req.body)
       .then(data => {
-        // console.log("pin created ", data);
         res.json(data);
       })
       .catch(err => {
@@ -176,32 +172,25 @@ module.exports = (db) => {
 
   // edit pin details
   router.patch("/pin", (req, res) => {
-    // console.log("editing pin details route");
-    res.send("editing pin details route");
-
     //updatePin
-
-    // will query the db for pin details
-    // db.thePinQuery({params})
-    //     .then(data => {
-    //     })
-    //     .catch(err => {
-    //     });
+    db.editPinDetails(req.body)
+        .then(data => {
+          res.send(data.rows);
+        })
+        .catch(err => {
+        });
   });
 
 
   // remove pin
   router.delete("/pin", (req, res) => {
-    // console.log("pin removed route");
-    res.send("pin removed route");
-    // removePin
 
-    // will query the db for pin details
-    // db.thePinQuery({params})
-    //     .then(data => {
-    //     })
-    //     .catch(err => {
-    //     });
+    db.removePin(req.body)
+        .then(data => {
+          res.send(data.rows);
+        })
+        .catch(err => {
+        });
   });
 
   // queries for collaborator list

@@ -14,12 +14,9 @@ $(() => {
     const imgUrl = pin ? pin.img_url : '';
 
     return `
-    <article class="pinForm" id="${id}">
+    <article class="pinForm">
       <section class="d-flex justify-content-center my-3">
-        <form action="/api/pin" method="">
-          <input type="hidden" name="longitude" value="" hidden>
-          <input type="hidden" name="latitude" value="" hidden>
-
+        <form action="/api/pin" method="" id="pin-Form" value="${id}">
           <div class="form-group">
             <label for="pin-title">Name</label>
             <input type="text" name="title" class="form-control" placeholder="Enter place name" value="${name}">
