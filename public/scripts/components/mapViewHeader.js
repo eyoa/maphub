@@ -4,10 +4,8 @@ $(() => {
 
     if(!map) {
       return `
-      <div class="container row" id="map-header">
-        <div class="row">
-          <div id="header-title">Create Map</div>
-        </div>
+      <div class="container mt-5 d-flex flex-row" id="map-header">
+        <h3 id="header-title">Create Map</h3>
       </div>
     `;
     }
@@ -21,28 +19,26 @@ $(() => {
     if (collabs.includes(currentUser)) {
       if (state === 'view') {
         headerTitle = map.title;
-        headerButton = `<button class="btn btn-primary" id="edit-map">edit map</button>`;
+        headerButton = `<button class="btn btn-primary ml-auto flex-end" id="edit-map">edit map</button>`;
 
         if (favList.includes(map.id)) {
-          favToggle = `<img class="fav-Toggle" id="fav" src="./../../images/fav-sel.png" style="height:25px;">`
+          favToggle = `<img class="fav-Toggle mx-2" id="fav" src="./../../images/fav-sel.png" style="height:25px;">`
         } else {
-          favToggle = `<img class="fav-Toggle" id="not-fav" src="./../../images/fav-unsel.png" style="height:25px;">`
+          favToggle = `<img class="fav-Toggle mx-2" id="not-fav" src="./../../images/fav-unsel.png" style="height:25px;">`
         }
 
       } else if (state === 'editMap') {
         headerTitle = `Edit Map`;
       } else {
         headerTitle = `Configure Map Details for ${map.title}`;
-        headerButton = `<button class="btn btn-primary" id="exit-editor">exit editor</button>`
+        headerButton = `<button class="btn btn-secondary ml-auto flex-end" id="exit-editor">exit editor</button>`
       }
     }
     return `
-      <div class="container row" id="map-header">
-        <div class="row">
-          <div id="header-title">${headerTitle}</div>
+      <div class="container row mt-5 d-flex flex-row" id="map-header">
+          <h3 id="header-title">${headerTitle}</h3>
             ${favToggle}
             ${headerButton}
-        </div>
       </div>
     `;
   };

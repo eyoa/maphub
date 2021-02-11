@@ -5,27 +5,28 @@ $(() => {
     let emailDiv = '';
 
     if (currentUser.id === user.id) {
-      editBtn = `<button class="btn btn-primary" id="profile-edit-btn">edit</button>`;
-      emailDiv = `<div id="email">${user.email}</div>`;
+      editBtn = `<button class="btn btn-primary mx-auto" id="profile-edit-btn">edit</button>`;
+      emailDiv = `<div id="email" class=""><label>Email: </label>${user.email}</div>`;
     }
 
     return `
-      <div class="container" id="user-info-item">
-        <div class="row">
-
-          <div class="col">
-            <img id="user-profile-img" src="${user.profile_img_url}">
-          </div>
-
-          <div class="col">
-            <div id="username">${user.username}</div>
-            ${emailDiv}
-          </div>
-
+      <div class="container d-flex flex-row" id="user-info-item">
+        <div class="p-2">
+          <img id="user-profile-img" src="${user.profile_img_url}">
         </div>
-        <div id="description">${user.description}</div>
-        ${editBtn}
+        <div class="p-2 d-flex flex-column">
+
+          <div id="username" >
+            <label>Username: </label>
+            ${user.username}
+          </div>
+          ${emailDiv}
+          <div id="description" class="my-4">${user.description}</div>
+          ${editBtn}
+        </div>
       </div>
+    </div>
+
     `;
   }
 

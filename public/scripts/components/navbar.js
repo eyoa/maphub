@@ -99,8 +99,8 @@ $(() => {
         window.currMapViewState = "editMap"
 
         console.log('sending to create page...');
-        window.mapView.displayMapView(window.currentMap, "editMap");
         views_manager.show('mapDetails');
+        window.mapView.displayMapView(window.currentMap, "editMap");
 
       } else {          //if not logged in we ship them back to browse
         getMapList()

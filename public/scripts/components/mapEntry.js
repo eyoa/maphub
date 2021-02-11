@@ -18,13 +18,13 @@ $(() => {
       <section class ="container-fluid">
       <div class="card my-3">
         <div class="card-body">
-          <div class="row">
+          <div class="row mx-2 my-2">
             <h5 class="card-title">${maps.title}</h5>
             <div class="col">${favToggle}</div>
           </div>
           </a>
           <div class="row">
-            <div class ="col">
+            <div class ="col mx-2">
               <p>${maps.description}</p>
             </div>
             <div class ="col">

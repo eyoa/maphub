@@ -5,14 +5,14 @@ $(() => {
     if (state === 'editDetail') {
       editRemoveBtn = `
       <div class="col">
-        <button id="pin-edit-prompt">edit</button>
-        <button id="pin-remove">remove</button>
+        <button class="btn btn-secondary mx-auto" id="pin-edit-prompt">edit</button>
+        <button class="btn btn-secondary mx-auto" id="pin-remove">remove</button>
       </div>
       `;
     }
 
     return `
-      <div class="container row pin-item" id="${pin.id}">
+      <div class="container my-1 row pin-item" id="${pin.id}">
         <div class="col pin-title">${pin.title}</div>
         ${editRemoveBtn}
       </div>

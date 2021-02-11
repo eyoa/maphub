@@ -1,6 +1,6 @@
 $(() => {
   const $userProfile = $(`
-  <div class="container" id="userProfile">
+  <div class="container my-5 " id="userProfile">
     <div class="container" id="user-info"></div>
     <p id="loading-message">fetching user map data...</p>
     <div>Maps owned by this user</div>
