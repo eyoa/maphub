@@ -95,9 +95,9 @@ $(() => {
     getUserWithCookies().then(output => {
       if (output.user) { //if logged in, we let them make a thing
         window.currentMap = null;
-        currentUser = output.user.id;
         window.currMapViewState = "editMap"
-        $mapView.displayMapView(window.currentMap, window.currentUser, "editMap");
+
+        $mapView.displayMapView(window.currentMap, "editMap");
         views_manager.show('mapDetails');
       } else {          //if not logged in we ship them back to browse
         getMapList()
@@ -120,6 +120,12 @@ $(() => {
     event.preventDefault();
     logOut();
     navbar.updateNav(null);
+
+    currentMap = null;
+    getMapList().then(res => {
+      mapList.addMapEntries(res);
+      views_manager.show('mapList');
+    });
   });
 
   $('#nav-mapDetails').on("click", function(event) {
