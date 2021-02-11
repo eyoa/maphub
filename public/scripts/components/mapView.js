@@ -3,7 +3,7 @@ $(() => {
   <div class="container" id="mapView">
     <div class="container" id="mapView-header-container"></div>
     <div class="container mx-auto" style="height:500px; margin:3rem;" id="display-map"></div>
-    <div class="container" id="mapView-content-container"></div>
+    <div class="container my-3" id="mapView-content-container"></div>
   </div>
   `);
 

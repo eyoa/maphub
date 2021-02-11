@@ -1,14 +1,14 @@
 $(() => {
   const $userProfile = $(`
-  <div class="container my-5 " id="userProfile">
+  <div class="container my-5 align-items-center" id="userProfile">
     <div class="container" id="user-info"></div>
     <p id="loading-message">fetching user map data...</p>
-    <div>Maps owned by this user</div>
-    <div class="container" id="user-maps-owned"></div>
-    <div>Maps this user has collaborated in</div>
-    <div class="container" id="user-maps-collaborated"></div>
-    <div>Maps favourited by this user</div>
-    <div class="container" id="user-maps-favourited"></div>
+    <div class="my-3 d-flex justify-content-center" ><h4>Maps owned by this user</h4></div>
+    <div class="container w-75 my-3 d-flex flex-column justify-content-center align-items-center " id="user-maps-owned"></div>
+    <div class="my-3 d-flex justify-content-center"><h4>Maps this user has collaborated in</h4></div>
+    <div class="container w-75" id="user-maps-collaborated"></div>
+    <div class="my-3 d-flex justify-content-center"><h4>Maps favourited by this user</h4></div>
+    <div class="container w-75" id="user-maps-favourited"></div>
   </div>
   `);
   window.$userProfile = $userProfile;

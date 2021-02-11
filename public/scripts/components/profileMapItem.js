@@ -19,25 +19,18 @@ $(() => {
           buttonId = 'remove-fav';
           break;
       }
-      changeButton = `<button class="btn btn-secondary" id="${buttonId}">${buttonMsg}</button>`;
+      changeButton = `<button class="btn btn-secondary mx-auto" id="${buttonId}">${buttonMsg}</button>`;
     }
 
     return `
-      <div class="container row user-map-item" id="${map.id}">
-          <div class="col" id="map-title">${map.title}</div>
-          <div class="col">
+      <div class="container user-map-item d-flex flex-row justify-content-center my-1 mx-auto" id="${map.id}">
+          <div class=" d-flex flex-column mr-auto" id="map-title">${map.title}</div>
+          <div class=" d-flex flex-column">
             ${changeButton}
           </div>
       </div>
     `;
   }
 
-  /**
-   *
-   *      <div class="col">
-            <img id="map-preview" src="${map.preview_img_url}">
-          </div>
-   *
-   */
   window.profileMapItem.createMapItem = createMapItem;
 });

@@ -10,11 +10,11 @@ $(() => {
     }
 
     return `
-      <div class="container d-flex flex-row" id="user-info-item">
+      <div class="container d-flex flex-row justify-content-center" id="user-info-item">
         <div class="p-2">
-          <img id="user-profile-img" src="${user.profile_img_url}">
+          <img id="user-profile-img" src="${user.profile_img_url}" class="rounded img-thumbnail">
         </div>
-        <div class="p-2 d-flex flex-column">
+        <div class="p-2 d-flex flex-column justify-content-center">
 
           <div id="username" >
             <label>Username: </label>

@@ -33,7 +33,7 @@ $(() => {
     }
 
     let pinContainer = `
-      <div class="container" id="pin-list">
+      <div class="container my-2 " id="pin-list">
         <div>All pins</div>
         ${pinList}
         ${addBtn}
