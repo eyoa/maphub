@@ -75,11 +75,28 @@ $(() => {
   /////////////////////leaflet ////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  const insertHeader = function(map, currentUser, state, collabs) {
-    $headerContainer.empty();
-    const mapHeader = mapViewHeader.createMapHeader(map, currentUser, state, collabs);
-    $headerContainer.append(mapHeader);
-  }
+  const insertHeader = function(map, state) {
+    Promise.all([getUserWithCookies(), getCollaborators(`id=${map.id}`)])
+    .then(res1 => {
+      const currentUser = res1[0].user.id;
+      const collabs = []
+      for (const collab of res1[1]) {
+        collabs.push(collab.id);
+      }
+      getMapList(`user_id=${currentUser}`)
+      .then(res2 => {
+        const mapList = res2;
+        const favList = [];
+        for(const mapKey in mapList) {
+          favList.push(mapList[mapKey].id);
+        }
+
+        $headerContainer.empty();
+        const mapHeader = mapViewHeader.createMapHeader(map, currentUser, state, collabs, favList);
+        $headerContainer.append(mapHeader);
+      })
+    })
+  };
 
   const insertMapDisplay = function (map, pins) {
     $displayContainer.empty();
@@ -105,7 +122,7 @@ $(() => {
   //if map is empty sends you straight to editMap (create/edit page)
   const displayMapView = function (map, currentUser, state) {
     if (!map) { //no map -> send to create page
-      insertHeader(map, currentUser, state);
+      insertHeader(map, state);
       insertMapDisplay(map);
       insertContent(map, currentUser, state, "mapForm", map);
       return;
@@ -117,7 +134,7 @@ $(() => {
       const collabs = [];
       for (const collab of output[1]) collabs.push(collab.id);
 
-      insertHeader(map, currentUser, state, collabs);
+      insertHeader(map, state);
       insertMapDisplay(map, pins);
       if(state === "view" || state === "editDetail") {
         insertContent(map, currentUser, state, "pinList", pins);
@@ -304,8 +321,27 @@ $(() => {
   });
 
   //fav toggle - update db and update visuals
-  $(document).on('click', '', function(event) {
+  $mapView.on('click', '.fav-Toggle', function(event){
     event.preventDefault();
+
+    elementId = $(this).attr('id');
+    mapId = currentMap.id;
+
+    getUserWithCookies()
+    .then(output => {
+      const currUser = output.user;
+      if(currUser){
+        if(elementId === 'fav') {
+          $(this).attr('id', 'not-fav');
+          $(this).attr('src', './../../images/fav-unsel.png')
+          removeFav(`map_id=${mapId}&user_id=${currUser.id}`);
+        } else {
+          $(this).attr('id', 'fav');
+          $(this).attr('src', './../../images/fav-sel.png')
+          addFav(`map_id=${mapId}&user_id=${currUser.id}`);
+        }
+      }
+    });
   });
 
   /*

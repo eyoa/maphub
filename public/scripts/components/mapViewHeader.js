@@ -1,6 +1,6 @@
 $(() => {
   mapViewHeader = {};
-  const createMapHeader = function (map, currentUser, state, collabs) {
+  const createMapHeader = function (map, currentUser, state, collabs, favList) {
     if(!map) {
       return `
       <div class="container row" id="map-header">
@@ -19,7 +19,12 @@ $(() => {
       if (state === 'view') {
         headerTitle = map.title;
         headerButton = `<button class="btn btn-primary" id="edit-map">edit map</button>`;
-        favToggle = '<div id="fav-toggle">⭐</div>';
+
+        if (favList.includes(map.id)) {
+          favToggle = `<img class="fav-Toggle" id="fav" src="./../../images/fav-sel.png" style="height:25px;">`
+        } else {
+          favToggle = `<img class="fav-Toggle" id="not-fav" src="./../../images/fav-unsel.png" style="height:25px;">`
+        }
 
       } else if (state === 'editMap') {
         headerTitle = `Edit Map`;
