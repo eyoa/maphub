@@ -334,6 +334,7 @@ exports.getPinDetails = getPinDetails;
 
 
 const addPin = function(mapParams) {
+  console.log("server add pin mapParams are", mapParams);
   const params = [];
   let queryString = `INSERT INTO pins (`;
 
@@ -348,6 +349,7 @@ const addPin = function(mapParams) {
   }
   queryString +=  `VALUES (`;
 
+  console.log(queryString);
   for (const key of keys) {
     // check to push correct type to db
     const numRegex = new RegExp("^[1-9]\d*(\.\d+)?$", "gm");
@@ -366,8 +368,8 @@ const addPin = function(mapParams) {
 
   queryString += `RETURNING *;`;
 
-  // console.log("addPin query is ", queryString);
-  // console.log("addPin parameters ", params);
+  console.log("addPin query is ", queryString);
+  console.log("addPin parameters ", params);
 
   return pool.query(queryString, params)
     .then(data => {

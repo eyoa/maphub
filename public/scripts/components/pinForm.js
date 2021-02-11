@@ -8,29 +8,26 @@ $(() => {
 
 
   const createForm = function(pin) {
-    const id = pin ? pin.id : '';
-    const name = pin ? pin.title : '';
-    const desc = pin ? pin.description : '';
-    const imgUrl = pin ? pin.img_url : '';
+    // const id = pin ? pin.id : '';
+    // const name = pin ? pin.title : '';
+    // const desc = pin ? pin.description : '';
+    // const imgUrl = pin ? pin.img_url : '';
 
     return `
-    <article class="pinForm" id="${id}">
+    <article class="pinForm">
       <section class="d-flex justify-content-center my-3">
-        <form action="/api/pin" method="">
-          <input type="hidden" name="longitude" value="" hidden>
-          <input type="hidden" name="latitude" value="" hidden>
-
+        <form action="/api/pin" method="" id="pin-Form">
           <div class="form-group">
             <label for="pin-title">Name</label>
-            <input type="text" name="title" class="form-control" placeholder="Enter place name" value="${name}">
+            <input type="text" name="title" class="form-control" placeholder="Enter place name">
           </div>
           <div class="form-group">
             <label for="pin-description">Description</label>
-            <input type="text" name="description" class="form-control" placeholder="Describe this location" value="${desc}">
+            <input type="text" name="description" class="form-control" placeholder="Describe this location">
           </div>
           <div class="form-group">
             <label for="pin-img_url">Location Image</label>
-            <input type="url" name="img_url" class="form-control" placeholder="http://" value="${imgUrl}">
+            <input type="url" name="img_url" class="form-control" placeholder="http://" >
           </div>
 
           ${!pin ?

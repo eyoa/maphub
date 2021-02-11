@@ -163,13 +163,10 @@ module.exports = (db) => {
   // ================================================ params format not checked yet
 
   router.put("/pin", (req, res) => {
-    // console.log("creat new pin route");
-    // res.send("Create new pin route");
-
     //addPin returns new created pin row
-    db.addPin({params})
+    db.addPin(req.body)
       .then(data => {
-        // console.log("pin created ", data);
+        console.log("pin created ======================");
         res.json(data);
       })
       .catch(err => {

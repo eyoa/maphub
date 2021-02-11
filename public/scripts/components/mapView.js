@@ -233,6 +233,14 @@ $(() => {
   $(document).on('click', '#pin-add-prompt', function(event) {
     event.preventDefault();
     insertContent(currentMap, currentUser, currentState, "pinForm", null);
+
+    const mapCenter = window.mapView.leafMap.getCenter();
+
+    // maybe check for already newPin
+    // put draggable pin on map
+    const newPin = L.marker(mapCenter, {draggable: true}).addTo(window.mapView.leafMap);
+
+    window.mapView.newPin = newPin;
   });
 
   //display pin form when click edit pin
@@ -257,15 +265,30 @@ $(() => {
   //======on click events with db changes ========================================================================================
 
   //clicking add pin will add it in the db and display pinlist once done
-  $(document).on('click', '.add-pin-detail', function(event){
+  $mapView.on('click', '.add-pin-detail', function(event){
     event.preventDefault();
-    //TO DO
-    //add pin to db
+      // get coords of new pin and add to form data
+      const {lat, lng} = window.mapView.newPin.getLatLng();
+      const formdata = $(this).parent("#pin-Form").serializeArray();
+      formdata.push({name: "latitude", value: lat});
+      formdata.push({name: "longitude", value: lng});
+      formdata.push({name: "map_id", value: currentMap.id});
 
-    //display pin list
-    getMapPins(`id=${currentMap.id}`).then(output => {
-      const pins = output;
-      insertContent(currentMap, currentUser, currentState, "pinList", pins);
+      console.log(formdata);
+
+      addPin(formdata)
+      .then(result =>{
+        console.log("back to event handler");
+        console.log(result);
+        getMapPins(`id=${currentMap.id}`).then(output => {
+          console.log("getMapPins success?");
+        //display pin list
+        const pins = output;
+        displayMapView(currentMap, currentUser, 'editDetail');
+      })
+      .catch(e => console.log(e))
+
+
     });
   });
 
