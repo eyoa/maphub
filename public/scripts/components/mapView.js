@@ -420,23 +420,6 @@ $(() => {
   });
 
 //========collab events===================================================================================
-
-  //add collab - update db and refresh collabList
-  $mapView.on('click', '#addCollabBtn', function(event) {
-    event.preventDefault();
-    const username = $(this).closest('.new-collab-container').find('#new-collab-username').val();
-    getUser(`username=${username}`).then(user => {
-      if (user) {
-        addCollaborator(`map_id=${currentMap.id}&user_id=${user.id}`)
-        .then(output => displayCollabList());
-      } else {
-        alert('not a valid user!');
-      }
-    })
-  });
-
-//========collab events===================================================================================
-
   //add collab - update db and refresh collabList
   $mapView.on('click', '#addCollabBtn', function(event) {
     event.preventDefault();
@@ -503,6 +486,4 @@ $(() => {
       - onclick search button: (editMap & owner/anyone) : update coords in form and leaflet map
       - onclick search button: (editDetail & owner/collab) : show pinForm, update coords in form and leaflet map
   */
-
-
 });
