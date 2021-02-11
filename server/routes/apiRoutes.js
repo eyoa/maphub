@@ -200,9 +200,7 @@ module.exports = (db) => {
       res.send(data);
     })
     .catch(err => {
-      res
-        .status(500)
-        .json({ error: err.message });
+      res.send([]);
     });
   });
 

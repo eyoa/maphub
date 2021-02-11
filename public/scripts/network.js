@@ -53,7 +53,6 @@ const updateUser = function(data) {
 //  api ajax requests
 
 function getMapList(params) {
-  console.log("called getMapList");
   let url  = params ? "/api/maps?" + params : "/api/maps";
   return $.ajax({
     method: "GET",

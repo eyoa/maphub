@@ -7,9 +7,10 @@ $(() => {
   </div>
   `);
 
-  window.$mapView = $mapView;
+  window.mapView = {};
   const $headerContainer = $mapView.find(`#mapView-header-container`);
   const $displayContainer = $mapView.find(`#mapView-display-container`);
+  const $newLeafletMap = $(`<div id="leaflet-map"></div>`);
   const $contentContainer = $mapView.find(`#mapView-content-container`);
 
   //mapView state: view, editDetail, editMap
@@ -18,12 +19,15 @@ $(() => {
   /////////////////////leaflet ////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   const loadMap = function (mapDetails, pins = null) {
+    console.log(mapDetails);
+
     // extract for easier reading
     const zoom_lv = mapDetails.zoom_lv;
     const lon = mapDetails.longitude;
     const lat = mapDetails.latitude;
 
       // checking for previous instance of the map(leaflet) and kill it
+
       if (window.mapView.leafMap != null){
         window.mapView.leafMap.off();
         window.mapView.leafMap.remove();
@@ -31,6 +35,8 @@ $(() => {
 
     // setup leaflet map
     var leafMap = L.map('mapView-display-container').setView([lat, lon], zoom_lv);
+
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
@@ -76,13 +82,15 @@ $(() => {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const insertHeader = function(map, state) {
-    Promise.all([getUserWithCookies(), getCollaborators(`id=${map.id}`)])
+    Promise.all([getUserWithCookies(), getCollaborators(`id=${!map ? null : map.id}`)])
+
     .then(res1 => {
       const currentUser = res1[0].user? res1[0].user.id : null;
       const collabs = []
       for (const collab of res1[1]) {
         collabs.push(collab.id);
       }
+
       getMapList(`user_id=${currentUser}`)
       .then(res2 => {
         const mapList = res2;
@@ -99,15 +107,12 @@ $(() => {
   };
 
   const insertMapDisplay = function (map, pins) {
-    $displayContainer.empty();
-
     if (!map) {
       // default values are toronto
       loadMap({latitude: "43.653274", longitude: "-79.381397", zoom_lv: 8});
     } else {
       loadMap(map, pins);
     }
-
   };
 
   const insertContent = function(map, state, contentType, contentData){
@@ -126,6 +131,7 @@ $(() => {
   //if map is empty sends you straight to editMap (create/edit page)
   const displayMapView = function (map, state) {
     if (!map) { //no map -> send to create page
+      console.log('null map case');
       insertHeader(map, state);
       insertMapDisplay(map);
       insertContent(map, state, "mapForm", map);
