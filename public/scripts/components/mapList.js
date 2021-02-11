@@ -2,7 +2,7 @@ $(() => {
   window.mapList = {};
 
   const $mapList = $(`
-  <section class="map-list" id="map-list">
+  <section class="map-list " id="map-list">
     <p>Loading...</p>
   </section>
   `);
