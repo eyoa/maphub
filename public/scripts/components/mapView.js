@@ -18,8 +18,6 @@ $(() => {
   /////////////////////leaflet ////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   const loadMap = function (mapDetails, pins = null) {
-    console.log("load map function called");
-
     // extract for easier reading
     const zoom_lv = mapDetails.zoom_lv;
     const lon = mapDetails.longitude;
@@ -36,8 +34,6 @@ $(() => {
     // setup leaflet map
     const leafMap = L.map('display-map').setView([lat, lon], zoom_lv);
 
-    console.log('leafMap: ' , leafMap);
-
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
@@ -45,10 +41,6 @@ $(() => {
 
     // show the scale bar on the lower left corner
     L.control.scale().addTo(leafMap);
-
-    console.log('leafMap: ' , leafMap);
-
-
 
     if (pins){
       const pinsArray = [];
@@ -73,8 +65,6 @@ $(() => {
 
     }
 
-
-    console.log("loadMap is done");
     // set global to control map and check if an instance already exists
     window.mapView.leafMap = leafMap;
   };
@@ -83,8 +73,6 @@ $(() => {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const insertHeader = function(map, state) {
-    console.log("map coming in to insertHeader", map );
-
     Promise.all([getUserWithCookies(), getCollaborators(`id=${!map ? null : map.id}`)])
 
     .then(res1 => {
@@ -106,17 +94,12 @@ $(() => {
 
         $headerContainer.empty();
         const mapHeader = mapViewHeader.createMapHeader(map, currentUser, state, collabs, favList);
-        console.log('mapheader content: ' , mapHeader);
-        console.log($headerContainer);
-
         $headerContainer.append(mapHeader);
       })
     })
   };
 
   const insertMapDisplay = function (map, pins) {
-    // $displayContainer.empty();
-    console.log(map);
     if (!map) {
       // default values are toronto
       loadMap({latitude: "43.653274", longitude: "-79.381397", zoom_lv: 8});
@@ -127,14 +110,11 @@ $(() => {
   };
 
   const insertContent = function(map, state, contentType, contentData){
-    console.log("loading map content...");
-
     getUserWithCookies()
     .then(output => {
       const currentUser = output.user ? output.user.id : null;
       $contentContainer.empty();
       const mapContent = mapViewContent.createMapContent(map, currentUser, state, contentType, contentData);
-      console.log('mapcontent content: ', mapContent);
       $contentContainer.append(mapContent);
     })
   }
@@ -144,18 +124,10 @@ $(() => {
   //displays default page of a given state. use this for buttons that change mapView state
   //if map is empty sends you straight to editMap (create/edit page)
   const displayMapView = function (map, state) {
-    console.log("in display map view ");
     if (!map) { //no map -> send to create page
-      console.log("shouldn't be a map yet map and state", map, state);
-      console.log("going into insertHeader");
       insertHeader(map, state);
-      console.log("out of insertHeader");
-      console.log("going into insertMapDIsplay");
       insertMapDisplay(map);
-      console.log("out of insertMapDisplay");
-      console.log("going into insertContent");
       insertContent(map, state, "mapForm", map);
-      console.log("going out of insertContent");
       return;
     }
 
@@ -226,17 +198,19 @@ $(() => {
 
       addMap(formdata)
       .then( result => {
-        const map = result[0];
+        currentMap = result[0];
         // ========================================================================
         // needs to go to where you can add pins....
         getUserWithCookies().then(output => {
           const currentUser = output.user ? output.user.id : null;
-          console.log(`newmap id : ${map.id}, currentUser: ${currentUser}`);
-          addCollaborator(`map_id=${map.id}&user_id=${currentUser}`);
+
+          console.log(`newmap id : ${currentMap.id}, currentUser: ${currentUser}`);
+          addCollaborator(`map_id=${currentMap.id}&user_id=${currentUser}`)
+          .then(res => {
+            displayMapView(currentMap, 'editDetail');
+            displayPinList();
+          });
         });
-        displayMapView(map, 'editDetail');
-        insertContent(map, currentState, "pinList", pins);
-        currentMap = map;
       })
       .catch(e => console.log(e));
 
@@ -254,15 +228,10 @@ $(() => {
       editMap(formdata)
       .then( result => {
         console.log("back in handler");
-        console.log(result);
+        currentMap = result[0];
 
-        getMapPins(result.id).then(output => {
-        //display pin list
-        const pins = output;
         displayMapView(currentMap, 'editDetail');
-        insertContent(currentMap, currentState, "pinList", pins);
-        })
-
+        displayPinList();
       })
       .catch(e => console.log(e));
 

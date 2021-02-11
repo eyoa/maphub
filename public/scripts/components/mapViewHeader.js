@@ -14,8 +14,6 @@ $(() => {
     let headerButton = '';
     let favToggle = '';
 
-    console.log('collabs: ' , collabs);
-
     if (collabs.includes(currentUser)) {
       if (state === 'view') {
         headerTitle = map.title;
