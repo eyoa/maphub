@@ -63,7 +63,7 @@ $(() => {
 
   const createMapContent = function (map, currentUser, state, contentType, contentData) {
     insertContentHeader(map, currentUser, state);
-    insertContentBody(map.owner_id, contentType, contentData, state);
+    insertContentBody(map ? map.owner_id : currentUser, contentType, contentData, state);
     return $mapViewContent;
   }
 
