@@ -156,13 +156,19 @@ $(() => {
 
   //clicking edit map will send you to either editMap (mapinfo edit) or editDetail (pins) depending on if youre owner or not
   $mapView.on('click', '#edit-map', function(event) {
-    event.preventDefault();
-    if (currentUser === currentMap.owner_id) {
-      currentState = "editMap"
-    } else {
-      currentState = "editDetail"
-    }
-    displayMapView(currentMap, currentState);
+    getUserWithCookies()
+    .then(output => {
+      const currUser = output.user ? output.user.id : null;
+      event.preventDefault();
+      if (currUser === currentMap.owner_id) {
+        currentState = "editMap"
+      } else {
+        currentState = "editDetail"
+      }
+      displayMapView(currentMap, currentState);
+    })
+
+
   });
 
   //quitting creation will send you back to browse
@@ -363,15 +369,20 @@ $(() => {
     .catch(e => console.log(e));
   });
 
+//========collab events===================================================================================
+
   //add collab - update db and refresh collabList
   $mapView.on('click', '', function(event) {
     event.preventDefault();
   });
 
   //delete collab - update db and refresh collabList
-  $(document).on('click', '', function(event) {
+  $mapView.on('click', '#deleteCollabBtn', function(event) {
     event.preventDefault();
+    console.log('delete!');
   });
+
+//========fav events==========================================================================================
 
   //fav toggle - update db and update visuals
   $mapView.on('click', '.fav-Toggle', function(event){
