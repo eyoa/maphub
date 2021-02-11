@@ -15,20 +15,42 @@ $(() => {
 
   const addMapEntries = function(data) {
     clearList();
-    for (const mapRow of data) {
-      const entry = window.mapEntry.createMapEntry(mapRow);
-      $mapList.append(entry);
-    }
+    getUserWithCookies()
+    .then(output => {
+      const currUser = output.user;
+      if(currUser) {
+        getMapList(`user_id=${currUser.id}`)
+        .then(output => {
+          const mapList = output;
+          const favList = [];
+          for(const mapKey in mapList) {
+            favList.push(mapList[mapKey].id);
+          }
+          for (const mapRow of data) {
+            const entry = window.mapEntry.createMapEntry(mapRow, favList);
+            $mapList.append(entry);
+          }
+        });
+      } else {
+        for (const mapRow of data) {
+          const entry = window.mapEntry.createMapEntry(mapRow, null);
+          $mapList.append(entry);
+        }
+      }
+    });
   };
 
+  window.mapList.addMapEntries = addMapEntries;
   //===============================
   // initializing global vars
   window.currentMap = {};
   window.currentUser = null;
   //===============================
 
-  $(document).on('click','.mapEntry', function(event) {
-    const mapId = $(this).attr('id');
+  //on click listener for clicking on map item
+  $mapList.on('click','#view-map', function(event) {
+    const mapId = $(this).closest(".mapEntry").attr('id');
+
     event.preventDefault();
     Promise.all([getMapById(`id=${mapId}`), getUserWithCookies()])
     .then((output) => {
@@ -45,5 +67,28 @@ $(() => {
     })
   });
 
-  window.mapList.addMapEntries = addMapEntries;
+  //onclick listners for fav toggles
+  $mapList.on('click', '.fav-Toggle', function(event){
+    event.preventDefault();
+
+    elementId = $(this).attr('id');
+    mapId = $(this).closest(".mapEntry").attr("id");
+
+    getUserWithCookies()
+    .then(output => {
+      const currUser = output.user;
+      if(currUser){
+        if(elementId === 'fav') {
+          $(this).attr('id', 'not-fav');
+          $(this).attr('src', './../../images/fav-unsel.png')
+          removeFav(`map_id=${mapId}&user_id=${currUser.id}`);
+        } else {
+          $(this).attr('id', 'fav');
+          $(this).attr('src', './../../images/fav-sel.png')
+          addFav(`map_id=${mapId}&user_id=${currUser.id}`);
+        }
+      }
+    });
+  });
+
 });
