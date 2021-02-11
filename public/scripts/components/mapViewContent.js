@@ -6,6 +6,8 @@ $(() => {
     </div>
   `);
 
+  window.mapViewContent = {};
+
   const $mapContentHeader = $mapViewContent.find(`#map-content-header`);
   const $mapContentBody = $mapViewContent.find(`#map-content-body`);
 
@@ -65,5 +67,5 @@ $(() => {
     return $mapViewContent;
   }
 
-  window.$mapViewContent.createMapContent = createMapContent;
+  window.mapViewContent.createMapContent = createMapContent;
 });

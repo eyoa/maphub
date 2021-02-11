@@ -94,15 +94,18 @@ $(() => {
     event.preventDefault();
     getUserWithCookies().then(output => {
       if (output.user) { //if logged in, we let them make a thing
+
         window.currentMap = null;
         window.currMapViewState = "editMap"
 
-        $mapView.displayMapView(window.currentMap, "editMap");
+        console.log('sending to create page...');
+        window.mapView.displayMapView(window.currentMap, "editMap");
         views_manager.show('mapDetails');
+
       } else {          //if not logged in we ship them back to browse
         getMapList()
         .then((data) =>{
-          console.log("data is", data);
+          console.log("Not logged in we should be going to browse data is", data);
           mapList.addMapEntries(data);
           views_manager.show('mapList');
         })

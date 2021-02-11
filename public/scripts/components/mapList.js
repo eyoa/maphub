@@ -56,7 +56,7 @@ $(() => {
       window.currentMap = map;
       currentState = 'view';
 
-      window.$mapView.displayMapView(map, 'view');
+      window.mapView.displayMapView(map, 'view');
       window.views_manager.show('mapDetails');
     })
   });

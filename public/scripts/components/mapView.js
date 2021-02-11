@@ -2,14 +2,14 @@ $(() => {
   window.$mapView = $(`
   <div class="container" id="mapView">
     <div class="container" id="mapView-header-container"></div>
-    <div class="container" style="height:500px; margin:3rem" id="mapView-display-container"></div>
+    <div class="container mx-auto" style="height:500px; margin:3rem;" id="display-map"></div>
     <div class="container" id="mapView-content-container"></div>
   </div>
   `);
 
-  window.$mapView = $mapView;
+  window.mapView = {leafMap: null};
   const $headerContainer = $mapView.find(`#mapView-header-container`);
-  const $displayContainer = $mapView.find(`#mapView-display-container`);
+  // const $displayContainer = $mapView.find(`#mapView-display-container`);
   const $contentContainer = $mapView.find(`#mapView-content-container`);
 
   //mapView state: view, editDetail, editMap
@@ -18,19 +18,26 @@ $(() => {
   /////////////////////leaflet ////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
   const loadMap = function (mapDetails, pins = null) {
+    console.log("load map function called");
+
     // extract for easier reading
     const zoom_lv = mapDetails.zoom_lv;
     const lon = mapDetails.longitude;
     const lat = mapDetails.latitude;
 
-      // checking for previous instance of the map(leaflet) and kill it
-      if (window.mapView.leafMap != null){
-        window.mapView.leafMap.off();
-        window.mapView.leafMap.remove();
-      }
+
+    // checking for previous instance of the map(leaflet) and kill it
+    if (window.mapView.leafMap != null){
+      window.mapView.leafMap.off();
+      window.mapView.leafMap.remove();
+    }
+
 
     // setup leaflet map
-    var leafMap = L.map('mapView-display-container').setView([lat, lon], zoom_lv);
+    const leafMap = L.map('display-map').setView([lat, lon], zoom_lv);
+
+    console.log('leafMap: ' , leafMap);
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
@@ -38,6 +45,9 @@ $(() => {
 
     // show the scale bar on the lower left corner
     L.control.scale().addTo(leafMap);
+
+    console.log('leafMap: ' , leafMap);
+
 
 
     if (pins){
@@ -56,18 +66,15 @@ $(() => {
         </div>
         `;
 
-
         const marker = L.marker(latlon).bindPopup(popUp).addTo(leafMap);
 
         pinsArray.push(marker);
       }
 
-      // for more adjustements probably better as a layer to adjust
-      // const allThePins = L.layerGroup(pinsArray);
-      // L.control.layers(allThePins).addTo(leafMap);
-
     }
 
+
+    console.log("loadMap is done");
     // set global to control map and check if an instance already exists
     window.mapView.leafMap = leafMap;
   };
@@ -76,13 +83,19 @@ $(() => {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   const insertHeader = function(map, state) {
-    Promise.all([getUserWithCookies(), getCollaborators(`id=${map.id}`)])
+    console.log("map coming in to insertHeader", map );
+
+    Promise.all([getUserWithCookies(), getCollaborators(`id=${!map ? null : map.id}`)])
+
     .then(res1 => {
       const currentUser = res1[0].user? res1[0].user.id : null;
       const collabs = []
       for (const collab of res1[1]) {
         collabs.push(collab.id);
       }
+
+      //console.log('collab list: ', collabs);
+
       getMapList(`user_id=${currentUser}`)
       .then(res2 => {
         const mapList = res2;
@@ -93,14 +106,17 @@ $(() => {
 
         $headerContainer.empty();
         const mapHeader = mapViewHeader.createMapHeader(map, currentUser, state, collabs, favList);
+        console.log('mapheader content: ' , mapHeader);
+        console.log($headerContainer);
+
         $headerContainer.append(mapHeader);
       })
     })
   };
 
   const insertMapDisplay = function (map, pins) {
-    $displayContainer.empty();
-
+    // $displayContainer.empty();
+    console.log(map);
     if (!map) {
       // default values are toronto
       loadMap({latitude: "43.653274", longitude: "-79.381397", zoom_lv: 8});
@@ -111,11 +127,14 @@ $(() => {
   };
 
   const insertContent = function(map, state, contentType, contentData){
+    console.log("loading map content...");
+
     getUserWithCookies()
     .then(output => {
       const currentUser = output.user ? output.user.id : null;
       $contentContainer.empty();
-      const mapContent = $mapViewContent.createMapContent(map, currentUser, state, contentType, contentData);
+      const mapContent = mapViewContent.createMapContent(map, currentUser, state, contentType, contentData);
+      console.log('mapcontent content: ', mapContent);
       $contentContainer.append(mapContent);
     })
   }
@@ -125,10 +144,18 @@ $(() => {
   //displays default page of a given state. use this for buttons that change mapView state
   //if map is empty sends you straight to editMap (create/edit page)
   const displayMapView = function (map, state) {
+    console.log("in display map view ");
     if (!map) { //no map -> send to create page
+      console.log("shouldn't be a map yet map and state", map, state);
+      console.log("going into insertHeader");
       insertHeader(map, state);
+      console.log("out of insertHeader");
+      console.log("going into insertMapDIsplay");
       insertMapDisplay(map);
+      console.log("out of insertMapDisplay");
+      console.log("going into insertContent");
       insertContent(map, state, "mapForm", map);
+      console.log("going out of insertContent");
       return;
     }
 
@@ -147,6 +174,7 @@ $(() => {
       }
     });
   };
+  window.mapView.displayMapView = displayMapView;
 
   //for buttons that manipulate content, use insertHeader and insertContent
 
@@ -156,13 +184,20 @@ $(() => {
 
   //clicking edit map will send you to either editMap (mapinfo edit) or editDetail (pins) depending on if youre owner or not
   $mapView.on('click', '#edit-map', function(event) {
-    event.preventDefault();
-    if (currentUser === currentMap.owner_id) {
-      currentState = "editMap"
-    } else {
-      currentState = "editDetail"
-    }
-    displayMapView(currentMap, currentState);
+    getUserWithCookies()
+    .then(output => {
+      const currUser = output.user ? output.user.id : null;
+      event.preventDefault();
+      if (currUser === currentMap.owner_id) {
+        currentState = "editMap"
+      } else {
+        currentState = "editDetail"
+      }
+      console.log("clicked edit map button, current map is ", currentMap);
+      console.log("current state is ", currentState);
+
+      displayMapView(currentMap, currentState);
+    })
   });
 
   //quitting creation will send you back to browse
@@ -199,8 +234,8 @@ $(() => {
         // ========================================================================
         // needs to go to where you can add pins....
 
-        displayMapView(result.id, currentUser, 'editDetail');
-        insertContent(result.id, currentUser, currentState, "pinList", pins);
+        displayMapView(result.id, 'editDetail');
+        insertContent(result.id, currentState, "pinList", pins);
 
 
       })
@@ -225,20 +260,17 @@ $(() => {
         getMapPins(result.id).then(output => {
         //display pin list
         const pins = output;
-        displayMapView(currentMap, currentUser, 'editDetail');
-        insertContent(currentMap, currentUser, currentState, "pinList", pins);
+        displayMapView(currentMap, 'editDetail');
+        insertContent(currentMap, currentState, "pinList", pins);
         })
 
       })
       .catch(e => console.log(e));
 
     }
-<<<<<<< HEAD
-=======
     //window.currentMap = result of update/edit
     currentState = 'editDetail';
     displayMapView(currentMap, 'editDetail')
->>>>>>> dev
   });
 
   //delete map
@@ -266,22 +298,31 @@ $(() => {
 
   //======on click events without database interaction (strictly displays)========================================
 
-  // display pinlist
-  $mapView.on('click', '#get-pin-list', function(event) {
-    event.preventDefault();
+  ///////these two show up a lot//////////////////////////////////////////////////////
+  const displayPinList = function () {
     getMapPins(`id=${currentMap.id}`).then(output => {
       const pins = output;
       insertContent(currentMap, currentState, "pinList", pins);
     });
+  }
+  const displayCollabList = function () {
+    getCollaborators(`id=${currentMap.id}`).then(output => {
+      const collabs = output;
+      insertContent(currentMap, currentState, "collabList", collabs);
+    });
+  }
+  /////////////////////////////////////////////////////////////////////////
+
+  // display pinlist
+  $mapView.on('click', '#get-pin-list', function(event) {
+    event.preventDefault();
+    displayPinList();
   });
 
   //display collaborators
   $mapView.on('click', '#get-collab-list', function(event) {
     event.preventDefault();
-    getCollaborators(`id=${currentMap.id}`).then(output => {
-      const collabs = output;
-      insertContent(currentMap, currentState, "collabList", collabs);
-    });
+    displayCollabList();
   });
 
   //display pin detail when pin clicked
@@ -297,10 +338,7 @@ $(() => {
   //display pin list when pin detail closed
   $mapView.on('click', '#close-pin-detail', function(event){
     event.preventDefault();
-    getMapPins(`id=${currentMap.id}`).then(output => {
-      const pins = output;
-      insertContent(currentMap, currentState, "pinList", pins);
-    });
+    displayPinList();
   });
 
   //display pin form when click add pin
@@ -337,10 +375,7 @@ $(() => {
   //display pin list when edit/add is canceled
   $mapView.on('click', '#cancel-pin-detail-edit', function(event){
     event.preventDefault();
-    getMapPins(`id=${currentMap.id}`).then(output => {
-      const pins = output;
-      insertContent(currentMap, currentState, "pinList", pins);
-    });
+    displayPinList();
   });
 
   //======on click events with db changes ========================================================================================
@@ -464,5 +499,5 @@ $(() => {
       - onclick search button: (editDetail & owner/collab) : show pinForm, update coords in form and leaflet map
   */
 
-  window.$mapView.displayMapView = displayMapView;
+
 });

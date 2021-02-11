@@ -429,8 +429,11 @@ const getMapCollaborators = function(map) {
       c.map_id = $1;
   `;
   const queryParams = [map.id];
+
+  console.log(queryStr);
   return pool.query(queryStr, queryParams)
-    .then(res => res.rows);
+    .then(res => res.rows)
+    .catch(e => console.log(e))
 };
 exports.getMapCollaborators = getMapCollaborators;
 

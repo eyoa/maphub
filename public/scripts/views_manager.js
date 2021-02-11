@@ -27,6 +27,7 @@ $(() => {
       $userProfile.appendTo($main);
       break;
     case 'mapDetails':
+      console.log("mapDetails in views_manager");
       $mapView.appendTo($main);
       break;
     case 'newMap':
