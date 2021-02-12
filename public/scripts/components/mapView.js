@@ -80,7 +80,7 @@ $(() => {
 
           insertContent(currentMap, currentState, 'pinForm', {latitude, longitude, title, description, img_url});
           if (newMarker) leafMap.removeLayer(newMarker);
-          newMarker = L.marker([latitude, longitude]).addTo(leafMap);
+          newMarker = L.marker([latitude, longitude], {draggable: true}).addTo(leafMap);
         }, 1000);
       }).on('mouseup mouseleave', function() {
         clearTimeout(timeoutId);
@@ -380,7 +380,7 @@ $(() => {
           insertContent(currentMap, currentState, 'pinForm', pin);
 
           if (newMarker) mapView.leafMap.removeLayer(newMarker);
-          newMarker = L.marker([pin.latitude, pin.longitude]).addTo(mapView.leafMap);
+          newMarker = L.marker([pin.latitude, pin.longitude], {draggable: true}).addTo(mapView.leafMap);
 
         }, 1000);
       }).on('mouseup mouseleave', function() {
@@ -418,26 +418,23 @@ $(() => {
   //clicking add pin will add it in the db and display pinlist once done
   $mapView.on('click', '.add-pin-detail', function(event){
     event.preventDefault();
-      const $form = $(this).parent("#pin-Form");
-      const name = $form.find('#pin-form-title').val();
-      const desc = $form.find('#pin-form-desc').val();
-      const imgUrl = $form.find('#pin-form-img').val();
-
-      if(!name || !desc || !imgUrl){
-        alert("Please don't leave fields blank.");
-        return;
-      }
 
       // get coords of new pin and add to form data
 
-      //const {lat, lng} = window.mapView.newPin.getLatLng();
-
+      const $form = $(this).closest("#pin-Form");
       const longitude = Number($(this).closest('.new-pin-long').attr('id'));
       const latitude = Number($(this).closest('.new-pin-lat').attr('id'));
       const map_id = currentMap.id;
-      const title = $(this).closest('#pin-Form').find('#new-pin-name').val();
-      const description = $(this).closest('#pin-Form').find('#new-pin-desc').val();
-      const img_url = $(this).closest('#pin-Form').find('#new-pin-name').val();
+      const title = $form.find('#new-pin-name').val();
+      const description = $form.find('#new-pin-desc').val();
+      const img_url = $form.find('#new-pin-name').val();
+
+
+
+      if(!title || !description || !img_url){
+        alert("Please don't leave fields blank.");
+        return;
+      }
 
       let newPin = {longitude, latitude, map_id, title, description, img_url};
 
