@@ -21,10 +21,10 @@ $(() => {
       <form id="searchOnMapForm">
         <div class="row">
           <div class="col">
-            <input type="text" class="form-control" placeholder="search for a region of interest">
+            <input type="text" class="form-control" placeholder="search for a region of interest" hidden>
           </div>
           <div class="col">
-            <button type="submit">🔎</button>
+            <button type="submit" hidden>🔎</button>
           </div>
         </div>
       </form>
