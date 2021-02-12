@@ -5,7 +5,7 @@ MapHub is a full stack single page web app that allowes users to create and have
 
 =========
 
-## Final Product
+## Screenshots V1.0.0
 
 !["View map"](https://github.com/eyoa/maphub/blob/feature-readme/public/images/screenshots/viewMap.png?raw=true)
 !["Own Profile"](https://github.com/eyoa/maphub/blob/feature-readme/public/images/screenshots/UserProfile.png?raw=true)
@@ -67,14 +67,14 @@ MapHub is a full stack single page web app that allowes users to create and have
 * correct list of maps shows up for example owned or favorites
 * favorite star works 
 
-# My profile 
+## My profile 
 * shows user details has access to edit details
 * shows correct owned maps, favorite and collaborated maps list
 * delete map button 
 * stop collaborating 
 * remove favorite
 
-# My profile Edit
+## My profile Edit
 * can see the profile img display
 * can edit details 
   * if username is changed the display changes after refresh or logout
@@ -101,7 +101,7 @@ refresh or logout
 * Can update title and desc as well 
 * Can delete map 
        
-## Edit Map Pt2
+## Edit Map details
 * Can favorite toggle map 
 * Can add/remove collaborators
 	* Checks for non-collaborators and doesn't allow you to add
