@@ -320,11 +320,12 @@ $(() => {
 
     const mapCenter = window.mapView.leafMap.getCenter();
 
-    // maybe check for already newPin
     // put draggable pin on map
-    const newPin = L.marker(mapCenter, {draggable: true}).addTo(window.mapView.leafMap);
+    if (!window.mapView.newPin){
+      const newPin = L.marker(mapCenter, {draggable: true}).addTo(window.mapView.leafMap);
+      window.mapView.newPin = newPin;
+    }
 
-    window.mapView.newPin = newPin;
   });
 
   //display pin form when click edit pin
@@ -353,9 +354,11 @@ $(() => {
 
       if(window.mapView.editPin){
         window.mapView.editPin.remove();
+        window.mapView.editPin = null;
       }
       if(window.mapView.newPin){
         window.mapView.newPin.remove();
+        window.mapView.newPin = null;
       }
 
     displayPinList();
@@ -416,6 +419,9 @@ $(() => {
     formdata.push({name: "longitude", value: lng});
     formdata.push({name: "map_id", value: currentMap.id});
 
+    // reset editPin it's done it's work
+    window.mapView.editPin.remove();
+    window.mapView.editPin = null;
 
     editPin(formdata)
       .then(result =>{
@@ -425,7 +431,6 @@ $(() => {
         displayMapView(currentMap, 'editDetail');
       })
       .catch(e => console.log(e))
-
 
     });
 
