@@ -7,8 +7,13 @@ MapHub is a full stack single page web app that allowes users to create and have
 
 ## Final Product
 
-!["screenshot description"](#)
-!["screenshot description"](#)
+!["View map"](https://github.com/eyoa/maphub/blob/feature-readme/public/images/screenshots/viewMap.png?raw=true)
+!["Own Profile"](https://github.com/eyoa/maphub/blob/feature-readme/public/images/screenshots/UserProfile.png?raw=true)
+!["Browse view"](https://github.com/eyoa/maphub/blob/feature-readme/public/images/screenshots/Browse.png?raw=true)
+!["Register"](https://github.com/eyoa/maphub/blob/feature-readme/public/images/screenshots/Register.png?raw=true)
+!["Add/Edit pins"](https://github.com/eyoa/maphub/blob/feature-readme/public/images/screenshots/editRemovePins.png?raw=true)
+!["Add/remove collaborators"](https://github.com/eyoa/maphub/blob/feature-readme/public/images/screenshots/collaboratorsList.png?raw=true)
+!["View other users profile"](https://github.com/eyoa/maphub/blob/feature-readme/public/images/screenshots/otherProfile.png?raw=true)
 
 
 ## Getting Started
