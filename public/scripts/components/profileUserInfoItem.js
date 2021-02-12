@@ -4,7 +4,7 @@ $(() => {
     let editBtn = '';
     let emailDiv = '';
 
-    if (currentUser.id === user.id) {
+    if (currentUser && currentUser.id === user.id) {
       editBtn = `<button class="btn btn-primary mx-auto" id="profile-edit-btn">edit</button>`;
       emailDiv = `<div id="email" class=""><label>Email: </label>${user.email}</div>`;
     }

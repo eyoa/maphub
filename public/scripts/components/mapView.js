@@ -65,9 +65,32 @@ $(() => {
 
     }
 
+    //press and hold event: drop a pin and prompt an add
+    let newMarker = {};
+
+    if(currentState === 'editDetail'){
+      leafMap.on('mousedown', function(event) {
+        timeoutId = setTimeout(
+        function() {
+          let latitude = event.latlng.lat;
+          let longitude = event.latlng.lng;
+          let title = '';
+          let description = '';
+          let img_url = '';
+
+          insertContent(currentMap, currentState, 'pinForm', {latitude, longitude, title, description, img_url});
+          if (newMarker) leafMap.removeLayer(newMarker);
+          newMarker = L.marker([latitude, longitude]).addTo(leafMap);
+        }, 1000);
+      }).on('mouseup mouseleave', function() {
+        clearTimeout(timeoutId);
+      });
+    }
+
     // set global to control map and check if an instance already exists
     window.mapView.leafMap = leafMap;
   };
+
 
   /////////////////////leaflet ////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -317,20 +340,20 @@ $(() => {
     displayPinList();
   });
 
-  //display pin form when click add pin
-  $mapView.on('click', '#pin-add-prompt', function(event) {
-    event.preventDefault();
-    insertContent(currentMap, currentState, "pinForm", null);
+  // //display pin form when click add pin
+  // $mapView.on('click', '#pin-add-prompt', function(event) {
+  //   event.preventDefault();
+  //   insertContent(currentMap, currentState, "pinForm", null);
 
-    const mapCenter = window.mapView.leafMap.getCenter();
+  //   const mapCenter = window.mapView.leafMap.getCenter();
 
     // put draggable pin on map
-    if (!window.mapView.newPin){
-      const newPin = L.marker(mapCenter, {draggable: true}).addTo(window.mapView.leafMap);
-      window.mapView.newPin = newPin;
-    }
+  //   if (!window.mapView.newPin){
+  //     const newPin = L.marker(mapCenter, {draggable: true}).addTo(window.mapView.leafMap);
+  //     window.mapView.newPin = newPin;
+  //   }
 
-  });
+  // });
 
   //display pin form when click edit pin
   $mapView.on('click', '#pin-edit-prompt', function(event) {
@@ -340,21 +363,37 @@ $(() => {
 
     getPinDetails(`id=${pinId}`).then(output => {
       const pin = output[0];
-      const point = L.latLng(Number(pin.latitude), Number(pin.longitude));
 
-      // extra check there's no extra ones
-      if(!window.mapView.editPin){
-        const editPin = L.marker(point, {draggable: true}).addTo(window.mapView.leafMap);
-        window.mapView.editPin = editPin;
-      }
+      console.log(pin);
+      insertContent(currentMap, currentState, 'pinForm', pin);
 
-      insertContent(currentMap, currentState, "pinForm", pin);
+
+      mapView.leafMap.off('mousedown');
+
+      let newMarker = {};
+      mapView.leafMap.on('mousedown', function(event) {
+        timeoutId = setTimeout(
+        function() {
+          pin.latitude = event.latlng.lat;
+          pin.longitude = event.latlng.lng;
+
+          insertContent(currentMap, currentState, 'pinForm', pin);
+
+          if (newMarker) mapView.leafMap.removeLayer(newMarker);
+          newMarker = L.marker([pin.latitude, pin.longitude]).addTo(mapView.leafMap);
+
+        }, 1000);
+      }).on('mouseup mouseleave', function() {
+        clearTimeout(timeoutId);
+      });
+
     });
   });
 
   //display pin list when edit/add is canceled
   $mapView.on('click', '#cancel-pin-detail-edit', function(event){
     event.preventDefault();
+<<<<<<< HEAD
 
       if(window.mapView.editPin){
         window.mapView.editPin.remove();
@@ -365,6 +404,9 @@ $(() => {
         window.mapView.newPin = null;
       }
 
+=======
+    displayMapView(currentMap, currentState);
+>>>>>>> dev
     displayPinList();
   });
 
@@ -400,13 +442,27 @@ $(() => {
       }
 
       // get coords of new pin and add to form data
+<<<<<<< HEAD
       const {lat, lng} = window.mapView.newPin.getLatLng();
       const formdata = $form.serializeArray();
       formdata.push({name: "latitude", value: lat});
       formdata.push({name: "longitude", value: lng});
       formdata.push({name: "map_id", value: currentMap.id});
+=======
+>>>>>>> dev
 
-      addPin(formdata)
+      //const {lat, lng} = window.mapView.newPin.getLatLng();
+
+      const longitude = Number($(this).closest('.new-pin-long').attr('id'));
+      const latitude = Number($(this).closest('.new-pin-lat').attr('id'));
+      const map_id = currentMap.id;
+      const title = $(this).closest('#pin-Form').find('#new-pin-name').val();
+      const description = $(this).closest('#pin-Form').find('#new-pin-desc').val();
+      const img_url = $(this).closest('#pin-Form').find('#new-pin-name').val();
+
+      let newPin = {longitude, latitude, map_id, title, description, img_url};
+
+      addPin(newPin)
       .then(result =>{
         getMapPins(`id=${currentMap.id}`).then(output => {
         //display pin list
@@ -415,8 +471,6 @@ $(() => {
         displayMapView(currentMap, 'editDetail');
       })
       .catch(e => console.log(e))
-
-
     });
   });
 
@@ -424,20 +478,25 @@ $(() => {
   // currently doesn't track changes? just all the fields?
   $mapView.on('click', '.edit-pin-detail', function(event){
     event.preventDefault();
-    const pinId = $(this).closest('#pin-Form').attr("value");
 
-    const {lat, lng} = window.mapView.editPin.getLatLng();
-    const formdata = $(this).parent("#pin-Form").serializeArray();
-    formdata.push({name: "id", value: pinId});
-    formdata.push({name: "latitude", value: lat});
-    formdata.push({name: "longitude", value: lng});
-    formdata.push({name: "map_id", value: currentMap.id});
+    const id = $(this).closest('#pin-Form').attr("value");
+    const longitude = Number($(this).closest('.new-pin-long').attr('id'));
+    const latitude = Number($(this).closest('.new-pin-lat').attr('id'));
+    const map_id = currentMap.id;
+    const title = $(this).closest('#pin-Form').find('#new-pin-name').val();
+    const description = $(this).closest('#pin-Form').find('#new-pin-desc').val();
+    const img_url = $(this).closest('#pin-Form').find('#new-pin-name').val();
 
+<<<<<<< HEAD
     // reset editPin it's done it's work
     window.mapView.editPin.remove();
     window.mapView.editPin = null;
+=======
+    let newPin = {id, longitude, latitude, map_id, title, description, img_url};
+>>>>>>> dev
 
-    editPin(formdata)
+
+    editPin(newPin)
       .then(result =>{
         getMapPins(`id=${currentMap.id}`).then(output => {
         //display pin list
@@ -445,10 +504,11 @@ $(() => {
         displayMapView(currentMap, 'editDetail');
       })
       .catch(e => console.log(e))
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
     });
-
-
   });
 
   //delete pin - update db and refresh pinList

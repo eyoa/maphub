@@ -4,7 +4,7 @@ $(() => {
     let changeButton = '';
     let buttonMsg;
     let buttonId;
-    if (currentUser.id === user.id) {
+    if (currentUser && currentUser.id === user.id) {
       switch (mapCategory) {
         case 'owned':
           buttonMsg = 'delete map';
