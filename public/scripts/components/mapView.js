@@ -350,6 +350,22 @@ $(() => {
     displayPinList();
   });
 
+  //redirect to collaborator's profile
+  $mapView.on('click', '.collab-profile-link', function(event){
+    event.preventDefault();
+    if(currentState === 'view'){
+      const viewUserId = $(this).closest('.collab-item-container').attr('id');
+
+      Promise.all([getUserWithCookies(), getUser(`id=${viewUserId}`)])
+      .then(output => {
+        const currUser = output[0].user;
+        const viewUser = output[1];
+        $userProfile.displayUserProfile(viewUser, currUser);
+        views_manager.show('profile');
+      });
+    }
+  });
+
   //======on click events with db changes ========================================================================================
 
   //clicking add pin will add it in the db and display pinlist once done
