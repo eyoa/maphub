@@ -37,9 +37,9 @@ $(() => {
         coList +=`
         <li class = "list-group-item d-flex flex-row collab-item-container" id="${entry.id}">
           <div class="list-group-item-action mr-auto" data-toggle="collapse" data-target="#deleteBtn${count}">
-            <a class="list-group-item-action" href="/users/?id=${entry.id}">
+            <div class="collab-profile-link">
               ${entry.id === owner_id ? `${entry.username} (owner)`: entry.username}
-            </a>
+            </div>
           </div>
           <div class="collapse ml-auto my-auto" id="deleteBtn${count}">
             <form action="/api/collaborators/" method"delete">
