@@ -358,35 +358,34 @@ $(() => {
 
     getPinDetails(`id=${pinId}`).then(output => {
       const pin = output[0];
-      const point = L.latLng(Number(pin.latitude), Number(pin.longitude));
 
-      mapView.leafMap.on('click', function(event){
-        console.log('hi');
+      console.log(pin);
+      insertContent(currentMap, currentState, 'pinForm', pin);
+
+
+      mapView.leafMap.off('mousedown');
+
+      let newMarker = {};
+      mapView.leafMap.on('mousedown', function(event) {
+        timeoutId = setTimeout(
+        function() {
+          pin.latitude = event.latlng.lat;
+          pin.longitude = event.latlng.lng;
+
+          insertContent(currentMap, currentState, 'pinForm', pin);
+
+          if (newMarker) mapView.leafMap.removeLayer(newMarker);
+          newMarker = L.marker([pin.latitude, pin.longitude]).addTo(mapView.leafMap);
+
+        }, 1000);
+      }).on('mouseup mouseleave', function() {
+        clearTimeout(timeoutId);
       });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       // check there's no extra ones somehow?
-      const editPin = L.marker(point, {draggable: true}).addTo(window.mapView.leafMap);
-      window.mapView.editPin = editPin;
-      insertContent(currentMap, currentState, "pinForm", pin);
+      //const editPin = L.marker(point, {draggable: true}).addTo(window.mapView.leafMap);
+      //window.mapView.editPin = editPin;
+      //insertContent(currentMap, currentState, "pinForm", pin);
     });
   });
 
@@ -447,17 +446,19 @@ $(() => {
   // currently doesn't track changes? just all the fields?
   $mapView.on('click', '.edit-pin-detail', function(event){
     event.preventDefault();
-    const pinId = $(this).closest('#pin-Form').attr("value");
 
-    const {lat, lng} = window.mapView.editPin.getLatLng();
-    const formdata = $(this).parent("#pin-Form").serializeArray();
-    formdata.push({name: "id", value: pinId});
-    formdata.push({name: "latitude", value: lat});
-    formdata.push({name: "longitude", value: lng});
-    formdata.push({name: "map_id", value: currentMap.id});
+    const id = $(this).closest('#pin-Form').attr("value");
+    const longitude = Number($(this).closest('.new-pin-long').attr('id'));
+    const latitude = Number($(this).closest('.new-pin-lat').attr('id'));
+    const map_id = currentMap.id;
+    const title = $(this).closest('#pin-Form').find('#new-pin-name').val();
+    const description = $(this).closest('#pin-Form').find('#new-pin-desc').val();
+    const img_url = $(this).closest('#pin-Form').find('#new-pin-name').val();
+
+    let newPin = {id, longitude, latitude, map_id, title, description, img_url};
 
 
-    editPin(formdata)
+    editPin(newPin)
       .then(result =>{
         getMapPins(`id=${currentMap.id}`).then(output => {
         //display pin list

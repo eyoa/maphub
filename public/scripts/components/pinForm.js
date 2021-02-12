@@ -7,10 +7,12 @@ $(() => {
   const createForm = function(pin) {
     const long = pin.longitude;
     const lat = pin.latitude;
-    const id = pin ? pin.id : '';
-    const name = pin ? pin.title : 'new title';
-    const desc = pin ? pin.description : 'new description';
-    const imgUrl = pin ? pin.img_url : 'http://';
+    const id = !pin ? '' : pin.id;
+    const name = !pin ? 'new title': pin.title;
+    const desc = !pin ? 'new description': pin.description;
+    const imgUrl = !pin ? 'http://' : pin.img_url;
+
+    console.log(id, long, lat, name, desc, imgUrl);
 
     return `
     <article class="pinForm">
