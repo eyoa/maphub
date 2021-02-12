@@ -60,12 +60,8 @@ $(() => {
 
   const getLogin = function(){
     getUserWithCookies()
-    .then(user => {
-      if(user.message ==="not logged in"){
-        updateNav();
-        return;
-      }
-      updateNav(user);
+    .then(output => {
+      updateNav(output.user ? output.user : null);
     })
   };
 
