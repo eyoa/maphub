@@ -16,15 +16,15 @@ $(() => {
         <form action="/api/pin" method="" id="pin-Form" value="${id}">
           <div class="form-group">
             <label for="pin-title">Name</label>
-            <input type="text" name="title" class="form-control" placeholder="Enter place name" value="${name}">
+            <input type="text" name="title" class="form-control" id="pin-form-title" placeholder="Enter place name" value="${name}">
           </div>
           <div class="form-group">
             <label for="pin-description">Description</label>
-            <input type="text" name="description" class="form-control" placeholder="Describe this location" value="${desc}">
+            <input type="text" name="description" class="form-control" id="pin-form-desc" placeholder="Describe this location" value="${desc}">
           </div>
           <div class="form-group">
             <label for="pin-img_url">Location Image</label>
-            <input type="url" name="img_url" class="form-control" placeholder="http://" value="${imgUrl}">
+            <input type="url" name="img_url" class="form-control" id="pin-form-img" placeholder="http://" value="${imgUrl}">
           </div>
 
           ${!pin ?

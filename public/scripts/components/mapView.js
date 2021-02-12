@@ -385,9 +385,19 @@ $(() => {
   //clicking add pin will add it in the db and display pinlist once done
   $mapView.on('click', '.add-pin-detail', function(event){
     event.preventDefault();
+      const $form = $(this).parent("#pin-Form");
+      const name = $form.find('#pin-form-title').val();
+      const desc = $form.find('#pin-form-desc').val();
+      const imgUrl = $form.find('#pin-form-img').val();
+
+      if(!name || !desc || !imgUrl){
+        alert("Please don't leave fields blank.");
+        return;
+      }
+
       // get coords of new pin and add to form data
       const {lat, lng} = window.mapView.newPin.getLatLng();
-      const formdata = $(this).parent("#pin-Form").serializeArray();
+      const formdata = $form.serializeArray();
       formdata.push({name: "latitude", value: lat});
       formdata.push({name: "longitude", value: lng});
       formdata.push({name: "map_id", value: currentMap.id});
