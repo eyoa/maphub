@@ -27,16 +27,16 @@ $(() => {
       `;
     }
 
-    let addBtn = '';
+    let addPrompt = '';
     if (state === 'editDetail') {
-      addBtn = `<button class="btn btn-primary" id="pin-add-prompt">add a new pin</button>`;
+      addPrompt = `<p>Click and hold on the map to add a pin!</p>`;
     }
 
     let pinContainer = `
-      <div class="container my-2 " id="pin-list">
+    ${addPrompt}
+    <div class="container my-2 " id="pin-list">
         <div>All pins</div>
         ${pinList}
-        ${addBtn}
       </div>
     `;
     return pinContainer;
