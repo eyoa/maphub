@@ -337,9 +337,12 @@ $(() => {
       const pin = output[0];
       const point = L.latLng(Number(pin.latitude), Number(pin.longitude));
 
-      // check there's no extra ones somehow?
-      const editPin = L.marker(point, {draggable: true}).addTo(window.mapView.leafMap);
-      window.mapView.editPin = editPin;
+      // extra check there's no extra ones
+      if(!window.mapView.editPin){
+        const editPin = L.marker(point, {draggable: true}).addTo(window.mapView.leafMap);
+        window.mapView.editPin = editPin;
+      }
+
       insertContent(currentMap, currentState, "pinForm", pin);
     });
   });
@@ -347,6 +350,14 @@ $(() => {
   //display pin list when edit/add is canceled
   $mapView.on('click', '#cancel-pin-detail-edit', function(event){
     event.preventDefault();
+
+      if(window.mapView.editPin){
+        window.mapView.editPin.remove();
+      }
+      if(window.mapView.newPin){
+        window.mapView.newPin.remove();
+      }
+
     displayPinList();
   });
 
