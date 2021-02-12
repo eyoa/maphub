@@ -29,7 +29,7 @@ $(() => {
 
     let addPrompt = '';
     if (state === 'editDetail') {
-      addPrompt = `<p>Click and hold on the map to add a pin!</p>`;
+      addPrompt = `<p class="text-info">Click and hold on the map to add a pin!</p>`;
     }
 
     let pinContainer = `

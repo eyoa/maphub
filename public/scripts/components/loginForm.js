@@ -32,6 +32,11 @@ $(() => {
       alert("fields blank");
     } else {
       const data = $loginForm.serialize();
+
+      // clear form for security
+      $logInForm.find("#login-email").val("");
+      $logInForm.find("#login-password").val("");
+
       logIn(data)
         .then(user => {
           if (!user.user){

@@ -58,6 +58,13 @@ $(() => {
       alert("fields cannot be empty");
     } else if(verify === pass){
       const data = form.serialize();
+
+      // clear fields for security
+      const username = form.find('#register-username').val("");
+      const email = form.find('#register-email').val("");
+      const verify = form.find('#register-verify-password').val("");
+      const pass = form.find('#register-password').val("");
+
         register(data)
           .then(user => {
             window.navbar.updateNav(user.user);
@@ -74,6 +81,13 @@ $(() => {
 
   $registerForm.find('#register-cancel').on('click', function(event) {
     event.preventDefault();
+
+    // clear fields for security
+    const form = $(this).closest('#sign-up-form');
+    const username = form.find('#register-username').val("");
+    const email = form.find('#register-email').val("");
+    const verify = form.find('#register-verify-password').val("");
+    const pass = form.find('#register-password').val("");
     views_manager.show('login');
   });
 
