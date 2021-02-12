@@ -427,7 +427,7 @@ $(() => {
       const map_id = currentMap.id;
       const title = $form.find('#new-pin-name').val();
       const description = $form.find('#new-pin-desc').val();
-      const img_url = $form.find('#new-pin-name').val();
+      const img_url = $form.find('#new-pin-img-url').val();
 
 
 
@@ -461,7 +461,7 @@ $(() => {
     const map_id = currentMap.id;
     const title = $(this).closest('#pin-Form').find('#new-pin-name').val();
     const description = $(this).closest('#pin-Form').find('#new-pin-desc').val();
-    const img_url = $(this).closest('#pin-Form').find('#new-pin-name').val();
+    const img_url = $(this).closest('#pin-Form').find('#new-pin-img-url').val();
 
     let newPin = {id, longitude, latitude, map_id, title, description, img_url};
 
