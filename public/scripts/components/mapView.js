@@ -186,15 +186,26 @@ $(() => {
   //create new map/update map
   $mapView.on('click', '#save-continue-map-edit', function(event) {
     event.preventDefault();
-    if (!currentMap) {
-      // get map center and zoom lv and put together with form fields
-      const zoom = window.mapView.leafMap.getZoom();
-      const {lat, lng} = window.mapView.leafMap.getCenter();
-      const formdata = $(this).closest('#map-detailForm').serializeArray();
+    const $form = $(this).closest('#map-detailForm');
+    const title = $form.find('#edit-map-title').val();
+    const desc = $form.find('#edit-map-description').val();
 
-      formdata.push({name: "latitude", value: lat});
-      formdata.push({name: "longitude", value: lng});
-      formdata.push({name: "zoom_lv", value: zoom});
+    if(!title || !desc){
+      alert("Please don't leave fields blank");
+      return;
+    }
+
+
+    // get map center and zoom lv and put together with form fields
+    const zoom = window.mapView.leafMap.getZoom();
+    const {lat, lng} = window.mapView.leafMap.getCenter();
+    const formdata = $(this).closest('#map-detailForm').serializeArray();
+
+    formdata.push({name: "latitude", value: lat});
+    formdata.push({name: "longitude", value: lng});
+    formdata.push({name: "zoom_lv", value: zoom});
+
+    if (!currentMap) {
 
       addMap(formdata)
       .then( result => {
@@ -215,14 +226,7 @@ $(() => {
       .catch(e => console.log(e));
 
     } else {
-      // get map center and zoom lv and put together with form fields
-      const zoom = window.mapView.leafMap.getZoom();
-      const {lat, lng} = window.mapView.leafMap.getCenter();
-      const formdata = $(this).closest('#map-detailForm').serializeArray();
 
-      formdata.push({name: "latitude", value: lat});
-      formdata.push({name: "longitude", value: lng});
-      formdata.push({name: "zoom_lv", value: zoom});
       formdata.push({name: "id", value: currentMap.id});
 
       editMap(formdata)
