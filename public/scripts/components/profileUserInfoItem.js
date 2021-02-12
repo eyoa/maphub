@@ -11,14 +11,14 @@ $(() => {
 
     return `
       <div class="container d-flex flex-row justify-content-center" id="user-info-item">
-        <div class="p-2 mx-5" style="max-width: 400px">
+        <div class="p-2 mx-3" style="max-width: 400px; min-width:150px;">
           <img id="user-profile-img" src="${user.profile_img_url}" class="rounded img-thumbnail">
         </div>
         <div class="mx-5 p-2 d-flex flex-column justify-content-center">
 
           <div id="username" >
             <label>Username: </label>
-            ${user.username}
+            <div>${user.username}</div>
           </div>
           ${emailDiv}
           <div id="description" class="my-4">${user.description}</div>
@@ -36,7 +36,7 @@ $(() => {
         <form id="edit-user-profile">
           <div class="p-2 d-flex flex-row justify-content-center">
 
-            <div class=" mx-5" style="max-width: 400px">
+            <div class=" mx-3" style="max-width: 400px; min-width:150px">
               <img id="user-profile-img" src="${user.profile_img_url}" class=" img-responsive img-thumbnail rounded">
             </div>
 
