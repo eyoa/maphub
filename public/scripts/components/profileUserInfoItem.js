@@ -11,10 +11,10 @@ $(() => {
 
     return `
       <div class="container d-flex flex-row justify-content-center" id="user-info-item">
-        <div class="p-2">
+        <div class="p-2 mx-5" style="max-width: 400px">
           <img id="user-profile-img" src="${user.profile_img_url}" class="rounded img-thumbnail">
         </div>
-        <div class="p-2 d-flex flex-column justify-content-center">
+        <div class="mx-5 p-2 d-flex flex-column justify-content-center">
 
           <div id="username" >
             <label>Username: </label>
@@ -36,11 +36,11 @@ $(() => {
         <form id="edit-user-profile">
           <div class="p-2 d-flex flex-row justify-content-center">
 
-            <div class=" mw-25 mh-25">
+            <div class=" mx-5" style="max-width: 400px">
               <img id="user-profile-img" src="${user.profile_img_url}" class=" img-responsive img-thumbnail rounded">
             </div>
 
-            <div class="p-2 d-flex flex-column justify-content-center">
+            <div class="mx-5 p-2 d-flex flex-column justify-content-center">
               <div class="form-group">
                 <label for="edit-username">new username: </label>
                 <input type="text" class="form-control" id="edit-username" value="${user.username}">
