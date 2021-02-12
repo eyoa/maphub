@@ -14,7 +14,7 @@ $(() => {
     let headerButton = '';
     let favToggle = '';
 
-    if (currentUser) {
+    if (currentUser && state === 'view') {
       if (favList.includes(map.id)) {
         favToggle = `<img class="fav-Toggle mx-2" id="fav" src="./../../images/fav-sel.png" style="height:25px;">`
       } else {

@@ -85,8 +85,8 @@ $(() => {
   //updates display for profile image
   $userProfile.on('click', '#refresh-profile-image', function(event) {
     event.preventDefault();
-    const newUrl = $(this).closest('.col').find('#edit-profile-img').val();
-    const imgElement = $(this).closest('.col').find('#user-profile-img');
+    const newUrl = $(this).siblings('#edit-profile-img').val();
+    const imgElement = $(this).closest('#edit-user-profile').find('#user-profile-img');
     console.log(newUrl);
     console.log(imgElement);
     imgElement.attr('src', newUrl);

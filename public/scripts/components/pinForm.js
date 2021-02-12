@@ -8,9 +8,9 @@ $(() => {
     const long = pin.longitude;
     const lat = pin.latitude;
     const id = !pin ? '' : pin.id;
-    const name = !pin ? 'new title': pin.title;
-    const desc = !pin ? 'new description': pin.description;
-    const imgUrl = !pin ? 'http://' : pin.img_url;
+    const name = !pin ? '': pin.title;
+    const desc = !pin ? '': pin.description;
+    const imgUrl = !pin ? '' : pin.img_url;
 
     console.log(id, long, lat, name, desc, imgUrl);
 

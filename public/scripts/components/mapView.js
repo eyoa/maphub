@@ -74,9 +74,9 @@ $(() => {
         function() {
           let latitude = event.latlng.lat;
           let longitude = event.latlng.lng;
-          let title = 'new title';
-          let description = 'new desc';
-          let img_url = 'enter a new image url';
+          let title = '';
+          let description = '';
+          let img_url = '';
 
           insertContent(currentMap, currentState, 'pinForm', {latitude, longitude, title, description, img_url});
           if (newMarker) leafMap.removeLayer(newMarker);
@@ -382,10 +382,6 @@ $(() => {
         clearTimeout(timeoutId);
       });
 
-      // check there's no extra ones somehow?
-      //const editPin = L.marker(point, {draggable: true}).addTo(window.mapView.leafMap);
-      //window.mapView.editPin = editPin;
-      //insertContent(currentMap, currentState, "pinForm", pin);
     });
   });
 
@@ -466,11 +462,7 @@ $(() => {
         displayMapView(currentMap, 'editDetail');
       })
       .catch(e => console.log(e))
-
-
     });
-
-
   });
 
   //delete pin - update db and refresh pinList

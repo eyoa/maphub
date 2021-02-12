@@ -4,7 +4,7 @@ $(() => {
     let editBtn = '';
     let emailDiv = '';
 
-    if (currentUser.id === user.id) {
+    if (currentUser && currentUser.id === user.id) {
       editBtn = `<button class="btn btn-primary mx-auto" id="profile-edit-btn">edit</button>`;
       emailDiv = `<div id="email" class=""><label>Email: </label>${user.email}</div>`;
     }
@@ -36,8 +36,8 @@ $(() => {
         <form id="edit-user-profile">
           <div class="p-2 d-flex flex-row justify-content-center">
 
-            <div>
-              <img id="user-profile-img" src="${user.profile_img_url}">
+            <div class=" mw-25 mh-25">
+              <img id="user-profile-img" src="${user.profile_img_url}" class=" img-responsive img-thumbnail rounded">
             </div>
 
             <div class="p-2 d-flex flex-column justify-content-center">
